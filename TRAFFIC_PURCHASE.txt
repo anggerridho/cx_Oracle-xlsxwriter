@@ -1,0 +1,74 @@
+SELECT
+	CALLING_DATE,
+	CHANNEL,
+	ATTEMPT_A,
+	SUCCESS_A,
+	ATTEMPT_B,
+	SUCCESS_B
+FROM
+	(
+	SELECT
+		calling_date,
+	CASE
+			WHEN substr(media_code, 2, 1) = 'U' THEN 'UMB'
+			WHEN substr(media_code, 2, 1) = 'I' THEN 'IVR'
+			WHEN substr(media_code, 2, 1) = 'O' THEN 'OpenAPI'
+			WHEN substr(media_code, 2, 1) = '0' THEN 'SMS'
+			WHEN substr(media_code, 2, 1) = 'B' THEN 'Web'
+			WHEN substr(media_code, 2, 1) = 'D' THEN 'DTMF'
+			WHEN substr(media_code, 2, 1) = 'S' THEN 'HTTPGW'
+			WHEN substr(media_code, 2, 1) = 'C' THEN 'CSWeb'
+			WHEN substr(media_code, 2, 1) = 'W'
+			AND lower(DVC_ID) != 'smsbroadcast' THEN 'WCC'
+			WHEN substr(media_code, 2, 1) = 'W'
+			AND lower(DVC_ID) = 'smsbroadcast' THEN 'Sms Broadcast'
+			WHEN substr(media_code, 2, 1) = 'M' THEN 'MKios'
+			WHEN substr(media_code, 2, 1) = 'Z' THEN 'Point'
+			WHEN substr(media_code, 2, 1) = 'N' THEN 'Renewal'
+			WHEN substr(media_code, 2, 1) = 'J' THEN 'Recomendation'
+			WHEN substr(media_code, 2, 1) = 'L' THEN 'Referal'
+			WHEN substr(media_code, 2, 1) = 'P' THEN 'WAP'
+			WHEN substr(media_code, 2, 1) = 'R' THEN 'MyNSP'
+			WHEN substr(media_code, 2, 1) = 'V' THEN 'My Telkomsel'
+			WHEN substr(media_code, 2, 1) = 'Q' THEN 'Music Max'
+			ELSE 'Promo'
+		END AS CHANNEL,
+		-- PURCHASING AUTORENEWAL ON (A)
+ sum(CASE WHEN calling_type IN (1) THEN trans_count ELSE 0 END) AS attempt_A,
+		sum(CASE WHEN calling_type IN (1) AND RESULT NOT IN (501, 502, 802, 803, 100) THEN trans_count ELSE 0 END) AS success_A,
+		-- PURCHASING AUTORENEWAL OFF (B)
+ sum(CASE WHEN calling_type IN (2, 7, 77) THEN trans_count ELSE 0 END) AS attempt_B,
+		sum(CASE WHEN calling_type IN (2, 7, 77) AND RESULT NOT IN (501, 502, 802, 803, 100) THEN trans_count ELSE 0 END) AS success_B
+	FROM
+		cdr_report_goofree
+	WHERE
+		calling_date = to_char(sysdate-1, 'yyyymmdd')
+		AND calling_type IN (1, 2, 7, 64, 93, 77, 78, 65, 95, 96, 99, 100)
+	GROUP BY
+		calling_date,
+	CASE
+			WHEN substr(media_code, 2, 1) = 'U' THEN 'UMB'
+			WHEN substr(media_code, 2, 1) = 'I' THEN 'IVR'
+			WHEN substr(media_code, 2, 1) = 'O' THEN 'OpenAPI'
+			WHEN substr(media_code, 2, 1) = '0' THEN 'SMS'
+			WHEN substr(media_code, 2, 1) = 'B' THEN 'Web'
+			WHEN substr(media_code, 2, 1) = 'D' THEN 'DTMF'
+			WHEN substr(media_code, 2, 1) = 'S' THEN 'HTTPGW'
+			WHEN substr(media_code, 2, 1) = 'C' THEN 'CSWeb'
+			WHEN substr(media_code, 2, 1) = 'W'
+			AND lower(DVC_ID) != 'smsbroadcast' THEN 'WCC'
+			WHEN substr(media_code, 2, 1) = 'W'
+			AND lower(DVC_ID) = 'smsbroadcast' THEN 'Sms Broadcast'
+			WHEN substr(media_code, 2, 1) = 'M' THEN 'MKios'
+			WHEN substr(media_code, 2, 1) = 'Z' THEN 'Point'
+			WHEN substr(media_code, 2, 1) = 'N' THEN 'Renewal'
+			WHEN substr(media_code, 2, 1) = 'J' THEN 'Recomendation'
+			WHEN substr(media_code, 2, 1) = 'L' THEN 'Referal'
+			WHEN substr(media_code, 2, 1) = 'P' THEN 'WAP'
+			WHEN substr(media_code, 2, 1) = 'R' THEN 'MyNSP'
+			WHEN substr(media_code, 2, 1) = 'V' THEN 'My Telkomsel'
+			WHEN substr(media_code, 2, 1) = 'Q' THEN 'Music Max'
+			ELSE 'Promo'
+		END
+	ORDER BY
+		calling_date)

@@ -1,0 +1,27 @@
+SELECT
+	substr(a.calling_datetime, 1, 8),
+	--as calling_date
+ upper(a.apps_id),
+	--as apps_id
+ sum(decode(a.chg_type, 'C', b.amount, 0)),
+	--as chg_amount
+ sum(decode(a.chg_type, 'C', 1, 0)),
+	-- as chg_req
+ sum(decode(a.chg_type, 'R', b.amount, 0)),
+	--as refund_amount
+ sum(decode(a.chg_type, 'R', 1, 0))
+	-- as refund_req
+
+	FROM perfcdr_chg a,
+	application_id_info b
+WHERE
+	a.chg_type IN ('C', 'R')
+	AND a.result LIKE 'Success%'
+	AND rtrim(b.application_id)= a.apps_id
+	AND substr(a.calling_datetime, 1, 8) = to_char(sysdate-1, 'YYYYMMDD')
+	--and     a.calling_datetime like to_char(sysdate-1,'YYYYMMDD') || '%'
+
+	GROUP BY a.apps_id,
+	substr(a.calling_datetime, 1, 8)
+ORDER BY
+	a.apps_id
