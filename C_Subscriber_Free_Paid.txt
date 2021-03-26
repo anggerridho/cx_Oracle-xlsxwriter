@@ -1,0 +1,11 @@
+SELECT
+	sum(CASE WHEN b.initial_amount = 0 THEN 1 ELSE 0 END),
+	sum(CASE WHEN b.initial_amount != 0 THEN 1 ELSE 0 END)
+FROM
+	user_monthly_rating a,
+	V_SUBS_STATUS b
+WHERE
+	a.content_id = b.content_id
+	AND a.rating_id = b.rating_id
+	AND a.play_order = '000'
+	AND a.effective_dt_to LIKE '9999%'

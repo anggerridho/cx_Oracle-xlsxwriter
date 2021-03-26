@@ -1,0 +1,144 @@
+SELECT
+	calling_date,
+	'Subs Withdrawal' Churned_User,
+	sum(CASE WHEN region = 'Sumbagut' THEN 1 ELSE 0 END) Sumbagut,
+	sum(CASE WHEN region = 'Sumbagteng' THEN 1 ELSE 0 END) Sumbagteng,
+	sum(CASE WHEN region = 'Sumbagsel' THEN 1 ELSE 0 END) Sumbagsel,
+	sum(CASE WHEN region = 'Jabotabek' THEN 1 ELSE 0 END) Jabotabek,
+	sum(CASE WHEN region = 'Jabar' THEN 1 ELSE 0 END) Jabar,
+	sum(CASE WHEN region = 'Jateng' THEN 1 ELSE 0 END) Jateng,
+	sum(CASE WHEN region = 'Jatim' THEN 1 ELSE 0 END) Jatim,
+	sum(CASE WHEN region = 'Balinusra' THEN 1 ELSE 0 END) Balinusra,
+	sum(CASE WHEN region = 'Kalimantan' THEN 1 ELSE 0 END) Kalimantan,
+	sum(CASE WHEN region = 'Sulawesi' THEN 1 ELSE 0 END) Sulawesi,
+	sum(CASE WHEN region = 'Papua' THEN 1 ELSE 0 END) Papua,
+	sum(CASE WHEN region = 'UNKNOWN' THEN 1 ELSE 0 END) Other,
+	count(*) total
+FROM
+	CALL_DETAILED_RECORD a,
+	prefix_region b
+WHERE
+	prev_subs_status = 'A'
+	AND next_subs_status = 'S'
+	AND substr(a.calling_mdn, 1, 7) = b.prefix
+	AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+	AND calling_type = 18
+	AND RESULT = 0
+GROUP BY
+	calling_date
+UNION ALL
+SELECT
+	calling_date,
+	'Delete Content' Churned_User,
+	sum(CASE WHEN region = 'Sumbagut' THEN 1 ELSE 0 END) Sumbagut,
+	sum(CASE WHEN region = 'Sumbagteng' THEN 1 ELSE 0 END) Sumbagteng,
+	sum(CASE WHEN region = 'Sumbagsel' THEN 1 ELSE 0 END) Sumbagsel,
+	sum(CASE WHEN region = 'Jabotabek' THEN 1 ELSE 0 END) Jabotabek,
+	sum(CASE WHEN region = 'Jabar' THEN 1 ELSE 0 END) Jabar,
+	sum(CASE WHEN region = 'Jateng' THEN 1 ELSE 0 END) Jateng,
+	sum(CASE WHEN region = 'Jatim' THEN 1 ELSE 0 END) Jatim,
+	sum(CASE WHEN region = 'Balinusra' THEN 1 ELSE 0 END) Balinusra,
+	sum(CASE WHEN region = 'Kalimantan' THEN 1 ELSE 0 END) Kalimantan,
+	sum(CASE WHEN region = 'Sulawesi' THEN 1 ELSE 0 END) Sulawesi,
+	sum(CASE WHEN region = 'Papua' THEN 1 ELSE 0 END) Papua,
+	sum(CASE WHEN region = 'UNKNOWN' THEN 1 ELSE 0 END) Other,
+	count(*) total
+FROM
+	CALL_DETAILED_RECORD a,
+	prefix_region b
+WHERE
+	prev_subs_status = 'A'
+	AND next_subs_status = 'S'
+	AND substr(a.calling_mdn, 1, 7) = b.prefix
+	AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+	AND calling_type = 4
+	AND RESULT = 0
+GROUP BY
+	calling_date
+UNION ALL
+SELECT
+	calling_date,
+	'Renewal Content Deletion' Churned_User,
+	sum(CASE WHEN region = 'Sumbagut' THEN 1 ELSE 0 END) Sumbagut,
+	sum(CASE WHEN region = 'Sumbagteng' THEN 1 ELSE 0 END) Sumbagteng,
+	sum(CASE WHEN region = 'Sumbagsel' THEN 1 ELSE 0 END) Sumbagsel,
+	sum(CASE WHEN region = 'Jabotabek' THEN 1 ELSE 0 END) Jabotabek,
+	sum(CASE WHEN region = 'Jabar' THEN 1 ELSE 0 END) Jabar,
+	sum(CASE WHEN region = 'Jateng' THEN 1 ELSE 0 END) Jateng,
+	sum(CASE WHEN region = 'Jatim' THEN 1 ELSE 0 END) Jatim,
+	sum(CASE WHEN region = 'Balinusra' THEN 1 ELSE 0 END) Balinusra,
+	sum(CASE WHEN region = 'Kalimantan' THEN 1 ELSE 0 END) Kalimantan,
+	sum(CASE WHEN region = 'Sulawesi' THEN 1 ELSE 0 END) Sulawesi,
+	sum(CASE WHEN region = 'Papua' THEN 1 ELSE 0 END) Papua,
+	sum(CASE WHEN region = 'UNKNOWN' THEN 1 ELSE 0 END) Other,
+	count(*) total
+FROM
+	CALL_DETAILED_RECORD a,
+	prefix_region b
+WHERE
+	prev_subs_status = 'A'
+	AND next_subs_status = 'S'
+	AND substr(a.calling_mdn, 1, 7) = b.prefix
+	AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+	AND calling_type = 67
+	AND RESULT = 0
+GROUP BY
+	calling_date
+UNION ALL
+SELECT
+	calling_date,
+	'Renewal Content Insuf Balance' Churned_User,
+	sum(CASE WHEN region = 'Sumbagut' THEN 1 ELSE 0 END) Sumbagut,
+	sum(CASE WHEN region = 'Sumbagteng' THEN 1 ELSE 0 END) Sumbagteng,
+	sum(CASE WHEN region = 'Sumbagsel' THEN 1 ELSE 0 END) Sumbagsel,
+	sum(CASE WHEN region = 'Jabotabek' THEN 1 ELSE 0 END) Jabotabek,
+	sum(CASE WHEN region = 'Jabar' THEN 1 ELSE 0 END) Jabar,
+	sum(CASE WHEN region = 'Jateng' THEN 1 ELSE 0 END) Jateng,
+	sum(CASE WHEN region = 'Jatim' THEN 1 ELSE 0 END) Jatim,
+	sum(CASE WHEN region = 'Balinusra' THEN 1 ELSE 0 END) Balinusra,
+	sum(CASE WHEN region = 'Kalimantan' THEN 1 ELSE 0 END) Kalimantan,
+	sum(CASE WHEN region = 'Sulawesi' THEN 1 ELSE 0 END) Sulawesi,
+	sum(CASE WHEN region = 'Papua' THEN 1 ELSE 0 END) Papua,
+	sum(CASE WHEN region = 'UNKNOWN' THEN 1 ELSE 0 END) Other,
+	count(*) total
+FROM
+	CALL_DETAILED_RECORD a,
+	prefix_region b
+WHERE
+	prev_subs_status = 'A'
+	AND next_subs_status = 'S'
+	AND substr(a.calling_mdn, 1, 7) = b.prefix
+	AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+	AND calling_type IN (64, 93, 95, 96, 99, 100)
+	AND RESULT = 666
+GROUP BY
+	calling_date
+UNION ALL
+SELECT
+	calling_date,
+	'Renewal Content Error Charging' Churned_User,
+	sum(CASE WHEN region = 'Sumbagut' THEN 1 ELSE 0 END) Sumbagut,
+	sum(CASE WHEN region = 'Sumbagteng' THEN 1 ELSE 0 END) Sumbagteng,
+	sum(CASE WHEN region = 'Sumbagsel' THEN 1 ELSE 0 END) Sumbagsel,
+	sum(CASE WHEN region = 'Jabotabek' THEN 1 ELSE 0 END) Jabotabek,
+	sum(CASE WHEN region = 'Jabar' THEN 1 ELSE 0 END) Jabar,
+	sum(CASE WHEN region = 'Jateng' THEN 1 ELSE 0 END) Jateng,
+	sum(CASE WHEN region = 'Jatim' THEN 1 ELSE 0 END) Jatim,
+	sum(CASE WHEN region = 'Balinusra' THEN 1 ELSE 0 END) Balinusra,
+	sum(CASE WHEN region = 'Kalimantan' THEN 1 ELSE 0 END) Kalimantan,
+	sum(CASE WHEN region = 'Sulawesi' THEN 1 ELSE 0 END) Sulawesi,
+	sum(CASE WHEN region = 'Papua' THEN 1 ELSE 0 END) Papua,
+	sum(CASE WHEN region = 'UNKNOWN' THEN 1 ELSE 0 END) Other,
+	count(*) total
+FROM
+	CALL_DETAILED_RECORD a,
+	prefix_region b
+WHERE
+	prev_subs_status = 'A'
+	AND next_subs_status = 'S'
+	AND substr(a.calling_mdn, 1, 7) = b.prefix
+	AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+	AND calling_type IN (64, 93, 95, 96, 99, 100)
+	AND RESULT = 502
+GROUP BY
+	calling_date

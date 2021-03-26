@@ -1,0 +1,61 @@
+SELECT
+	CALLING_DATE,
+	NOTE,
+	SMS,
+	UMB,
+	HTTP,
+	DTMF,
+	OPENAPI,
+	WEB,
+	IVR,
+	WAP,
+	CSWEB,
+	WCC,
+	OTHERS
+FROM
+	(
+	SELECT
+		calling_date,
+		'ATTEMPT (B)' note,
+		sum(CASE WHEN substr(media_code, 2, 1)= '0' THEN trans_count ELSE 0 END) SMS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'U' THEN trans_count ELSE 0 END) UMB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'S' THEN trans_count ELSE 0 END) HTTP,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'D' THEN trans_count ELSE 0 END) DTMF,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'O' THEN trans_count ELSE 0 END) OPENAPI,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'B' THEN trans_count ELSE 0 END) WEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'I' THEN trans_count ELSE 0 END) IVR,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'P' THEN trans_count ELSE 0 END) WAP,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'C' THEN trans_count ELSE 0 END) CSWEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'W' THEN trans_count ELSE 0 END) WCC,
+		sum(CASE WHEN substr(media_code, 2, 1) NOT IN('0', 'U', 'S', 'D', 'B', 'P', 'I', 'C', 'W', 'N', 'O') THEN trans_count ELSE 0 END) OTHERS
+	FROM
+		cdr_report_goofree
+	WHERE
+		calling_type IN (2, 7, 77)
+	GROUP BY
+		calling_date
+UNION
+	SELECT
+		calling_date,
+		'SUCCESS (B)' NOTE,
+		sum(CASE WHEN substr(media_code, 2, 1)= '0' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) SMS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'U' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) UMB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'S' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) HTTP,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'D' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) DTMF,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'O' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) OPENAPI,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'B' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) WEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'I' AND RESULT IN (0, 805)THEN trans_count ELSE 0 END) IVR,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'P' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) WAP,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'C' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) CSWEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'W' AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) WCC,
+		sum(CASE WHEN substr(media_code, 2, 1) NOT IN('0', 'U', 'S', 'D', 'B', 'P', 'I', 'C', 'W', 'N', 'O') AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) OTHERS
+	FROM
+		cdr_report_goofree
+	WHERE
+		calling_type IN (2, 7, 77)
+	GROUP BY
+		calling_date)
+WHERE
+	calling_date = to_char(sysdate-1, 'YYYYMMDD')
+ORDER BY
+	calling_date

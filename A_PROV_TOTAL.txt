@@ -1,0 +1,15 @@
+SELECT
+	calling_date,
+	count(*),
+	sum(CASE WHEN prov_result_cde = 0 THEN 1 ELSE 0 END),
+	round(100 * sum(CASE WHEN prov_result_cde = 0 THEN 1 ELSE 0 END)/ count(*), 2) || '%'
+FROM
+	call_detailed_record
+WHERE
+	calling_type IN (1, 2, 7, 64, 93, 78, 77, 65, 95, 96, 99, 100)
+	AND calling_date = to_char(sysdate-1, 'YYYYMMDD')
+	AND trim(prov_tr_id) IS NOT NULL
+GROUP BY
+	calling_date
+ORDER BY
+	calling_date

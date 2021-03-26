@@ -1,0 +1,28 @@
+SELECT
+	a.calling_date,
+	a. total TOTAL_SUBSCRIBER,
+	b.t_req_act TOT_REQ_ACTIVATION,
+	b.t_req_act_succ TOT_SUCC_ACTIVATION,
+	b.t_req_deact TOT_REQ_DEACTIVATION,
+	b.t_req_deact_succ TOT_SUCC_DEACTIVATION,
+	b.s_a SUSPEND_TO_ACTIVE,
+	b.a_s ACTIVE_TO_SUSPEND
+FROM
+	subs_summary_region a,
+	(
+	SELECT
+		calling_date,
+		sum(CASE WHEN calling_type = 17 THEN 1 ELSE 0 END) t_req_act,
+		sum(CASE WHEN calling_type = 17 AND RESULT IN (0, 805) THEN 1 ELSE 0 END) t_req_act_succ,
+		sum(CASE WHEN calling_type = 72 THEN 1 ELSE 0 END) t_req_deact,
+		sum(CASE WHEN calling_type = 72 AND RESULT IN (0, 805) THEN 1 ELSE 0 END) t_req_deact_succ,
+		sum(CASE WHEN prev_subs_status = 'S' AND next_subs_status = 'A' THEN 1 ELSE 0 END) s_a,
+		sum(CASE WHEN prev_subs_status = 'A' AND next_subs_status = 'S' THEN 1 ELSE 0 END) a_s
+	FROM
+		call_detailed_record
+	WHERE
+		CALLING_DATE = TO_CHAR(SYSDATE-2, 'YYYYMMDD')
+	GROUP BY
+		calling_date) b
+WHERE
+	a.calling_date = b.calling_date

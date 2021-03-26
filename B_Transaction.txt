@@ -1,0 +1,26 @@
+SELECT
+	calling_date,
+	sum(CASE WHEN calling_type IN (1) THEN trans_count ELSE 0 END) PA_ATTEMPT,
+	sum(CASE WHEN calling_type IN (1) AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) PA_SUCCESS,
+	sum(CASE WHEN calling_type IN (1) AND RESULT IN (0, 805) THEN revenue ELSE 0 END) PA_REVENUE,
+	sum(CASE WHEN calling_type IN (2, 7, 77) THEN trans_count ELSE 0 END) PM_ATTEMPT,
+	sum(CASE WHEN calling_type IN (2, 7, 77) AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) PM_SUCCESS,
+	sum(CASE WHEN calling_type IN (2, 7, 77) AND RESULT IN (0, 805) THEN revenue ELSE 0 END) PM_REVENUE,
+	sum(CASE WHEN calling_type IN (64, 93, 95, 96, 99, 100) THEN trans_count ELSE 0 END) RA_ATTEMPT,
+	sum(CASE WHEN calling_type IN (64, 93, 95, 96, 99, 100) AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) RA_SUCCESS,
+	sum(CASE WHEN calling_type IN (64, 93, 95, 96, 99, 100) AND RESULT IN (0, 805) THEN revenue ELSE 0 END) RA_REVENUE,
+	sum(CASE WHEN calling_type IN (78, 65) THEN trans_count ELSE 0 END) RM_ATTEMPT ,
+	sum(CASE WHEN calling_type IN (78, 65) AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) RM_SUCCESS,
+	sum(CASE WHEN calling_type IN (78, 65) AND RESULT IN (0, 805) THEN revenue ELSE 0 END) RM_REVENUE,
+	sum(CASE WHEN calling_type IN (1, 2, 7, 77, 78, 64, 93, 65, 95, 96, 99, 100) THEN trans_count ELSE 0 END) TOTAL_ATTEMPT,
+	sum(CASE WHEN calling_type IN (1, 2, 7, 77, 78, 64, 93, 65, 95, 96, 99, 100) AND RESULT IN (0, 805) THEN trans_count ELSE 0 END) TOTAL_SUCCESS,
+	sum(CASE WHEN calling_type IN (1, 2, 7, 77, 78, 64, 93, 65, 95, 96, 99, 100) AND RESULT IN (0, 805) THEN revenue ELSE 0 END) TOTAL_REVENUE
+FROM
+	cdr_report_goofree
+WHERE
+	calling_type IN (1, 2, 7, 77, 78, 64, 93, 65, 95, 96, 99, 100)
+	AND calling_date = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+GROUP BY
+	calling_date
+ORDER BY
+	calling_date

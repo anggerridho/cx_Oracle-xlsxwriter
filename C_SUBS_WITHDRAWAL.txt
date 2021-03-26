@@ -1,0 +1,18 @@
+SELECT
+	calling_date,
+	sum(CASE WHEN calling_type = 18 AND RESULT = 0 THEN 1 ELSE 0 END) SUBS_WITHDRAWAL,
+	sum(CASE WHEN calling_type = 4 AND RESULT = 0 THEN 1 ELSE 0 END) DELETE_CONTENT,
+	sum(CASE WHEN calling_type = 67 AND RESULT = 0 THEN 1 ELSE 0 END) RENEWAL_CONTENT_DELETION,
+	sum(CASE WHEN calling_type IN (64, 93, 95, 96, 99, 100) AND RESULT = 666 THEN 1 ELSE 0 END) RENEWAL_CONTENT_INSUF_BALANCE,
+	sum(CASE WHEN calling_type IN (64, 93, 95, 96, 99, 100) AND RESULT = 502 THEN 1 ELSE 0 END) RENEWAL_CONTENT_ERROR_CHARGING,
+	count(*) GRAND_TOTAL
+FROM
+	call_detailed_record
+WHERE
+	prev_subs_status = 'A'
+	AND next_subs_status = 'S'
+	AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+	AND calling_type IN (4, 18, 67, 64, 93, 95, 96, 99, 100)
+	AND RESULT IN (0, 502, 666)
+GROUP BY
+	calling_date

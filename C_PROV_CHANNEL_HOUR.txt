@@ -1,0 +1,39 @@
+SELECT
+	calling_date,
+	hr,
+	channel,
+	attempt_PA,
+	success_PA,
+	attempt_PB,
+	success_PB
+FROM
+	(
+	SELECT
+		calling_date,
+		substr(calling_time, 1, 2) AS hr,
+		nvl(media_name, 'renewal') AS channel,
+		sum(CASE WHEN calling_type IN (1) THEN 1 ELSE 0 END) AS attempt_PA,
+		sum(CASE WHEN calling_type IN (1) AND prov_result_cde = 0 THEN 1 ELSE 0 END) AS success_PA,
+		sum(CASE WHEN calling_type IN (2, 7, 77) THEN 1 ELSE 0 END) AS attempt_PB,
+		sum(CASE WHEN calling_type IN (2, 7, 77) AND prov_result_cde = 0 THEN 1 ELSE 0 END) AS success_PB
+	FROM
+		call_detailed_record cdr
+	LEFT JOIN (
+		SELECT
+			DISTINCT media_code,
+			media_name
+		FROM
+			media_info) mi ON
+		substr(mi.media_code, 2, 1) = substr(cdr.media_code, 2, 1)
+	WHERE
+		calling_type IN (1, 2, 7, 77)
+		AND calling_date = to_char(sysdate-1, 'yyyymmdd')
+		AND trim(prov_tr_id) IS NOT NULL
+	GROUP BY
+		calling_date,
+		nvl(media_name, 'renewal') ,
+		substr(calling_time, 1, 2)
+	ORDER BY
+		calling_date,
+		nvl(media_name, 'renewal') ,
+		substr(calling_time, 1, 2))

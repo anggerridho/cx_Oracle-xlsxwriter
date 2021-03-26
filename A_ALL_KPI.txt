@@ -1,0 +1,44 @@
+SELECT
+	calling_date,
+	sms,
+	umb,
+	ivr,
+	http,
+	wap,
+	web,
+	openapi,
+	mobileapps,
+	wcc,
+	csweb,
+	renewal,
+	rbt_req,
+	chg_req,
+	refund_req,
+	chg_trans_succ,
+	chg_timeout,
+	decode(chg_req, 0, 0,(((chg_req-chg_timeout)/ chg_req)) * 100) AS chgSuccessRate,
+	chg_succ,
+	decode(chg_req, 0, 0,(chg_succ / chg_req)* 100) AS billableRate,
+	chg_insf,
+	chg_subs_locked,
+	chg_other_err,
+	refund_succ,
+	decode(refund_req, 0, 0,(refund_succ / refund_req)* 100) AS refundRate,
+	prov_req,
+	deprov_req,
+	prov_succ,
+	prov_error,
+	prov_timeout,
+	decode(prov_req, 0, 0,((prov_req-prov_timeout)/ prov_req)* 100) AS provTransactionRate,
+	decode( prov_req, 0, 0,(prov_succ / prov_req)* 100) AS provRate,
+	deprov_succ,
+	deprov_err,
+	decode(deprov_req, 0, 0,( deprov_succ / deprov_req)* 100) AS deactiveRate,
+	revenue,
+	avg_svc_latency
+FROM
+	perf_dashboard
+WHERE
+	CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+ORDER BY
+	calling_date DESC
