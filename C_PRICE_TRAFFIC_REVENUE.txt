@@ -1,0 +1,220 @@
+SELECT
+	CALLING_DATE,
+	TYPE,
+	CSWEB ,
+	DTMF ,
+	HTTPGW ,
+	IVR ,
+	MKIOS ,
+	OPENAPI ,
+	POINT ,
+	RECOMENDATION ,
+	RENEWAL ,
+	SMS,
+	UMB,
+	WCC,
+	WEB,
+	Media_1,
+	Media_2,
+	Media_3,
+	Media_4,
+	Media_5,
+	Media_6,
+	Media_7,
+	Media_8,
+	Media_9,
+	Media_A,
+	Media_E,
+	Media_F,
+	Media_G,
+	Media_H,
+	Media_K,
+	Media_L,
+	Media_Q,
+	Media_R,
+	Media_T,
+	Total
+FROM
+	(
+	SELECT
+		calling_date,
+		'PURCHASE_ON' TYPE,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'C' THEN charge_amount ELSE NULL END) CSWEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'D' THEN charge_amount ELSE NULL END) DTMF,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'S' THEN charge_amount ELSE NULL END) HTTPGW,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'I' THEN charge_amount ELSE NULL END) IVR,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'M' THEN charge_amount ELSE NULL END) MKIOS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'O' THEN charge_amount ELSE NULL END) OPENAPI,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Z' THEN charge_amount ELSE NULL END) POINT,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'J' THEN charge_amount ELSE NULL END) RECOMENDATION,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'N' THEN charge_amount ELSE NULL END) RENEWAL,
+		sum(CASE WHEN substr(media_code, 2, 1)= '0' THEN charge_amount ELSE NULL END) SMS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'U' THEN charge_amount ELSE NULL END) UMB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'W' THEN charge_amount ELSE NULL END) WCC,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'B' THEN charge_amount ELSE NULL END) WEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= '1' THEN charge_amount ELSE NULL END) Media_1,
+		sum(CASE WHEN substr(media_code, 2, 1)= '2' THEN charge_amount ELSE NULL END) Media_2,
+		sum(CASE WHEN substr(media_code, 2, 1)= '3' THEN charge_amount ELSE NULL END) Media_3,
+		sum(CASE WHEN substr(media_code, 2, 1)= '4' THEN charge_amount ELSE NULL END) Media_4,
+		sum(CASE WHEN substr(media_code, 2, 1)= '5' THEN charge_amount ELSE NULL END) Media_5,
+		sum(CASE WHEN substr(media_code, 2, 1)= '6' THEN charge_amount ELSE NULL END) Media_6,
+		sum(CASE WHEN substr(media_code, 2, 1)= '7' THEN charge_amount ELSE NULL END) Media_7,
+		sum(CASE WHEN substr(media_code, 2, 1)= '8' THEN charge_amount ELSE NULL END) Media_8,
+		sum(CASE WHEN substr(media_code, 2, 1)= '9' THEN charge_amount ELSE NULL END) Media_9,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'A' THEN charge_amount ELSE NULL END) Media_A,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'E' THEN charge_amount ELSE NULL END) Media_E,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'F' THEN charge_amount ELSE NULL END) Media_F,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'G' THEN charge_amount ELSE NULL END) Media_G,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'H' THEN charge_amount ELSE NULL END) Media_H,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'K' THEN charge_amount ELSE NULL END) Media_K,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'L' THEN charge_amount ELSE NULL END) Media_L,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Q' THEN charge_amount ELSE NULL END) Media_Q,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'R' THEN charge_amount ELSE NULL END) Media_R,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'T' THEN charge_amount ELSE NULL END) Media_T,
+		sum(charge_amount) Total
+	FROM
+		call_detailed_record
+	WHERE
+		calling_type IN (1)
+		AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+		AND RESULT = 0
+	GROUP BY
+		calling_date
+UNION ALL
+	SELECT
+		calling_date,
+		'PURCHASE_OFF' TYPE,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'C' THEN charge_amount ELSE NULL END) CSWEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'D' THEN charge_amount ELSE NULL END) DTMF,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'S' THEN charge_amount ELSE NULL END) HTTPGW,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'I' THEN charge_amount ELSE NULL END) IVR,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'M' THEN charge_amount ELSE NULL END) MKIOS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'O' THEN charge_amount ELSE NULL END) OPENAPI,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Z' THEN charge_amount ELSE NULL END) POINT,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'J' THEN charge_amount ELSE NULL END) RECOMENDATION,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'N' THEN charge_amount ELSE NULL END) RENEWAL,
+		sum(CASE WHEN substr(media_code, 2, 1)= '0' THEN charge_amount ELSE NULL END) SMS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'U' THEN charge_amount ELSE NULL END) UMB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'W' THEN charge_amount ELSE NULL END) WCC,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'B' THEN charge_amount ELSE NULL END) WEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= '1' THEN charge_amount ELSE NULL END) Media_1,
+		sum(CASE WHEN substr(media_code, 2, 1)= '2' THEN charge_amount ELSE NULL END) Media_2,
+		sum(CASE WHEN substr(media_code, 2, 1)= '3' THEN charge_amount ELSE NULL END) Media_3,
+		sum(CASE WHEN substr(media_code, 2, 1)= '4' THEN charge_amount ELSE NULL END) Media_4,
+		sum(CASE WHEN substr(media_code, 2, 1)= '5' THEN charge_amount ELSE NULL END) Media_5,
+		sum(CASE WHEN substr(media_code, 2, 1)= '6' THEN charge_amount ELSE NULL END) Media_6,
+		sum(CASE WHEN substr(media_code, 2, 1)= '7' THEN charge_amount ELSE NULL END) Media_7,
+		sum(CASE WHEN substr(media_code, 2, 1)= '8' THEN charge_amount ELSE NULL END) Media_8,
+		sum(CASE WHEN substr(media_code, 2, 1)= '9' THEN charge_amount ELSE NULL END) Media_9,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'A' THEN charge_amount ELSE NULL END) Media_A,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'E' THEN charge_amount ELSE NULL END) Media_E,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'F' THEN charge_amount ELSE NULL END) Media_F,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'G' THEN charge_amount ELSE NULL END) Media_G,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'H' THEN charge_amount ELSE NULL END) Media_H,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'K' THEN charge_amount ELSE NULL END) Media_K,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'L' THEN charge_amount ELSE NULL END) Media_L,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Q' THEN charge_amount ELSE NULL END) Media_Q,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'R' THEN charge_amount ELSE NULL END) Media_R,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'T' THEN charge_amount ELSE NULL END) Media_T,
+		sum(charge_amount) Total
+	FROM
+		call_detailed_record
+	WHERE
+		calling_type IN (2, 7, 77)
+		--pur off
+		AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+		AND RESULT = 0
+	GROUP BY
+		calling_date
+UNION ALL
+	SELECT
+		calling_date,
+		'RENEWAL_ON' TYPE,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'C' THEN charge_amount ELSE NULL END) CSWEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'D' THEN charge_amount ELSE NULL END) DTMF,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'S' THEN charge_amount ELSE NULL END) HTTPGW,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'I' THEN charge_amount ELSE NULL END) IVR,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'M' THEN charge_amount ELSE NULL END) MKIOS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'O' THEN charge_amount ELSE NULL END) OPENAPI,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Z' THEN charge_amount ELSE NULL END) POINT,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'J' THEN charge_amount ELSE NULL END) RECOMENDATION,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'N' THEN charge_amount ELSE NULL END) RENEWAL,
+		sum(CASE WHEN substr(media_code, 2, 1)= '0' THEN charge_amount ELSE NULL END) SMS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'U' THEN charge_amount ELSE NULL END) UMB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'W' THEN charge_amount ELSE NULL END) WCC,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'B' THEN charge_amount ELSE NULL END) WEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= '1' THEN charge_amount ELSE NULL END) Media_1,
+		sum(CASE WHEN substr(media_code, 2, 1)= '2' THEN charge_amount ELSE NULL END) Media_2,
+		sum(CASE WHEN substr(media_code, 2, 1)= '3' THEN charge_amount ELSE NULL END) Media_3,
+		sum(CASE WHEN substr(media_code, 2, 1)= '4' THEN charge_amount ELSE NULL END) Media_4,
+		sum(CASE WHEN substr(media_code, 2, 1)= '5' THEN charge_amount ELSE NULL END) Media_5,
+		sum(CASE WHEN substr(media_code, 2, 1)= '6' THEN charge_amount ELSE NULL END) Media_6,
+		sum(CASE WHEN substr(media_code, 2, 1)= '7' THEN charge_amount ELSE NULL END) Media_7,
+		sum(CASE WHEN substr(media_code, 2, 1)= '8' THEN charge_amount ELSE NULL END) Media_8,
+		sum(CASE WHEN substr(media_code, 2, 1)= '9' THEN charge_amount ELSE NULL END) Media_9,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'A' THEN charge_amount ELSE NULL END) Media_A,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'E' THEN charge_amount ELSE NULL END) Media_E,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'F' THEN charge_amount ELSE NULL END) Media_F,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'G' THEN charge_amount ELSE NULL END) Media_G,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'H' THEN charge_amount ELSE NULL END) Media_H,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'K' THEN charge_amount ELSE NULL END) Media_K,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'L' THEN charge_amount ELSE NULL END) Media_L,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Q' THEN charge_amount ELSE NULL END) Media_Q,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'R' THEN charge_amount ELSE NULL END) Media_R,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'T' THEN charge_amount ELSE NULL END) Media_T,
+		sum(charge_amount) Total
+	FROM
+		call_detailed_record
+	WHERE
+		calling_type IN (64, 93, 95, 96, 99, 100)
+		--ren on
+		AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+		AND RESULT = 0
+	GROUP BY
+		calling_date
+UNION ALL
+	SELECT
+		calling_date,
+		'RENEWAL_OFF' TYPE,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'C' THEN charge_amount ELSE NULL END) CSWEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'D' THEN charge_amount ELSE NULL END) DTMF,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'S' THEN charge_amount ELSE NULL END) HTTPGW,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'I' THEN charge_amount ELSE NULL END) IVR,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'M' THEN charge_amount ELSE NULL END) MKIOS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'O' THEN charge_amount ELSE NULL END) OPENAPI,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Z' THEN charge_amount ELSE NULL END) POINT,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'J' THEN charge_amount ELSE NULL END) RECOMENDATION,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'N' THEN charge_amount ELSE NULL END) RENEWAL,
+		sum(CASE WHEN substr(media_code, 2, 1)= '0' THEN charge_amount ELSE NULL END) SMS,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'U' THEN charge_amount ELSE NULL END) UMB,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'W' THEN charge_amount ELSE NULL END) WCC,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'B' THEN charge_amount ELSE NULL END) WEB,
+		sum(CASE WHEN substr(media_code, 2, 1)= '1' THEN charge_amount ELSE NULL END) Media_1,
+		sum(CASE WHEN substr(media_code, 2, 1)= '2' THEN charge_amount ELSE NULL END) Media_2,
+		sum(CASE WHEN substr(media_code, 2, 1)= '3' THEN charge_amount ELSE NULL END) Media_3,
+		sum(CASE WHEN substr(media_code, 2, 1)= '4' THEN charge_amount ELSE NULL END) Media_4,
+		sum(CASE WHEN substr(media_code, 2, 1)= '5' THEN charge_amount ELSE NULL END) Media_5,
+		sum(CASE WHEN substr(media_code, 2, 1)= '6' THEN charge_amount ELSE NULL END) Media_6,
+		sum(CASE WHEN substr(media_code, 2, 1)= '7' THEN charge_amount ELSE NULL END) Media_7,
+		sum(CASE WHEN substr(media_code, 2, 1)= '8' THEN charge_amount ELSE NULL END) Media_8,
+		sum(CASE WHEN substr(media_code, 2, 1)= '9' THEN charge_amount ELSE NULL END) Media_9,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'A' THEN charge_amount ELSE NULL END) Media_A,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'E' THEN charge_amount ELSE NULL END) Media_E,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'F' THEN charge_amount ELSE NULL END) Media_F,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'G' THEN charge_amount ELSE NULL END) Media_G,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'H' THEN charge_amount ELSE NULL END) Media_H,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'K' THEN charge_amount ELSE NULL END) Media_K,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'L' THEN charge_amount ELSE NULL END) Media_L,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'Q' THEN charge_amount ELSE NULL END) Media_Q,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'R' THEN charge_amount ELSE NULL END) Media_R,
+		sum(CASE WHEN substr(media_code, 2, 1)= 'T' THEN charge_amount ELSE NULL END) Media_T,
+		sum(charge_amount) Total
+	FROM
+		call_detailed_record
+	WHERE
+		calling_type IN (78, 65)
+		--ren off
+		AND CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+		AND RESULT = 0
+	GROUP BY
+		calling_date)
