@@ -1,0 +1,27 @@
+SELECT
+	calling_date ,
+	error_code ,
+	error_definition ,
+	amount
+FROM
+	(
+	SELECT
+		c.calling_date,
+		c.result AS error_code,
+		r.result_text AS error_definition,
+		count(*) AS amount
+	FROM
+		call_detailed_record c,
+		result_def r
+	WHERE
+		calling_date = to_char(sysdate-1, 'YYYYMMDD')
+		AND calling_type IN (78, 65)
+		AND media_code_default LIKE '%0'
+		AND RESULT NOT IN (0, 805)
+		AND c.result = r.result_code
+	GROUP BY
+		c.calling_date,
+		c.result,
+		r.result_text
+	ORDER BY
+		2 )

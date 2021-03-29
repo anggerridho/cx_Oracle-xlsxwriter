@@ -1,0 +1,22 @@
+SELECT
+	calling_date ,
+	att ,
+	succ ,
+	sr
+FROM
+	(
+	SELECT
+		calling_date,
+		count(*) att,
+		sum(CASE WHEN RESULT = 0 OR (RESULT = 502 AND charge_result_cde = '3:27') THEN 1 ELSE 0 END) succ,
+		round(100 * sum(CASE WHEN RESULT = 0 OR (RESULT = 502 AND charge_result_cde = '3:27') THEN 1 ELSE 0 END)/ count(*), 2) || '%' sr
+	FROM
+		call_detailed_record
+	WHERE
+		(media_code LIKE '%D'
+		OR media_code LIKE '%S')
+		AND calling_type IN (64, 93, 65, 78, 95, 96, 99, 100)
+		AND calling_date = to_char(sysdate-1, 'YYYYMMDD')
+	GROUP BY
+		calling_date,
+		dvc_id )
