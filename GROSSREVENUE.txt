@@ -1,0 +1,23 @@
+SELECT CALLING_DATE,
+      TOTAL_COUNT,
+      TOTAL_SUCCESS,
+      FAIL_COUNT,
+      SUCCESS_RATE,
+      BILLABLE_COUNT,
+      GROSS_REVENUE,
+      MELON_REVENUE
+FROM(SELECT calling_date,
+           SUM (TOTAL_COUNT) AS TOTAL_COUNT,
+           SUM (SUCCESS_COUNT) AS TOTAL_SUCCESS,
+           SUM (FAIL_COUNT) AS FAIL_COUNT,
+           ROUND( (SUM (SUCCESS_COUNT)/ (SUM (SUCCESS_COUNT) + SUM (FAIL_COUNT))) * 100,2) ||'%'    AS success_rate,
+           SUM (BILLABLE_COUNT) AS BILLABLE_COUNT,
+           SUM (CHARGE_AMOUNT) AS GROSS_REVENUE,
+           SUM (CHARGE_AMOUNT) * 75 /100 AS MELON_REVENUE
+      FROM CDR_SUMMARY
+      WHERE    CALLING_DATE = TO_CHAR(SYSDATE-1,'YYYYMMDD')
+           AND calling_type IN (1,2,7,64,93,77,78,65,95,96,99,100)
+           AND calling_type BETWEEN 0 AND 999
+      GROUP BY calling_date
+      ORDER BY calling_date
+     )
