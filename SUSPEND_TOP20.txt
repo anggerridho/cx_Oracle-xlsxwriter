@@ -1,0 +1,61 @@
+WITH TOP20 AS (
+SELECT
+	row_num,
+	rating_content_id,
+	content_title
+FROM
+	(
+	SELECT
+		rownum AS row_num,
+		A.*
+	FROM
+		(
+		SELECT
+			a.rating_content_id,
+			sum(a.total_success) AS total_success,
+			sum(a.total_revenue) AS total_revenue,
+			b.promo_code AS content_title,
+			b.content_singer AS content_singer,
+			c.mcp_user_disp_name AS mcp_user_disp_name
+		FROM
+			CDR_ACTIVATION_SUMMARY_DAY a,
+			tot_content b,
+			mcp_user_info c
+		WHERE
+			CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+			AND a.rating_content_id = b.content_id
+			AND c.mcp_user_id = b.mcp_user_id
+		GROUP BY
+			a.rating_content_id,
+			promo_code,
+			content_singer,
+			mcp_user_disp_name
+		ORDER BY
+			total_success DESC ) A ) B
+WHERE
+	ROW_NUM BETWEEN 1 AND 20 )
+SELECT
+	ranking,
+	RATING_CONTENT_ID,
+	CONTENT_TITLE,
+	TOTAL_MDN
+FROM
+	(
+	SELECT
+		a.row_num AS ranking,
+		a.rating_content_id,
+		a.content_title,
+		count(b.calling_mdn) AS TOTAL_MDN
+	FROM
+		TOP20 A
+	LEFT JOIN call_detailed_record B ON
+		A.RATING_CONTENT_ID = B.RATING_CONTENT_ID
+		AND B.CALLING_DATE = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+		AND B.prev_subs_status = 'A'
+		AND B.next_subs_status = 'S'
+	GROUP BY
+		a.row_num ,
+		a.rating_content_id,
+		a.content_title
+	ORDER BY
+		1 ASC )
