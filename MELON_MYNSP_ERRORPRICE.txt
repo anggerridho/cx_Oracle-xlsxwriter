@@ -1,0 +1,20 @@
+SELECT
+	calling_date,
+	charge_amount,
+	--as price
+ RESULT,
+	--as error_result
+ sum(trans_count)
+	--as error_count
+
+	FROM cdr_report_goofree
+WHERE
+	calling_type IN (1, 2, 7, 77, 64, 93, 78, 65, 95, 96, 99, 100)
+	AND mcp_user_id = '23661'
+	AND calling_date = TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+GROUP BY
+	calling_date,
+	charge_amount,
+	RESULT
+ORDER BY
+	charge_amount

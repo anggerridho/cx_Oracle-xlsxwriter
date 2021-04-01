@@ -1,0 +1,30 @@
+SELECT
+	calling_date ,
+	nvl(media_name, 'RENEWAL') ,
+	--as channel,
+ RESULT ,
+	--as error_result,
+ count(*)
+	--as error_count
+
+	FROM call_detailed_record cdr
+LEFT JOIN (
+	SELECT
+		DISTINCT media_code,
+		media_name
+	FROM
+		media_info) mi ON
+	substr(mi.media_code, 2, 1) = substr(cdr.media_code, 2, 1)
+WHERE
+	calling_type IN (1, 2, 7, 64, 93, 78, 77, 65, 95, 96, 99, 100)
+	AND rating_content_id LIKE '23661%'
+	AND calling_date = to_char(sysdate-1, 'YYYYMMDD')
+	--and result <> 0
+
+	GROUP BY RESULT,
+	calling_date,
+	nvl(media_name, 'RENEWAL')
+ORDER BY
+	calling_date,
+	nvl(media_name, 'RENEWAL'),
+	RESULT
