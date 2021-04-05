@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
+# In[1]:
 
 
 import cx_Oracle
@@ -11,12 +11,15 @@ import csv
 import paramiko
 import pandas as pd
 import xlsxwriter
+import requests # Untuk Curl
 from xlsxwriter.utility import xl_rowcol_to_cell
 
 now = datetime.date.today()
 kemarin = now - datetime.timedelta(days=1)
 kemarin_str = str(kemarin.strftime('%Y%m%d'))
 dir = '/home/palugada/Daily/'
+TOKEN="1273628193:AAGfFDAO2res2DeaGHOLVxLFxz25E06LYrY"
+CHAT_ID="214749655"
 
 os.environ["ORACLE_HOME"] = "/usr/lib/oracle/12.2/client64"
 # workbook = xlsxwriter.Workbook('/home/palugada/Daily/Demo.xlsx')
@@ -25,6 +28,15 @@ ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 ssh.connect('192.168.0.7', 1115, username='trbt', password='.pteluon')
 database = cx_Oracle.connect('RBTRPTN/RBTRPTN@192.168.0.7:1521/RBTRPTN')
+
+def fyi(*text):
+    import requests
+    TOKEN="1273628193:AAGfFDAO2res2DeaGHOLVxLFxz25E06LYrY"
+    CHAT_ID="214749655"
+    CHID="-1001475662404"
+    API_ENDPOINT = "https://api.telegram.org/bot"+ TOKEN +"/sendMessage"
+    data = {'chat_id':CHID,'text':text}
+    requests.post(url = API_ENDPOINT, data = data)
 
 bold = workbook.add_format({'bold': True, 'bg_color': '#92D050', 'align': 'center', 'valign': 'vcenter', 'border': 1})
 bold.set_border()
@@ -73,7 +85,7 @@ for TabCon in ['summary','new_subs','prov','totaltraf','pricerevenue','chargingc
     exec(TabCol)
 
 
-# In[ ]:
+# In[2]:
 
 
 # Send Email:
@@ -90,7 +102,7 @@ def SendEmail():
     subject = "(Testing) RBT Daily Report " + Yesterday
     body = "Dear All,\nPlease kindly find RBT Daily Reports " + Yesterday + " in attachment.\n\nBest Regards,\nAngger Ridho (https://linktr.ee/anggerdho)\nNote: xlsx & this email message is an automation process that I created"
     sender_email = "Angger Ridho <angger@eluon.com>"
-    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com',                       'operation.support@eluon.com']
+    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com']
 #     password = input("Type your password and press enter:")
     password = "@nG9er28"
 
@@ -128,9 +140,11 @@ def SendEmail():
     with smtplib.SMTP_SSL("gw.eluon.com", 465, context=context) as server:
         server.login("angger@eluon.com", "@nG9er28")
         server.sendmail(sender_email, receiver_email, text)
+        chat = 'RBT Daily Report ' + str(kemarin_str) + 'was just emailed at '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        fyi(chat)
 
 
-# In[ ]:
+# In[3]:
 
 
 # A All KPI
@@ -143,6 +157,8 @@ def A_KPI():
     cursor.execute(query)
     result = cursor.fetchall()
     
+    summary.set_zoom(70)
+    summary.hide_gridlines(2)
     summary.write('A1','A All KPI',title)
     summary.merge_range('B3:B4','Calling Date',bold)
     summary.merge_range('C3:M3','User InterFace',bold)
@@ -250,7 +266,7 @@ def A_KPI():
     cursor.close()
 
 
-# In[ ]:
+# In[4]:
 
 
 # B Transaction
@@ -314,7 +330,7 @@ def B_Transaction():
     cursor.close()
 
 
-# In[ ]:
+# In[5]:
 
 
 # C_Subscriber
@@ -355,7 +371,7 @@ def C_Subscriber():
     cursor.close()
 
 
-# In[ ]:
+# In[6]:
 
 
 # C_Subscriber Free Paid
@@ -376,7 +392,7 @@ def C_FreePaid():
     cursor.close()
 
 
-# In[ ]:
+# In[7]:
 
 
 # C_SUBS_WITHDRAWAL
@@ -410,7 +426,7 @@ def C_SUBS_WITHDRAWAL():
     cursor.close()
 
 
-# In[ ]:
+# In[8]:
 
 
 # C_CHURNED_USER
@@ -458,9 +474,11 @@ def C_CHURNED_USER():
             summary.write(r,15, row[14], content)
             
     cursor.close()
+    chat = 'SUMMARY Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[9]:
 
 
 # A. NEW SUBSCRIPTION TOTAL
@@ -472,6 +490,8 @@ def A_NEW_SUBSCRIPTION_TOTAL():
     # Exec query new_subs
     cursor.execute(query)
     result = cursor.fetchall()
+    new_subs.set_zoom(70)
+    new_subs.hide_gridlines(2)
     new_subs.write('A1','A. NEW SUBSCRIPTION TOTAL',title)
     new_subs.merge_range('B3:B4','Calling Date',bold)
     new_subs.merge_range('C3:C4','Attempt',bold)
@@ -511,7 +531,7 @@ def A_NEW_SUBSCRIPTION_TOTAL():
     cursor.close()
 
 
-# In[ ]:
+# In[10]:
 
 
 # B. NEW SUBSCRIPTION CHANNEL
@@ -693,7 +713,7 @@ def B_NEW_SUBSCRIPTION_CHANNEL():
     D_SUCCESS_RATE()
 
 
-# In[ ]:
+# In[11]:
 
 
 # C. NEW SUBSCRIPTION HOUR
@@ -728,7 +748,7 @@ def C_NEW_SUBSCRIPTION_HOUR():
     cursor.close()
 
 
-# In[ ]:
+# In[12]:
 
 
 # D. NEW SUBSCRIPTION HOUR PER CHANNEL
@@ -762,9 +782,11 @@ def D_NEW_SUBSCRIPTION_HOUR_PER_CHANNEL():
             new_subs.write(r,8, row[7], content)
             
     cursor.close()
+    chat = 'NEW_SUBS Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[13]:
 
 
 # A. PROV TOTAL :
@@ -776,6 +798,8 @@ def A_PROV_TOTAL():
     # Exec query new_subs
     cursor.execute(query)
     result = cursor.fetchall()
+    prov.set_zoom(70)
+    prov.hide_gridlines(2)
     prov.write('A1','A. PROV TOTAL',title)
     prov.write('B3','CALLING_DATE',bold)
     prov.set_column(1,4, 15)
@@ -793,7 +817,7 @@ def A_PROV_TOTAL():
     cursor.close()
 
 
-# In[ ]:
+# In[14]:
 
 
 # B. PROV CHANNEL :
@@ -842,7 +866,7 @@ def B_PROV_CHANNEL():
     cursor.close()
 
 
-# In[ ]:
+# In[15]:
 
 
 # C. PROV CHANNEL HOUR :
@@ -892,9 +916,11 @@ def C_PROV_CHANNEL_HOUR():
             prov.write(r,7, row[6], content)
     
     cursor.close()
+    chat = 'PROV Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[16]:
 
 
 # A. TOTAL RBT TRAFFIC :
@@ -906,6 +932,8 @@ def A_TOTAL_RBT_TRAFFIC():
     # Exec query new_subs
     cursor.execute(query)
     result = cursor.fetchall()
+    totaltraf.set_zoom(70)
+    totaltraf.hide_gridlines(2)
     totaltraf.write('A1','A. TOTAL RBT TRAFFIC',title)
     totaltraf.write('B3','CALLING_DATE',bold)
     totaltraf.write('C3','CHANNEL',bold)
@@ -930,7 +958,7 @@ def A_TOTAL_RBT_TRAFFIC():
     cursor.close()
 
 
-# In[ ]:
+# In[17]:
 
 
 # TRAFFIC PURCHASE :
@@ -978,7 +1006,7 @@ def TRAFFIC_PURCHASE():
     cursor.close()
 
 
-# In[ ]:
+# In[18]:
 
 
 # TRAFFIC RENEWAL :
@@ -1024,9 +1052,11 @@ def TRAFFIC_RENEWAL():
             totaltraf.write(r,17, row[5], content)
     
     cursor.close()
+    chat = 'TOTAL TRAFFIC Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[19]:
 
 
 # A. PRICE TRAFFIC & REVENUE :
@@ -1038,6 +1068,8 @@ def A_PRICE_TRAFFIC_REVENUE():
     # Exec query new_subs
     cursor.execute(query)
     result = cursor.fetchall()
+    pricerevenue.set_zoom(70)
+    pricerevenue.hide_gridlines(2)
     pricerevenue.write('A1','A. PRICE TRAFFIC & REVENUE',title)
     pricerevenue.write('B3','CALLING_DATE',bold)
     pricerevenue.write('C3','APPS_ID',bold)
@@ -1072,7 +1104,7 @@ def A_PRICE_TRAFFIC_REVENUE():
     cursor.close()
 
 
-# In[ ]:
+# In[20]:
 
 
 # B. PRICE TRAFFIC & REVENUE :
@@ -1124,7 +1156,7 @@ def B_PRICE_TRAFFIC_REVENUE():
     cursor.close()
 
 
-# In[ ]:
+# In[21]:
 
 
 # C. PRICE TRAFFIC & REVENUE :
@@ -1222,9 +1254,11 @@ def C_PRICE_TRAFFIC_REVENUE():
             pricerevenue.write(r,35, row[34], content)
             
     cursor.close()
+    chat = 'PRICE & REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[22]:
 
 
 # A. SUMMARY CHARGING GW :
@@ -1235,6 +1269,8 @@ def A_SUMMARY_CHARGING_GW():
     # Exec query new_subs
     cursor.execute(query)
     result = cursor.fetchall()
+    chargingcdr.set_zoom(70)
+    chargingcdr.hide_gridlines(2)
     chargingcdr.write('A1','A. SUMMARY CHARGING GW',title)
     chargingcdr.merge_range('B3:E3','SUMMARY CHARGING GW',bold)
     chargingcdr.write('B4','CHARGING_TYPE',bold)
@@ -1261,7 +1297,7 @@ def A_SUMMARY_CHARGING_GW():
     cursor.close()
 
 
-# In[ ]:
+# In[23]:
 
 
 # B. CHARGING CDR ERROR :
@@ -1289,9 +1325,11 @@ def B_CHARGING_CDR_ERROR():
             chargingcdr.write(r,3, row[2], content)
             
     cursor.close()
+    chat = 'CHARGING CDR Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[24]:
 
 
 # ERROR SUBS :
@@ -1306,6 +1344,8 @@ def ERROR_SUBS():
         # Exec query new_subs
         cursor.execute(query)
         result = cursor.fetchall()
+        errorsubs.set_zoom(70)
+        errorsubs.hide_gridlines(2)
         errorsubs.write('A1','A. NEW SUBS ERROR CHANNEL',title)
         errorsubs.write('B3','CALLING_DATE',bold)
         errorsubs.write('C3','CHANNEL',bold)
@@ -1348,12 +1388,14 @@ def ERROR_SUBS():
                 errorsubs.write(r,11, row[4], content)
             
         cursor.close()
+        chat = 'ERROR SUBS Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
     
     A_NEW_SUBS_ERROR_CHANNEL()
     B_NEW_SUBS_ERROR_HOUR_CHANNEL()
 
 
-# In[ ]:
+# In[25]:
 
 
 # HTTPGW :
@@ -1368,6 +1410,8 @@ def HTTPGW():
         # Exec query new_subs
         cursor.execute(query)
         result = cursor.fetchall()
+        httpgw.set_zoom(70)
+        httpgw.hide_gridlines(2)
         httpgw.write('A1','A. HTTPGW BREAKDOWN PURCHASE',title)
         httpgw.write('B3','CALLING_DATE',bold)
         httpgw.write('C3','DVC_ID',bold)
@@ -1411,12 +1455,14 @@ def HTTPGW():
                 httpgw.write(r,10, row[3], content)
             
         cursor.close()
+        chat = 'HTTPGW Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
     
     A_HTTPGW_BREAKDOWN_PURCHASE()
     B_HTTPGW_BREAKDOWN_RENEWAL()
 
 
-# In[ ]:
+# In[26]:
 
 
 # SMS_CONFIRMATION :
@@ -1431,6 +1477,8 @@ def SMS_CONFIRMATION():
         # Exec query new_subs
         cursor.execute(query)
         result = cursor.fetchall()
+        smsconfirm.set_zoom(70)
+        smsconfirm.hide_gridlines(2)
         smsconfirm.write('B2','Purchase',bold)
         smsconfirm.write('B3','Calling Date',bold)
         smsconfirm.write('C3','Sub Request',bold)
@@ -1539,6 +1587,8 @@ def SMS_CONFIRMATION():
                 smsconfirm.write(r,4, row[3], content)
             
         cursor.close()
+        chat = 'SMS_CONFIRMATION Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
         
     Purchase()
     Error_Detail_Purchase()
@@ -1546,7 +1596,7 @@ def SMS_CONFIRMATION():
     Error_Detail_Renewal()
 
 
-# In[ ]:
+# In[27]:
 
 
 # SONG TOP :
@@ -1560,6 +1610,8 @@ def SONGTOP():
     df.to_csv(r'SongTop.csv', sep=',',index=False, header=False, mode='a')
 #     df.to_csv(r'SongTop.csv', index=False, mode='a')
     
+    songtop.set_zoom(70)
+    songtop.hide_gridlines(2)
     songtop.write('A1','SONG TOP 75 STATISTIC',title)
     songtop.write('B3','CALLING_DATE',bold)
     songtop.write('C3','RANK',bold)
@@ -1589,9 +1641,11 @@ def SONGTOP():
                 songtop.write(r,7, row[6], content)
                 
     cursor.close()
+    chat = 'SONG TOP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+    fyi(chat)
 
 
-# In[ ]:
+# In[28]:
 
 
 def GROSSREVENUE():
@@ -1604,11 +1658,12 @@ def GROSSREVENUE():
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
         df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
         
-        for line in ['B','C','D','E','F','G','H']:
+        for line in ['B','C','D','E','F','G','H','I']:
             for kolom in range(33):
                 Alline = line+'{}'.format(*([kolom + 4] * 33))
-                melonmynsp.write(Alline,'',neat)
-        revenue.set_zoom(60)
+                revenue.write(Alline,'',neat)
+        revenue.set_zoom(70)
+        revenue.hide_gridlines(2)
         revenue.write('A1','Revenue Statistics',title)
         revenue.write('B3','CALLING_DATE',bold)
         revenue.write('C3','TOTAL_COUNT',bold)
@@ -1617,14 +1672,15 @@ def GROSSREVENUE():
         revenue.write('F3','SUCCESS_RATE',bold)
         revenue.write('G3','BILLABLE_COUNT',bold)
         revenue.write('H3','GROSS_REVENUE',bold)
+        revenue.write('I3','',bold)
         revenue.write('B36','TOTAL',neat)
-        revenue.set_column('B:H', 20)
+        revenue.set_column('B:I', 20)
         revenue.write_formula('F36','=AVERAGE(F4:F35)',percentage)
                 
         for persum in ['C','D','E']:
             revenue.write_formula(persum+'36','=SUM('+persum+'4:'+persum+'35)',content)
             
-        for persum in ['G','H']:
+        for persum in ['G','H','I']:
             revenue.write_formula(persum+'36','=SUM('+persum+'4:'+persum+'35)',content)
             
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
@@ -1638,8 +1694,11 @@ def GROSSREVENUE():
                     revenue.write(r,5, row[4], percentage)
                     revenue.write(r,6, row[5], content)
                     revenue.write(r,7, row[6], content)
+                    revenue.write(r,8, row[7], content)
                     
         cursor.close()
+        chat = 'REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
     
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -1654,7 +1713,7 @@ def GROSSREVENUE():
         GETDAT()
 
 
-# In[ ]:
+# In[29]:
 
 
 def MELONDIY():
@@ -1669,8 +1728,9 @@ def MELONDIY():
         for line in ['B','C','D','E','F','G','H']:
             for kolom in range(33):
                 Alline = line+'{}'.format(*([kolom + 4] * 33))
-                melonmynsp.write(Alline,'',neat)
+                melondiy.write(Alline,'',neat)
         melondiy.set_zoom(60)
+        melondiy.hide_gridlines(2)
         melondiy.write('A1','Melon DIY Statistic',title)
         melondiy.write('B3','CALLING_DATE',bold)
         melondiy.write('C3','TOTAL',bold)
@@ -1700,6 +1760,8 @@ def MELONDIY():
                     melondiy.write(r,7, row[6], content)
         
         cursor.close()
+        chat = 'MELON DIY Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
     
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -1714,7 +1776,7 @@ def MELONDIY():
         GETDAT()
 
 
-# In[ ]:
+# In[30]:
 
 
 def MELONMYNSP():
@@ -1733,6 +1795,7 @@ def MELONMYNSP():
                     melonmynsp.write(Alline,'',neat)
 
             melonmynsp.set_zoom(60)
+            melonmynsp.hide_gridlines(2)
             melonmynsp.write('A1','Melon MyNSP Statistic',title)
             melonmynsp.write('B3','CALLING_DATE',bold)
             melonmynsp.write('C3','TOTAL',bold)
@@ -1818,13 +1881,15 @@ def MELONMYNSP():
                 melonmynsp.write(r,8, row[2], content)
                 melonmynsp.write(r,9, row[3], content)
         cursor.close()
+        chat = 'MELON MYNSP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
 
     Statistic()
     ERROR_CHANNEL()
     ERROR_PRICE()
 
 
-# In[ ]:
+# In[31]:
 
 
 def SUSPEND_TOP20():
@@ -1835,6 +1900,8 @@ def SUSPEND_TOP20():
         # Exec query new_subs
         cursor.execute(query)
         result = cursor.fetchall()
+        suspendtop20.set_zoom(70)
+        suspendtop20.hide_gridlines(2)
         suspendtop20.write('B3','RANK',bold)
         suspendtop20.write('C3','Content ID',bold)
         suspendtop20.write('D3','JUDUL LAGU',bold)
@@ -1852,9 +1919,11 @@ def SUSPEND_TOP20():
                 suspendtop20.write(r,4, row[3], content)
                 
         cursor.close()
+        chat = 'SUSPEND_TOP20 Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
 
 
-# In[ ]:
+# In[32]:
 
 
 def REGION():
@@ -1873,6 +1942,7 @@ def REGION():
                     region.write(Alline,'',neat)
 
             region.set_zoom(60)
+            region.hide_gridlines(2)
             region.write('A1','1.TRAFFIC AND REVENUE PER REGION',title)
             region.merge_range('A3:A4','CALLING_DATE',bold)
             region.merge_range('B3:C3','Sumbagut',bold)
@@ -2091,6 +2161,8 @@ def REGION():
                         region.write(r,14, row[14], content)
                         
             cursor.close()
+            chat = 'REGION Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(chat)
 
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2109,7 +2181,7 @@ def REGION():
     UNIQ_SUBS_TRANSACTION_PROCESS_TYPE()
 
 
-# In[ ]:
+# In[33]:
 
 
 def DTMF():
@@ -2128,6 +2200,7 @@ def DTMF():
                     dtmf.write(Alline,'',neat)
             
             dtmf.set_zoom(60)
+            dtmf.hide_gridlines(2)
             dtmf.write('A2','DTMF ONLY',title)
             dtmf.write('A3','CALLING_DATE',bold)
             dtmf.write('B3','TOTAL_HITS',bold)
@@ -2261,6 +2334,8 @@ def DTMF():
                         dtmf.write(r,36, row[26], content)
                         
             cursor.close()
+            chat = 'DTMF Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(chat)
         
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2279,7 +2354,7 @@ def DTMF():
     DTMF_REGION()
 
 
-# In[ ]:
+# In[34]:
 
 
 def GP():
@@ -2297,12 +2372,13 @@ def GP():
                 gp.write(Alline,'',neat)
         
         gp.set_zoom(80)
+        gp.hide_gridlines(2)
         gp.write('B2','GRACE PERIODE',title)
         gp.write('B4','CALLING_DATE',bold)
         gp.write('C4','GP Subs Success',bold)
         gp.write('D4','GP REV',bold)
         gp.write('B37','TOTAL',neat)
-        gp.set_column('B:B', 12)
+        gp.set_column('B:B', 16)
         gp.set_column('C:C', 17)
         gp.set_column('D:D', 13)
         for persum in ['C','D']:
@@ -2316,6 +2392,8 @@ def GP():
                     gp.write(r,3, row[2], content)
                     
         cursor.close()
+        chat = 'GRACE PERIODE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2330,7 +2408,7 @@ def GP():
         GETDAT()
 
 
-# In[ ]:
+# In[35]:
 
 
 def SMS_REVENUE():
@@ -2348,6 +2426,7 @@ def SMS_REVENUE():
                 smsrev.write(Alline,'',neat)
         
         smsrev.set_zoom(80)
+        smsrev.hide_gridlines(2)
         smsrev.merge_range('A2:D2','SMS REVENUE',title)
         smsrev.write('A4','CALLING_DATE',bold)
         smsrev.write('B4','SMS_ATTEMPT_COUNT',bold)
@@ -2366,6 +2445,8 @@ def SMS_REVENUE():
                     smsrev.write(r,2, row[2], content)
                     smsrev.write(r,3, row[3], content)
         cursor.close()
+        chat = 'SMS REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2380,7 +2461,7 @@ def SMS_REVENUE():
         GETDAT()
 
 
-# In[ ]:
+# In[36]:
 
 
 def REVENUE_RENEWAL():
@@ -2398,6 +2479,7 @@ def REVENUE_RENEWAL():
                 revrenew.write(Alline,'',neat)
         
         revrenew.set_zoom(80)
+        revrenew.hide_gridlines(2)
         revrenew.write('B2','CALLING_DATE',bold)
         revrenew.write('C2','REVENUE RENEWAL ON RP.0',bold)
         revrenew.write('B35','TOTAL',neat)
@@ -2412,6 +2494,8 @@ def REVENUE_RENEWAL():
                     revrenew.write(r,1, row[0], date_format)
                     revrenew.write(r,2, row[1], content)
         cursor.close()
+        chat = 'REVENUE RENEWAL Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2426,7 +2510,7 @@ def REVENUE_RENEWAL():
         GETDAT()
 
 
-# In[ ]:
+# In[37]:
 
 
 def NSP_REKOMENDASI(): # https://pandas.pydata.org/docs/user_guide/merging.html
@@ -2444,6 +2528,7 @@ def NSP_REKOMENDASI(): # https://pandas.pydata.org/docs/user_guide/merging.html
                 Alline = line+'{}'.format(*([kolom + 2] * 350))
                 nspreco.write(Alline,'',neat)
         nspreco.set_zoom(50)
+        nspreco.hide_gridlines(2)
         nspreco.write('B1','CALLING_DATE',bold)
         nspreco.write('C1','REGION',bold)
         nspreco.write('D1','TELKOMSEL TRAFFIC',bold)
@@ -2475,8 +2560,8 @@ def NSP_REKOMENDASI(): # https://pandas.pydata.org/docs/user_guide/merging.html
                     nspreco.write(r,7, row[6], content)
                     nspreco.write(r,8, row[7], content)
                     nspreco.write(r,9, row[8], content)
-                    
-        cursor.close()
+        chat = 'NSP REKOMENDASI Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2491,7 +2576,7 @@ def NSP_REKOMENDASI(): # https://pandas.pydata.org/docs/user_guide/merging.html
         GETDAT()
 
 
-# In[ ]:
+# In[38]:
 
 
 def SUCCESS_RATE_MT_AND_MO():
@@ -2506,6 +2591,7 @@ def SUCCESS_RATE_MT_AND_MO():
                 Alline = line+'{}'.format(*([kolom + 4] * 70))
                 succratemt.write(Alline,'',neat)
         succratemt.set_zoom(50)
+        succratemt.hide_gridlines(2)
         succratemt.write('B3','CALLING_DATE',bold)
         succratemt.write('C3','Type',bold)
         succratemt.write('D3','Attempt',bold)
@@ -2523,8 +2609,8 @@ def SUCCESS_RATE_MT_AND_MO():
                     succratemt.write(r,2, row[1], content)
                     succratemt.write(r,3, row[2], content)
                     succratemt.write(r,4, row[3], content)
-                    
-        cursor.close()
+        chat = 'SUCCESS RATE MT AND MO Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2539,7 +2625,7 @@ def SUCCESS_RATE_MT_AND_MO():
         GETDAT()
 
 
-# In[ ]:
+# In[39]:
 
 
 def TRANSACTION_UMB_TMENU():
@@ -2551,7 +2637,8 @@ def TRANSACTION_UMB_TMENU():
         query = ("SELECT TANGGAL, PROMO, Total_Transaksi FROM (SELECT calling_date AS TANGGAL,dvc_id AS PROMO,count(dvc_id) AS Total_Transaksi                 FROM call_detailed_record WHERE calling_date = to_char(sysdate-1, 'YYYYMMDD') AND calling_type IN (1, 77)                 AND dvc_id IN ("+LIST_PROMO+") AND media_code LIKE '%U' AND RESULT = 0 GROUP BY calling_date,dvc_id ORDER BY 3 DESC)")
         cursor.execute(query)
         result = cursor.fetchall()
-
+        transumb.set_zoom(50)
+        transumb.hide_gridlines(2)
         transumb.write('A1','JUMLAH TRANSAKSI UMB T-MENU PROMO AND HITS',title)
         transumb.write('A3','CALLING_DATE',bold)
         transumb.write('B3','PROMO',bold)
@@ -2578,12 +2665,14 @@ def TRANSACTION_UMB_TMENU():
                 transumb.write(r,1, row[1], content)
                 transumb.write(r,2, row[2], content)
         cursor.close()
+        chat = 'TRANSACTION_UMB_TMENU_PROMO Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
 
     PROMO()
     HITS()
 
 
-# In[ ]:
+# In[40]:
 
 
 A_KPI()
