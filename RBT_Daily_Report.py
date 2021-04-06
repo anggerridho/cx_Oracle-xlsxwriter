@@ -102,7 +102,7 @@ def SendEmail():
     subject = "(Testing) RBT Daily Report " + Yesterday
     body = "Dear All,\nPlease kindly find RBT Daily Reports " + Yesterday + " in attachment.\n\nBest Regards,\nAngger Ridho (https://linktr.ee/anggerdho)\nNote: xlsx & this email message is an automation process that I created"
     sender_email = "Angger Ridho <angger@eluon.com>"
-    receiver_email = ['angger@eluon.com', 'rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com']
+    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com']
 #     password = input("Type your password and press enter:")
     password = "@nG9er28"
 
@@ -1601,48 +1601,61 @@ def SMS_CONFIRMATION():
 
 # SONG TOP :
 def SONGTOP():
-    cursor = database.cursor()
-    with open('SONGTOP.txt','r') as inserts:
-        query = inserts.read()
+    def GETDAT():
+        Dump = 'SongTop_'+str(kmrnbulan[0:6])+'.csv'
+        cursor = database.cursor()
+        query = ("SELECT CALLING_DATE,RANK,CONTENT_SINGER,CONTENT_TITLE,TRAFFIC,REVENUE,CP_NAME FROM (SELECT a.calling_date, a.rating_content_id,                  SUM (a.total_success) AS traffic,SUM (a.total_revenue) AS revenue,b.promo_code AS content_title,b.content_singer AS content_singer,                  c.mcp_user_disp_name AS cp_name,RANK() OVER (PARTITION BY calling_date ORDER BY SUM (a.total_revenue) DESC) RANK FROM                  CDR_ACTIVATION_SUMMARY_DAY a, tot_content b, mcp_user_info c WHERE CALLING_DATE = TO_CHAR(SYSDATE-"+sys+",'YYYYMMDD') AND                  a.rating_content_id = b.content_id AND c.mcp_user_id = b.mcp_user_id GROUP BY a.rating_content_id,promo_code,content_singer,                  mcp_user_disp_name,a.calling_date ORDER BY 1, revenue DESC) WHERE RANK BETWEEN 1 AND 75")
 
-    cursor.execute(query)
-    df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-    df.to_csv(r'SongTop.csv', sep=',',index=False, header=False, mode='a')
-#     df.to_csv(r'SongTop.csv', index=False, mode='a')
+        cursor.execute(query)
+        df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
+        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode='a')
+        # df.to_csv(r'SongTop.csv', index=False, mode='a')
     
-    songtop.set_zoom(70)
-    songtop.hide_gridlines(2)
-    songtop.write('A1','SONG TOP 75 STATISTIC',title)
-    songtop.write('B3','CALLING_DATE',bold)
-    songtop.write('C3','RANK',bold)
-    songtop.write('D3','CONTENT_SINGER',bold)
-    songtop.write('E3','CONTENT_TITLE',bold)
-    songtop.write('F3','TRAFFIC',bold)
-    songtop.write('G3','REVENUE',bold)
-    songtop.write('H3','CP_NAME',bold)
-    songtop.set_column('B:B', 14)
-    songtop.set_column('C:C', 6)
-    songtop.set_column('D:D', 40)
-    songtop.set_column('E:E', 35)
-    songtop.set_column('F:F', 8)
-    songtop.set_column('G:G', 10)
-    songtop.set_column('H:H', 26)
-    
-    with open('SongTop.csv',encoding='ISO-8859-1') as csvfile:
-        readCSV = csv.reader(csvfile, delimiter=',')
-        for r, row in enumerate(readCSV, start=3):
-            for c, col in enumerate(row):
-                songtop.write(r,1, row[0], date_format)
-                songtop.write(r,2, row[1], content)
-                songtop.write(r,3, row[2], content)
-                songtop.write(r,4, row[3], content)
-                songtop.write(r,5, row[4], content)
-                songtop.write(r,6, row[5], content)
-                songtop.write(r,7, row[6], content)
-                
-    cursor.close()
-    chat = 'SONG TOP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+        songtop.set_zoom(70)
+        songtop.hide_gridlines(2)
+        songtop.write('A1','SONG TOP 75 STATISTIC',title)
+        songtop.write('B3','CALLING_DATE',bold)
+        songtop.write('C3','RANK',bold)
+        songtop.write('D3','CONTENT_SINGER',bold)
+        songtop.write('E3','CONTENT_TITLE',bold)
+        songtop.write('F3','TRAFFIC',bold)
+        songtop.write('G3','REVENUE',bold)
+        songtop.write('H3','CP_NAME',bold)
+        songtop.set_column('B:B', 14)
+        songtop.set_column('C:C', 6)
+        songtop.set_column('D:D', 40)
+        songtop.set_column('E:E', 35)
+        songtop.set_column('F:F', 8)
+        songtop.set_column('G:G', 10)
+        songtop.set_column('H:H', 26)
+
+        with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
+            readCSV = csv.reader(csvfile, delimiter=',')
+            for r, row in enumerate(readCSV, start=3):
+                for c, col in enumerate(row):
+                    songtop.write(r,1, row[0], date_format)
+                    songtop.write(r,2, row[1], content)
+                    songtop.write(r,3, row[2], content)
+                    songtop.write(r,4, row[3], content)
+                    songtop.write(r,5, row[4], content)
+                    songtop.write(r,6, row[5], content)
+                    songtop.write(r,7, row[6], content)
+
+        cursor.close()
+        chat = 'SONG TOP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
+
+    sys = '1'
+    lusa = now - datetime.timedelta(days=2)
+    storyday = now - datetime.timedelta(days=int(sys))
+    kmrnlusa = str(lusa.strftime('%Y%m%d'))
+    kmrnbulan = str(storyday.strftime('%Y%m%d'))
+    if kmrnbulan[0:6] == kmrnlusa[0:6]:
+        AsNeeded = 'a'
+        GETDAT()
+    else:
+        AsNeeded = 'w'
+        GETDAT()
 
 
 # In[28]:
@@ -2715,3 +2728,4 @@ TRANSACTION_UMB_TMENU()
 workbook.close()
 database.close()
 SendEmail()
+

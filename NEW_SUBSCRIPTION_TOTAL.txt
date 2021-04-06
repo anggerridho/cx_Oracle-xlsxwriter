@@ -1,0 +1,78 @@
+SELECT
+CALLING_DATE ,
+HOURZ ,
+CHANNEL ,
+FREE_USER ,
+PAID_USER
+from
+(
+select
+CALLING_DATE,
+HOURZ,
+CHANNEL,
+sum(case when CHARGE_AMOUNT=0 then 1 else 0 end) FREE_USER,
+sum(case when CHARGE_AMOUNT>0 then 1 else 0 end) PAID_USER
+from
+(
+select
+CALLING_DATE,
+substr(CALLING_TIME,1,2) AS HOURZ,
+case
+WHEN substr(media_code, 2, 1) = 'U' THEN 'UMB'
+WHEN substr(media_code, 2, 1) = 'I' THEN 'IVR'
+WHEN substr(media_code, 2, 1) = 'O' THEN 'OpenAPI'
+WHEN substr(media_code, 2, 1) = '0' THEN 'SMS'
+WHEN substr(media_code, 2, 1) = 'B' THEN 'Web'
+WHEN substr(media_code, 2, 1) = 'D' THEN 'DTMF'
+WHEN substr(media_code, 2, 1) = 'S' THEN 'HTTPGW'
+WHEN substr(media_code, 2, 1) = 'C' THEN 'CSWeb'
+WHEN substr(media_code, 2, 1) = 'W'
+        AND lower(DVC_ID) != 'smsbroadcast' THEN 'WCC'
+WHEN substr(media_code, 2, 1) = 'W'
+        AND lower(DVC_ID) = 'smsbroadcast' THEN 'Sms Broadcast'
+WHEN substr(media_code, 2, 1) = 'M' THEN 'MKios'
+WHEN substr(media_code, 2, 1) = 'Z' THEN 'Point'
+WHEN substr(media_code, 2, 1) = 'N' THEN 'Renewal'
+WHEN substr(media_code, 2, 1) = 'J' THEN 'Recomendation'
+WHEN substr(media_code, 2, 1) = 'L' THEN 'Referal'
+WHEN substr(media_code, 2, 1) = 'P' THEN 'WAP'
+WHEN substr(media_code, 2, 1) = 'R' THEN 'MyNSP'
+WHEN substr(media_code, 2, 1) = 'V' THEN 'My Telkomsel'
+WHEN substr(media_code, 2, 1) = 'Q' THEN 'Music Max'
+WHEN substr(media_code, 2, 1) = '1' THEN 'Media_1'
+WHEN substr(media_code, 2, 1) = '2' THEN 'Media_2'
+WHEN substr(media_code, 2, 1) = '3' THEN 'Media_3'
+WHEN substr(media_code, 2, 1) = '4' THEN 'Media_4'
+WHEN substr(media_code, 2, 1) = '5' THEN 'Media_5'
+WHEN substr(media_code, 2, 1) = '6' THEN 'Media_6'
+WHEN substr(media_code, 2, 1) = '7' THEN 'Media_7'
+WHEN substr(media_code, 2, 1) = '8' THEN 'Media_8'
+WHEN substr(media_code, 2, 1) = '9' THEN 'Media_9'
+WHEN substr(media_code, 2, 1) = 'A' THEN 'Media_A'
+WHEN substr(media_code, 2, 1) = 'E' THEN 'Media_E'
+WHEN substr(media_code, 2, 1) = 'F' THEN 'Media_F'
+WHEN substr(media_code, 2, 1) = 'G' THEN 'Media_G'
+WHEN substr(media_code, 2, 1) = 'H' THEN 'Media_H'
+WHEN substr(media_code, 2, 1) = 'K' THEN 'Media_K'
+WHEN substr(media_code, 2, 1) = 'R' THEN 'Media_R'
+WHEN substr(media_code, 2, 1) = 'T' THEN 'Media_T'
+ELSE 'Promo'
+end CHANNEL,
+CALLING_MDN,
+CHARGE_AMOUNT,
+CALLING_TYPE
+from RBTRPTN.CALL_DETAILED_RECORD_201801
+where CALLING_DATE = to_char(sysdate-1,'YYYYMMDD')
+and CALLING_TYPE not in ('17','3')
+and RESULT = 0 --success
+and TRANSACTION_ID in (
+select
+TRANSACTION_ID from RBTRPTN.CALL_DETAILED_RECORD_201801
+where CALLING_DATE = to_char(sysdate-1,'YYYYMMDD')
+and CALLING_TYPE = 17 --Subs Register
+and RESULT = 0 --success
+)
+)
+group by CALLING_DATE,HOURZ,CHANNEL
+order by CALLING_DATE,HOURZ,CHANNEL
+)
