@@ -1,0 +1,33 @@
+SELECT
+UMB ,
+ATTEMPT_FREE ,
+ATTEMPT_PAID ,
+SUCCESS_FREE ,
+SUCCESS_PAID ,
+REVENUE
+from
+(
+select
+UMB,
+(SUCCESS_FREE+FAILED_FREE) AS ATTEMPT_FREE,
+(SUCCESS_PAID+FAILED_PAID) AS ATTEMPT_PAID,
+SUCCESS_FREE,
+SUCCESS_PAID,
+REVENUE
+from
+(
+select
+a.dvc_id AS UMB,
+sum(case when a.RESULT = 0 and a.charge_amount = 0 then 1 else 0 end) SUCCESS_FREE,
+sum(case when a.RESULT = 0 and a.charge_amount > 0 then 1 else 0 end) SUCCESS_PAID,
+sum(case when a.RESULT != 0 and a.charge_amount = 0 then 1 else 0 end) FAILED_FREE,
+sum(case when a.RESULT != 0 and a.charge_amount > 0 then 1 else 0 end) FAILED_PAID,
+sum(case when a.RESULT = 0 then a.charge_amount else 0 end) AS REVENUE
+from RBTRPTN.CALL_DETAILED_RECORD a
+where a.calling_date = to_char(sysdate-1, 'YYYYMMdd')
+and a.calling_type in (1,77)
+and a.media_code like '%U'
+group by a.dvc_id
+)
+order by UMB
+)
