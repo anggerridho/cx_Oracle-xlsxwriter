@@ -102,7 +102,7 @@ def SendEmail():
     subject = "(Testing) RBT Daily Report " + Yesterday
     body = "Dear All,\nPlease kindly find RBT Daily Reports " + Yesterday + " in attachment.\n\nBest Regards,\nAngger Ridho (https://linktr.ee/anggerdho)\nNote: xlsx & this email message is an automation process that I created"
     sender_email = "Angger Ridho <angger@eluon.com>"
-    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com']
+    receiver_email = ['angger@eluon.com', 'rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com']
 #     password = input("Type your password and press enter:")
     password = "@nG9er28"
 
