@@ -102,7 +102,7 @@ def SendEmail():
     subject = "(Testing) RBT Daily Report " + Yesterday
     body = "Dear All,\nPlease kindly find RBT Daily Reports " + Yesterday + " in attachment.\n\nBest Regards,\nAngger Ridho (https://linktr.ee/anggerdho)\nNote: xlsx & this email message is an automation process that I created"
     sender_email = "Angger Ridho <angger@eluon.com>"
-    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com']
+    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com','angger@eluon.com']
 #     password = input("Type your password and press enter:")
     password = "@nG9er28"
 
@@ -223,47 +223,50 @@ def A_KPI():
     # for row in result:
     #     print(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15], row[16], row[17], row[18], row[19], row[20], row[21], row[22], row[23], row[24], row[25], row[26], row[27], row[28], row[29], row[30], row[31], row[32], row[33], row[34], row[35], row[36])
     
-    for r, row in enumerate(result, start=4):
-        for c, col in enumerate(row):
-            summary.write(r,1, row[0], date_format)
-            summary.write(r,2, row[1], content)
-            summary.write(r,3, row[2], content)
-            summary.write(r,4, row[3], content)
-            summary.write(r,5, row[4], content)
-            summary.write(r,6, row[5], content)
-            summary.write(r,7, row[6], content)
-            summary.write(r,8, row[7], content)
-            summary.write(r,9, row[8], content)
-            summary.write(r,10, row[9], content)
-            summary.write(r,11, row[10], content)
-            summary.write(r,12, row[11], content)
-            summary.write(r,13, row[12], content)
-            summary.write(r,14, row[13], content)
-            summary.write(r,15, row[14], content)
-            summary.write(r,16, row[15], content)
-            summary.write(r,17, row[16], content)
-            summary.write(r,18, row[17], content)
-            summary.write(r,19, row[18], content)
-            summary.write(r,20, row[19], content)
-            summary.write(r,21, row[20], content)
-            summary.write(r,22, row[21], content)
-            summary.write(r,23, row[22], content)
-            summary.write(r,24, row[23], content)
-            summary.write(r,25, row[24], content)
-            summary.write(r,26, row[25], content)
-            summary.write(r,27, row[26], content)
-            summary.write(r,28, row[27], content)
-            summary.write(r,29, row[28], content)
-            summary.write(r,30, row[29], content)
-            summary.write(r,31, row[30], content)
-            summary.write(r,32, row[31], content)
-            summary.write(r,33, row[32], content)
-            summary.write(r,34, row[33], content)
-            summary.write(r,35, row[34], content)
-            summary.write(r,36, row[35], content)
-            summary.write(r,37, row[36], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=4):
+            for c, col in enumerate(row):
+                summary.write(r,1, row[0], date_format)
+                summary.write(r,2, row[1], content)
+                summary.write(r,3, row[2], content)
+                summary.write(r,4, row[3], content)
+                summary.write(r,5, row[4], content)
+                summary.write(r,6, row[5], content)
+                summary.write(r,7, row[6], content)
+                summary.write(r,8, row[7], content)
+                summary.write(r,9, row[8], content)
+                summary.write(r,10, row[9], content)
+                summary.write(r,11, row[10], content)
+                summary.write(r,12, row[11], content)
+                summary.write(r,13, row[12], content)
+                summary.write(r,14, row[13], content)
+                summary.write(r,15, row[14], content)
+                summary.write(r,16, row[15], content)
+                summary.write(r,17, row[16], content)
+                summary.write(r,18, row[17], content)
+                summary.write(r,19, row[18], content)
+                summary.write(r,20, row[19], content)
+                summary.write(r,21, row[20], content)
+                summary.write(r,22, row[21], content)
+                summary.write(r,23, row[22], content)
+                summary.write(r,24, row[23], content)
+                summary.write(r,25, row[24], content)
+                summary.write(r,26, row[25], content)
+                summary.write(r,27, row[26], content)
+                summary.write(r,28, row[27], content)
+                summary.write(r,29, row[28], content)
+                summary.write(r,30, row[29], content)
+                summary.write(r,31, row[30], content)
+                summary.write(r,32, row[31], content)
+                summary.write(r,33, row[32], content)
+                summary.write(r,34, row[33], content)
+                summary.write(r,35, row[34], content)
+                summary.write(r,36, row[35], content)
+                summary.write(r,37, row[36], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing A. All KPI on worksheet SUMMARY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[4]:
@@ -308,26 +311,29 @@ def B_Transaction():
     summary.merge_range('Q10:Q11','TOTAL REVENUE',bold)
     summary.set_column('Q:Q', 18)
 
-    for r, row in enumerate(result, start=11):
-        for c, col in enumerate(row):
-            summary.write(r,1, row[0], date_format)
-            summary.write(r,2, row[1], content)
-            summary.write(r,3, row[2], content)
-            summary.write(r,4, row[3], content)
-            summary.write(r,5, row[4], content)
-            summary.write(r,6, row[5], content)
-            summary.write(r,7, row[6], content)
-            summary.write(r,8, row[7], content)
-            summary.write(r,9, row[8], content)
-            summary.write(r,10, row[9], content)
-            summary.write(r,11, row[10], content)
-            summary.write(r,12, row[11], content)
-            summary.write(r,13, row[12], content)
-            summary.write(r,14, row[13], content)
-            summary.write(r,15, row[14], content)
-            summary.write(r,16, row[15], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=11):
+            for c, col in enumerate(row):
+                summary.write(r,1, row[0], date_format)
+                summary.write(r,2, row[1], content)
+                summary.write(r,3, row[2], content)
+                summary.write(r,4, row[3], content)
+                summary.write(r,5, row[4], content)
+                summary.write(r,6, row[5], content)
+                summary.write(r,7, row[6], content)
+                summary.write(r,8, row[7], content)
+                summary.write(r,9, row[8], content)
+                summary.write(r,10, row[9], content)
+                summary.write(r,11, row[10], content)
+                summary.write(r,12, row[11], content)
+                summary.write(r,13, row[12], content)
+                summary.write(r,14, row[13], content)
+                summary.write(r,15, row[14], content)
+                summary.write(r,16, row[15], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing B. Transaction on worksheet SUMMARY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[5]:
@@ -357,18 +363,21 @@ def C_Subscriber():
     summary.write('K18','Paid',bold)
     summary.set_column('B:K', 15)
     
-    for r, row in enumerate(result, start=18):
-        for c, col in enumerate(row):
-            summary.write(r,1, row[0], date_format)
-            summary.write(r,2, row[1], content)
-            summary.write(r,3, row[2], content)
-            summary.write(r,4, row[3], content)
-            summary.write(r,5, row[4], content)
-            summary.write(r,6, row[5], content)
-            summary.write(r,7, row[6], content)
-            summary.write(r,8, row[7], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=18):
+            for c, col in enumerate(row):
+                summary.write(r,1, row[0], date_format)
+                summary.write(r,2, row[1], content)
+                summary.write(r,3, row[2], content)
+                summary.write(r,4, row[3], content)
+                summary.write(r,5, row[4], content)
+                summary.write(r,6, row[5], content)
+                summary.write(r,7, row[6], content)
+                summary.write(r,8, row[7], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing C. Subscriber on worksheet SUMMARY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[6]:
@@ -384,12 +393,16 @@ def C_FreePaid():
     cursor.execute(query)
     result = cursor.fetchall()
     
-    for r, row in enumerate(result, start=18):
-        for c, col in enumerate(row):
-            summary.write(r,9, row[0], content)
-            summary.write(r,10, row[1], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=18):
+            for c, col in enumerate(row):
+                summary.write(r,9, row[0], content)
+                summary.write(r,10, row[1], content)
+
+        cursor.close()
+    else:
+        chat = 'Skip writing C. Subscriber Free_Paid on worksheet SUMMARY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[7]:
@@ -413,17 +426,20 @@ def C_SUBS_WITHDRAWAL():
     summary.write('G23','RENEWAL CONTENT ERROR CHARGING',bold)
     summary.write('H23','GRAND TOTAL',bold)
     
-    for r, row in enumerate(result, start=23):
-        for c, col in enumerate(row):
-            summary.write(r,1, row[0], date_format)
-            summary.write(r,2, row[1], content)
-            summary.write(r,3, row[2], content)
-            summary.write(r,4, row[3], content)
-            summary.write(r,5, row[4], content)
-            summary.write(r,6, row[5], content)
-            summary.write(r,7, row[6], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=23):
+            for c, col in enumerate(row):
+                summary.write(r,1, row[0], date_format)
+                summary.write(r,2, row[1], content)
+                summary.write(r,3, row[2], content)
+                summary.write(r,4, row[3], content)
+                summary.write(r,5, row[4], content)
+                summary.write(r,6, row[5], content)
+                summary.write(r,7, row[6], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing C. Subscriber SUBS WITHDRAWAL on worksheet SUMMARY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[8]:
@@ -455,27 +471,30 @@ def C_CHURNED_USER():
     summary.write('O28','OTHER',bold)
     summary.write('P28','TOTAL',bold)
 
-    for r, row in enumerate(result, start=28):
-        for c, col in enumerate(row):
-            summary.write(r,1, row[0], date_format)
-            summary.write(r,2, row[1], content)
-            summary.write(r,3, row[2], content)
-            summary.write(r,4, row[3], content)
-            summary.write(r,5, row[4], content)
-            summary.write(r,6, row[5], content)
-            summary.write(r,7, row[6], content)
-            summary.write(r,8, row[7], content)
-            summary.write(r,9, row[8], content)
-            summary.write(r,10, row[9], content)
-            summary.write(r,11, row[10], content)
-            summary.write(r,12, row[11], content)
-            summary.write(r,13, row[12], content)
-            summary.write(r,14, row[13], content)
-            summary.write(r,15, row[14], content)
-            
-    cursor.close()
-    chat = 'SUMMARY Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+    if result:
+        for r, row in enumerate(result, start=28):
+            for c, col in enumerate(row):
+                summary.write(r,1, row[0], date_format)
+                summary.write(r,2, row[1], content)
+                summary.write(r,3, row[2], content)
+                summary.write(r,4, row[3], content)
+                summary.write(r,5, row[4], content)
+                summary.write(r,6, row[5], content)
+                summary.write(r,7, row[6], content)
+                summary.write(r,8, row[7], content)
+                summary.write(r,9, row[8], content)
+                summary.write(r,10, row[9], content)
+                summary.write(r,11, row[10], content)
+                summary.write(r,12, row[11], content)
+                summary.write(r,13, row[12], content)
+                summary.write(r,14, row[13], content)
+                summary.write(r,15, row[14], content)
+        cursor.close()
+        kelar = 'SUMMARY Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(kelar)
+    else:
+        chat = 'Skip writing C. Subscriber CHURNED USER on worksheet SUMMARY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[9]:
@@ -515,20 +534,23 @@ def A_NEW_SUBSCRIPTION_TOTAL():
     new_subs.set_column('K:K', 28)
     new_subs.set_row(3, 48)
     
-    for r, row in enumerate(result, start=4):
-        for c, col in enumerate(row):
-            new_subs.write(r,1, row[0], date_format)
-            new_subs.write(r,2, row[1], content)
-            new_subs.write(r,3, row[2], content)
-            new_subs.write(r,4, row[3], content)
-            new_subs.write(r,5, row[4], content)
-            new_subs.write(r,6, row[5], content)
-            new_subs.write(r,7, row[6], content)
-            new_subs.write(r,8, row[7], content)
-            new_subs.write(r,9, row[8], content)
-            new_subs.write(r,10, row[9], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=4):
+            for c, col in enumerate(row):
+                new_subs.write(r,1, row[0], date_format)
+                new_subs.write(r,2, row[1], content)
+                new_subs.write(r,3, row[2], content)
+                new_subs.write(r,4, row[3], content)
+                new_subs.write(r,5, row[4], content)
+                new_subs.write(r,6, row[5], content)
+                new_subs.write(r,7, row[6], content)
+                new_subs.write(r,8, row[7], content)
+                new_subs.write(r,9, row[8], content)
+                new_subs.write(r,10, row[9], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing A. NEW SUBSCRIPTION TOTAL on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[10]:
@@ -571,23 +593,26 @@ def B_NEW_SUBSCRIPTION_CHANNEL():
             new_subs.write(line + '14','',neat)
             new_subs.write_formula(line + '14', '=IFERROR(' + line +'13'+'/'+ line +'12' + ',"-")',percentage)
         
-        for r, row in enumerate(result, start=11):
-            for c, col in enumerate(row):
-                new_subs.write(r,1, row[0], date_format)
-                new_subs.write(r,2, row[1], content)
-                new_subs.write(r,3, row[2], content)
-                new_subs.write(r,4, row[3], content)
-                new_subs.write(r,5, row[4], content)
-                new_subs.write(r,6, row[5], content)
-                new_subs.write(r,7, row[6], content)
-                new_subs.write(r,8, row[7], content)
-                new_subs.write(r,9, row[8], content)
-                new_subs.write(r,10, row[9], content)
-                new_subs.write(r,11, row[10], content)
-                new_subs.write(r,12, row[11], content)
-                new_subs.write(r,13, row[12], content)
-
-        cursor.close()
+        if result:
+            for r, row in enumerate(result, start=11):
+                for c, col in enumerate(row):
+                    new_subs.write(r,1, row[0], date_format)
+                    new_subs.write(r,2, row[1], content)
+                    new_subs.write(r,3, row[2], content)
+                    new_subs.write(r,4, row[3], content)
+                    new_subs.write(r,5, row[4], content)
+                    new_subs.write(r,6, row[5], content)
+                    new_subs.write(r,7, row[6], content)
+                    new_subs.write(r,8, row[7], content)
+                    new_subs.write(r,9, row[8], content)
+                    new_subs.write(r,10, row[9], content)
+                    new_subs.write(r,11, row[10], content)
+                    new_subs.write(r,12, row[11], content)
+                    new_subs.write(r,13, row[12], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing B. NEW SUBSCRIPTION CHANNEL A. SUCCESS_RATE on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
 
     # B_SUCCESS_RATE Purchasing
     def B_SUCCESS_RATE():
@@ -604,24 +629,27 @@ def B_NEW_SUBSCRIPTION_CHANNEL():
         for line in ['D','E','F','G','H','I','J','K','L','M','N']:
             new_subs.write(line + '18','',neat)
             new_subs.write_formula(line + '18', '=IFERROR(' + line +'17'+'/'+ line +'16' + ',"-")',percentage)
-
-        for r, row in enumerate(result, start=15):
-            for c, col in enumerate(row):
-                new_subs.write(r,1, row[0], date_format)
-                new_subs.write(r,2, row[1], content)
-                new_subs.write(r,3, row[2], content)
-                new_subs.write(r,4, row[3], content)
-                new_subs.write(r,5, row[4], content)
-                new_subs.write(r,6, row[5], content)
-                new_subs.write(r,7, row[6], content)
-                new_subs.write(r,8, row[7], content)
-                new_subs.write(r,9, row[8], content)
-                new_subs.write(r,10, row[9], content)
-                new_subs.write(r,11, row[10], content)
-                new_subs.write(r,12, row[11], content)
-                new_subs.write(r,13, row[12], content)
-            
-        cursor.close()
+        
+        if result:
+            for r, row in enumerate(result, start=15):
+                for c, col in enumerate(row):
+                    new_subs.write(r,1, row[0], date_format)
+                    new_subs.write(r,2, row[1], content)
+                    new_subs.write(r,3, row[2], content)
+                    new_subs.write(r,4, row[3], content)
+                    new_subs.write(r,5, row[4], content)
+                    new_subs.write(r,6, row[5], content)
+                    new_subs.write(r,7, row[6], content)
+                    new_subs.write(r,8, row[7], content)
+                    new_subs.write(r,9, row[8], content)
+                    new_subs.write(r,10, row[9], content)
+                    new_subs.write(r,11, row[10], content)
+                    new_subs.write(r,12, row[11], content)
+                    new_subs.write(r,13, row[12], content)    
+            cursor.close()
+        else:
+            chat = 'Skip writing B. NEW SUBSCRIPTION CHANNEL B. SUCCESS_RATE on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
         
     # C_SUCCESS_RATE Renewal
     def C_SUCCESS_RATE():
@@ -655,23 +683,26 @@ def B_NEW_SUBSCRIPTION_CHANNEL():
             new_subs.write(line + '25','',neat)
             new_subs.write_formula(line + '25', '=IFERROR(' + line +'24'+'/'+ line +'23' + ',"-")',percentage)
         
-        for r, row in enumerate(result, start=22):
-            for c, col in enumerate(row):
-                new_subs.write(r,1, row[0], date_format)
-                new_subs.write(r,2, row[1], content)
-                new_subs.write(r,3, row[2], content)
-                new_subs.write(r,4, row[3], content)
-                new_subs.write(r,5, row[4], content)
-                new_subs.write(r,6, row[5], content)
-                new_subs.write(r,7, row[6], content)
-                new_subs.write(r,8, row[7], content)
-                new_subs.write(r,9, row[8], content)
-                new_subs.write(r,10, row[9], content)
-                new_subs.write(r,11, row[10], content)
-                new_subs.write(r,12, row[11], content)
-                new_subs.write(r,13, row[12], content)
-
-        cursor.close()
+        if result:
+            for r, row in enumerate(result, start=22):
+                for c, col in enumerate(row):
+                    new_subs.write(r,1, row[0], date_format)
+                    new_subs.write(r,2, row[1], content)
+                    new_subs.write(r,3, row[2], content)
+                    new_subs.write(r,4, row[3], content)
+                    new_subs.write(r,5, row[4], content)
+                    new_subs.write(r,6, row[5], content)
+                    new_subs.write(r,7, row[6], content)
+                    new_subs.write(r,8, row[7], content)
+                    new_subs.write(r,9, row[8], content)
+                    new_subs.write(r,10, row[9], content)
+                    new_subs.write(r,11, row[10], content)
+                    new_subs.write(r,12, row[11], content)
+                    new_subs.write(r,13, row[12], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing B. NEW SUBSCRIPTION CHANNEL C. SUCCESS_RATE on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
         
     # D_SUCCESS_RATE Renewal
     def D_SUCCESS_RATE():
@@ -689,23 +720,26 @@ def B_NEW_SUBSCRIPTION_CHANNEL():
             new_subs.write(line + '29','',neat)
             new_subs.write_formula(line + '29', '=IFERROR(' + line +'28'+'/'+ line +'27' + ',"-")',percentage)
 
-        for r, row in enumerate(result, start=26):
-            for c, col in enumerate(row):
-                new_subs.write(r,1, row[0], date_format)
-                new_subs.write(r,2, row[1], content)
-                new_subs.write(r,3, row[2], content)
-                new_subs.write(r,4, row[3], content)
-                new_subs.write(r,5, row[4], content)
-                new_subs.write(r,6, row[5], content)
-                new_subs.write(r,7, row[6], content)
-                new_subs.write(r,8, row[7], content)
-                new_subs.write(r,9, row[8], content)
-                new_subs.write(r,10, row[9], content)
-                new_subs.write(r,11, row[10], content)
-                new_subs.write(r,12, row[11], content)
-                new_subs.write(r,13, row[12], content)
-            
-        cursor.close()
+        if result:
+            for r, row in enumerate(result, start=26):
+                for c, col in enumerate(row):
+                    new_subs.write(r,1, row[0], date_format)
+                    new_subs.write(r,2, row[1], content)
+                    new_subs.write(r,3, row[2], content)
+                    new_subs.write(r,4, row[3], content)
+                    new_subs.write(r,5, row[4], content)
+                    new_subs.write(r,6, row[5], content)
+                    new_subs.write(r,7, row[6], content)
+                    new_subs.write(r,8, row[7], content)
+                    new_subs.write(r,9, row[8], content)
+                    new_subs.write(r,10, row[9], content)
+                    new_subs.write(r,11, row[10], content)
+                    new_subs.write(r,12, row[11], content)
+                    new_subs.write(r,13, row[12], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing B. NEW SUBSCRIPTION CHANNEL D. SUCCESS_RATE on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
             
     A_SUCCESS_RATE()
     B_SUCCESS_RATE()
@@ -735,17 +769,20 @@ def C_NEW_SUBSCRIPTION_HOUR():
     new_subs.write('H33','SR',bold)
     new_subs.set_column('B:B', 20)
     
-    for r, row in enumerate(result, start=33):
-        for c, col in enumerate(row):
-            new_subs.write(r,1, row[0], date_format)
-            new_subs.write(r,2, row[1], content)
-            new_subs.write(r,3, row[2], content)
-            new_subs.write(r,4, row[3], content)
-            new_subs.write(r,5, row[4], content)
-            new_subs.write(r,6, row[5], content)
-            new_subs.write(r,7, row[6], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=33):
+            for c, col in enumerate(row):
+                new_subs.write(r,1, row[0], date_format)
+                new_subs.write(r,2, row[1], content)
+                new_subs.write(r,3, row[2], content)
+                new_subs.write(r,4, row[3], content)
+                new_subs.write(r,5, row[4], content)
+                new_subs.write(r,6, row[5], content)
+                new_subs.write(r,7, row[6], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing C. NEW SUBSCRIPTION HOUR on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[12]:
@@ -770,20 +807,23 @@ def D_NEW_SUBSCRIPTION_HOUR_PER_CHANNEL():
     new_subs.write('H61','SUCC_CHARGE',bold)
     new_subs.write('I61','SR',bold)
     
-    for r, row in enumerate(result, start=61):
-        for c, col in enumerate(row):
-            new_subs.write(r,1, row[0], date_format)
-            new_subs.write(r,2, row[1], content)
-            new_subs.write(r,3, row[2], content)
-            new_subs.write(r,4, row[3], content)
-            new_subs.write(r,5, row[4], content)
-            new_subs.write(r,6, row[5], content)
-            new_subs.write(r,7, row[6], content)
-            new_subs.write(r,8, row[7], content)
-            
-    cursor.close()
-    chat = 'NEW_SUBS Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+    if result:
+        for r, row in enumerate(result, start=61):
+            for c, col in enumerate(row):
+                new_subs.write(r,1, row[0], date_format)
+                new_subs.write(r,2, row[1], content)
+                new_subs.write(r,3, row[2], content)
+                new_subs.write(r,4, row[3], content)
+                new_subs.write(r,5, row[4], content)
+                new_subs.write(r,6, row[5], content)
+                new_subs.write(r,7, row[6], content)
+                new_subs.write(r,8, row[7], content)
+        cursor.close()
+        chat = 'NEW_SUBS Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(chat)
+    else:
+        chat = 'Skip writing D. NEW SUBSCRIPTION HOUR PER CHANNEL on worksheet NEW_SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[13]:
@@ -807,14 +847,17 @@ def A_PROV_TOTAL():
     prov.write('D3','SUCC',bold)
     prov.write('E3','SR',bold)
     
-    for r, row in enumerate(result, start=3):
-        for c, col in enumerate(row):
-            prov.write(r,1, row[0], date_format)
-            prov.write(r,2, row[1], content)
-            prov.write(r,3, row[2], content)
-            prov.write(r,4, row[3], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=3):
+            for c, col in enumerate(row):
+                prov.write(r,1, row[0], date_format)
+                prov.write(r,2, row[1], content)
+                prov.write(r,3, row[2], content)
+                prov.write(r,4, row[3], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing A. PROV TOTAL on worksheet PROV xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[14]:
@@ -854,16 +897,19 @@ def B_PROV_CHANNEL():
             prov.write_formula(SRA_Cetak,'=IFERROR('+SRA_Source+',"-")',percentage)
             prov.write_formula(SRB_Cetak,'=IFERROR('+SRB_Source+',"-")',percentage)
     
-    for r, row in enumerate(result, start=9):
-        for c, col in enumerate(row):
-            prov.write(r,1, row[0], date_format)
-            prov.write(r,2, row[1], content)
-            prov.write(r,3, row[2], content)
-            prov.write(r,4, row[3], content)
-            prov.write(r,5, row[4], content)
-            prov.write(r,6, row[5], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=9):
+            for c, col in enumerate(row):
+                prov.write(r,1, row[0], date_format)
+                prov.write(r,2, row[1], content)
+                prov.write(r,3, row[2], content)
+                prov.write(r,4, row[3], content)
+                prov.write(r,5, row[4], content)
+                prov.write(r,6, row[5], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing B. PROV CHANNEL on worksheet PROV xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[15]:
@@ -905,19 +951,23 @@ def C_PROV_CHANNEL_HOUR():
             prov.write_formula(SRA_Cetak,'=IFERROR('+SRA_Source+',"-")',percentage)
             prov.write_formula(SRB_Cetak,'=IFERROR('+SRB_Source+',"-")',percentage)
     
-    for r, row in enumerate(result, start=25):
-        for c, col in enumerate(row):
-            prov.write(r,1, row[0], date_format)
-            prov.write(r,2, row[1], content)
-            prov.write(r,3, row[2], content)
-            prov.write(r,4, row[3], content)
-            prov.write(r,5, row[4], content)
-            prov.write(r,6, row[5], content)
-            prov.write(r,7, row[6], content)
-    
-    cursor.close()
-    chat = 'PROV Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+    if result:
+        for r, row in enumerate(result, start=25):
+            for c, col in enumerate(row):
+                prov.write(r,1, row[0], date_format)
+                prov.write(r,2, row[1], content)
+                prov.write(r,3, row[2], content)
+                prov.write(r,4, row[3], content)
+                prov.write(r,5, row[4], content)
+                prov.write(r,6, row[5], content)
+                prov.write(r,7, row[6], content)
+
+        cursor.close()
+        kelar = 'PROV Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(kelar)
+    else:
+        chat = 'Skip writing C. PROV CHANNEL HOUR on worksheet PROV xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[16]:
@@ -947,15 +997,18 @@ def A_TOTAL_RBT_TRAFFIC():
             Alline = line+'{}'.format(*([kolom + 4] * 20))
             totaltraf.write(Alline,'',neat)
     
-    for r, row in enumerate(result, start=3):
-        for c, col in enumerate(row):
-            totaltraf.write(r,1, row[0], date_format)
-            totaltraf.write(r,2, row[1], content)
-            totaltraf.write(r,3, row[2], content)
-            totaltraf.write(r,4, row[3], content)
-            totaltraf.write(r,5, row[4], content)
-    
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=3):
+            for c, col in enumerate(row):
+                totaltraf.write(r,1, row[0], date_format)
+                totaltraf.write(r,2, row[1], content)
+                totaltraf.write(r,3, row[2], content)
+                totaltraf.write(r,4, row[3], content)
+                totaltraf.write(r,5, row[4], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing A. TOTAL RBT TRAFFIC on worksheet TOTAL TRAFFIC xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[17]:
@@ -994,16 +1047,19 @@ def TRAFFIC_PURCHASE():
             totaltraf.write_formula(SRA_Cetak,'=IFERROR('+SRA_Source+',"-")',percentage)
             totaltraf.write_formula(SRB_Cetak,'=IFERROR('+SRB_Source+',"-")',percentage)
             
-    for r, row in enumerate(result, start=28):
-        for c, col in enumerate(row):
-            totaltraf.write(r,1, row[0], date_format)
-            totaltraf.write(r,2, row[1], content)
-            totaltraf.write(r,3, row[2], content)
-            totaltraf.write(r,4, row[3], content)
-            totaltraf.write(r,5, row[4], content)
-            totaltraf.write(r,6, row[5], content)
-    
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=28):
+            for c, col in enumerate(row):
+                totaltraf.write(r,1, row[0], date_format)
+                totaltraf.write(r,2, row[1], content)
+                totaltraf.write(r,3, row[2], content)
+                totaltraf.write(r,4, row[3], content)
+                totaltraf.write(r,5, row[4], content)
+                totaltraf.write(r,6, row[5], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing TRAFFIC PURCHASE on worksheet TOTAL TRAFFIC xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[18]:
@@ -1041,19 +1097,22 @@ def TRAFFIC_RENEWAL():
             SRB_Cetak = "T{}".format(*([kolom + 29] * 20))
             totaltraf.write_formula(SRA_Cetak,'=IFERROR('+SRA_Source+',"-")',percentage)
             totaltraf.write_formula(SRB_Cetak,'=IFERROR('+SRB_Source+',"-")',percentage)
-            
-    for r, row in enumerate(result, start=28):
-        for c, col in enumerate(row):
-            totaltraf.write(r,12, row[0], date_format)
-            totaltraf.write(r,13, row[1], content)
-            totaltraf.write(r,14, row[2], content)
-            totaltraf.write(r,15, row[3], content)
-            totaltraf.write(r,16, row[4], content)
-            totaltraf.write(r,17, row[5], content)
     
-    cursor.close()
-    chat = 'TOTAL TRAFFIC Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+    if result:
+        for r, row in enumerate(result, start=28):
+            for c, col in enumerate(row):
+                totaltraf.write(r,12, row[0], date_format)
+                totaltraf.write(r,13, row[1], content)
+                totaltraf.write(r,14, row[2], content)
+                totaltraf.write(r,15, row[3], content)
+                totaltraf.write(r,16, row[4], content)
+                totaltraf.write(r,17, row[5], content)
+        cursor.close()
+        kelar = 'TOTAL TRAFFIC Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(kelar)
+    else:
+        chat = 'Skip writing TRAFFIC RENEWAL on worksheet TOTAL TRAFFIC xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[19]:
@@ -1091,17 +1150,20 @@ def A_PRICE_TRAFFIC_REVENUE():
         for kolom in range(33):
             Alline = line+'{}'.format(*([kolom + 4] * 33))
             pricerevenue.write(Alline,'',neat)
-            
-    for r, row in enumerate(result, start=3):
-        for c, col in enumerate(row):
-            pricerevenue.write(r,1, row[0], date_format)
-            pricerevenue.write(r,2, row[1], content)
-            pricerevenue.write(r,3, row[2], content)
-            pricerevenue.write(r,4, row[3], content)
-            pricerevenue.write(r,5, row[4], content)
-            pricerevenue.write(r,6, row[5], content)
-            
-    cursor.close()
+    
+    if result:
+        for r, row in enumerate(result, start=3):
+            for c, col in enumerate(row):
+                pricerevenue.write(r,1, row[0], date_format)
+                pricerevenue.write(r,2, row[1], content)
+                pricerevenue.write(r,3, row[2], content)
+                pricerevenue.write(r,4, row[3], content)
+                pricerevenue.write(r,5, row[4], content)
+                pricerevenue.write(r,6, row[5], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing A. PRICE TRAFFIC & REVENUE on worksheet PRICE & REVENUE xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[20]:
@@ -1140,20 +1202,23 @@ def B_PRICE_TRAFFIC_REVENUE():
             Alline = line+'{}'.format(*([kolom + 44] * 32))
             pricerevenue.write(Alline,'',neat)
     
-    for r, row in enumerate(result, start=43):
-        for c, col in enumerate(row):
-            pricerevenue.write(r,1, row[0], date_format)
-            pricerevenue.write(r,2, row[1], content)
-            pricerevenue.write(r,3, row[2], content)
-            pricerevenue.write(r,4, row[3], content)
-            pricerevenue.write(r,5, row[4], content)
-            pricerevenue.write(r,6, row[5], content)
-            pricerevenue.write(r,7, row[6], content)
-            pricerevenue.write(r,8, row[7], content)
-            pricerevenue.write(r,9, row[8], content)
-            pricerevenue.write(r,10, row[9], content)
-            
-    cursor.close()
+    if result:
+        for r, row in enumerate(result, start=43):
+            for c, col in enumerate(row):
+                pricerevenue.write(r,1, row[0], date_format)
+                pricerevenue.write(r,2, row[1], content)
+                pricerevenue.write(r,3, row[2], content)
+                pricerevenue.write(r,4, row[3], content)
+                pricerevenue.write(r,5, row[4], content)
+                pricerevenue.write(r,6, row[5], content)
+                pricerevenue.write(r,7, row[6], content)
+                pricerevenue.write(r,8, row[7], content)
+                pricerevenue.write(r,9, row[8], content)
+                pricerevenue.write(r,10, row[9], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing B. PRICE TRAFFIC REVENUE on worksheet PRICE & REVENUE xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[21]:
@@ -1215,47 +1280,50 @@ def C_PRICE_TRAFFIC_REVENUE():
             Alline = line+'{}'.format(*([kolom + 80] * 4))
             pricerevenue.write(Alline,'',neat)
     
-    for r, row in enumerate(result, start=79):
-        for c, col in enumerate(row):
-            pricerevenue.write(r,1, row[0], date_format)
-            pricerevenue.write(r,2, row[1], content)
-            pricerevenue.write(r,3, row[2], content)
-            pricerevenue.write(r,4, row[3], content)
-            pricerevenue.write(r,5, row[4], content)
-            pricerevenue.write(r,6, row[5], content)
-            pricerevenue.write(r,7, row[6], content)
-            pricerevenue.write(r,8, row[7], content)
-            pricerevenue.write(r,9, row[8], content)
-            pricerevenue.write(r,10, row[9], content)
-            pricerevenue.write(r,11, row[10], content)
-            pricerevenue.write(r,12, row[11], content)
-            pricerevenue.write(r,13, row[12], content)
-            pricerevenue.write(r,14, row[13], content)
-            pricerevenue.write(r,15, row[14], content)
-            pricerevenue.write(r,16, row[15], content)
-            pricerevenue.write(r,17, row[16], content)
-            pricerevenue.write(r,18, row[17], content)
-            pricerevenue.write(r,19, row[18], content)
-            pricerevenue.write(r,20, row[19], content)
-            pricerevenue.write(r,21, row[20], content)
-            pricerevenue.write(r,22, row[21], content)
-            pricerevenue.write(r,23, row[22], content)
-            pricerevenue.write(r,24, row[23], content)
-            pricerevenue.write(r,25, row[24], content)
-            pricerevenue.write(r,26, row[25], content)
-            pricerevenue.write(r,27, row[26], content)
-            pricerevenue.write(r,28, row[27], content)
-            pricerevenue.write(r,29, row[28], content)
-            pricerevenue.write(r,30, row[29], content)
-            pricerevenue.write(r,31, row[30], content)
-            pricerevenue.write(r,32, row[31], content)
-            pricerevenue.write(r,33, row[32], content)
-            pricerevenue.write(r,34, row[33], content)
-            pricerevenue.write(r,35, row[34], content)
-            
-    cursor.close()
-    chat = 'PRICE & REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+    if result:
+        for r, row in enumerate(result, start=79):
+            for c, col in enumerate(row):
+                pricerevenue.write(r,1, row[0], date_format)
+                pricerevenue.write(r,2, row[1], content)
+                pricerevenue.write(r,3, row[2], content)
+                pricerevenue.write(r,4, row[3], content)
+                pricerevenue.write(r,5, row[4], content)
+                pricerevenue.write(r,6, row[5], content)
+                pricerevenue.write(r,7, row[6], content)
+                pricerevenue.write(r,8, row[7], content)
+                pricerevenue.write(r,9, row[8], content)
+                pricerevenue.write(r,10, row[9], content)
+                pricerevenue.write(r,11, row[10], content)
+                pricerevenue.write(r,12, row[11], content)
+                pricerevenue.write(r,13, row[12], content)
+                pricerevenue.write(r,14, row[13], content)
+                pricerevenue.write(r,15, row[14], content)
+                pricerevenue.write(r,16, row[15], content)
+                pricerevenue.write(r,17, row[16], content)
+                pricerevenue.write(r,18, row[17], content)
+                pricerevenue.write(r,19, row[18], content)
+                pricerevenue.write(r,20, row[19], content)
+                pricerevenue.write(r,21, row[20], content)
+                pricerevenue.write(r,22, row[21], content)
+                pricerevenue.write(r,23, row[22], content)
+                pricerevenue.write(r,24, row[23], content)
+                pricerevenue.write(r,25, row[24], content)
+                pricerevenue.write(r,26, row[25], content)
+                pricerevenue.write(r,27, row[26], content)
+                pricerevenue.write(r,28, row[27], content)
+                pricerevenue.write(r,29, row[28], content)
+                pricerevenue.write(r,30, row[29], content)
+                pricerevenue.write(r,31, row[30], content)
+                pricerevenue.write(r,32, row[31], content)
+                pricerevenue.write(r,33, row[32], content)
+                pricerevenue.write(r,34, row[33], content)
+                pricerevenue.write(r,35, row[34], content)
+        cursor.close()
+        kelar = 'PRICE & REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(kelar)
+    else:
+        chat = 'Skip writing C. PRICE TRAFFIC REVENUE on worksheet PRICE & REVENUE xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[22]:
@@ -1286,15 +1354,18 @@ def A_SUMMARY_CHARGING_GW():
         for kolom in range(3):
             Alline = line+'{}'.format(*([kolom + 5] * 3))
             chargingcdr.write(Alline,'',neat)
-            
-    for r, row in enumerate(result, start=4):
-        for c, col in enumerate(row):
-            chargingcdr.write(r,1, row[0], content)
-            chargingcdr.write(r,2, row[1], content)
-            chargingcdr.write(r,3, row[2], content)
-            chargingcdr.write(r,4, row[3], content)
-            
-    cursor.close()
+    
+    if result:
+        for r, row in enumerate(result, start=4):
+            for c, col in enumerate(row):
+                chargingcdr.write(r,1, row[0], content)
+                chargingcdr.write(r,2, row[1], content)
+                chargingcdr.write(r,3, row[2], content)
+                chargingcdr.write(r,4, row[3], content)
+        cursor.close()
+    else:
+        chat = 'Skip writing A. SUMMARY CHARGING GW on worksheet CHARGING CDR xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[23]:
@@ -1317,16 +1388,20 @@ def B_CHARGING_CDR_ERROR():
         for kolom in range(26):
             Alline = line+'{}'.format(*([kolom + 12] * 26))
             chargingcdr.write(Alline,'',neat)
-            
-    for r, row in enumerate(result, start=11):
-        for c, col in enumerate(row):
-            chargingcdr.write(r,1, row[0], content)
-            chargingcdr.write(r,2, row[1], content)
-            chargingcdr.write(r,3, row[2], content)
-            
-    cursor.close()
-    chat = 'CHARGING CDR Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-    fyi(chat)
+    
+    if result:
+        for r, row in enumerate(result, start=11):
+            for c, col in enumerate(row):
+                chargingcdr.write(r,1, row[0], content)
+                chargingcdr.write(r,2, row[1], content)
+                chargingcdr.write(r,3, row[2], content)
+
+        cursor.close()
+        kelar = 'CHARGING CDR Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+        fyi(kelar)
+    else:
+        chat = 'Skip writing B. CHARGING CDR ERROR on worksheet CHARGING CDR xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+        fyi(chat)
 
 
 # In[24]:
@@ -1352,15 +1427,18 @@ def ERROR_SUBS():
         errorsubs.write('D3','ERROR_RESULT',bold)
         errorsubs.write('E3','ERROR_COUNT',bold)
         errorsubs.set_column('B:E', 18)
-            
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                errorsubs.write(r,1, row[0], date_format)
-                errorsubs.write(r,2, row[1], content)
-                errorsubs.write(r,3, row[2], content)
-                errorsubs.write(r,4, row[3], content)
-            
-        cursor.close()
+
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    errorsubs.write(r,1, row[0], date_format)
+                    errorsubs.write(r,2, row[1], content)
+                    errorsubs.write(r,3, row[2], content)
+                    errorsubs.write(r,4, row[3], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing A. NEW SUBS ERROR CHANNEL on worksheet ERROR SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
     
     # B. NEW SUBS ERROR HOUR CHANNEL
     def B_NEW_SUBS_ERROR_HOUR_CHANNEL():
@@ -1378,18 +1456,21 @@ def ERROR_SUBS():
         errorsubs.write('K3','ERROR_RESULT',bold)
         errorsubs.write('L3','ERROR_COUNT',bold)
         errorsubs.set_column('H:L', 18)
-            
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                errorsubs.write(r,7, row[0], date_format)
-                errorsubs.write(r,8, row[1], content)
-                errorsubs.write(r,9, row[2], content)
-                errorsubs.write(r,10, row[3], content)
-                errorsubs.write(r,11, row[4], content)
-            
-        cursor.close()
-        chat = 'ERROR SUBS Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    errorsubs.write(r,7, row[0], date_format)
+                    errorsubs.write(r,8, row[1], content)
+                    errorsubs.write(r,9, row[2], content)
+                    errorsubs.write(r,10, row[3], content)
+                    errorsubs.write(r,11, row[4], content)
+            cursor.close()
+            kelar = 'ERROR SUBS Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(kelar)
+        else:
+            chat = 'Skip writing B. NEW SUBS ERROR HOUR CHANNEL on worksheet ERROR SUBS xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
     
     A_NEW_SUBS_ERROR_CHANNEL()
     B_NEW_SUBS_ERROR_HOUR_CHANNEL()
@@ -1420,16 +1501,19 @@ def HTTPGW():
         httpgw.write('F3','SR',bold)
         httpgw.set_column('B:C', 17)
         httpgw.set_column('D:F', 12)
-            
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                httpgw.write(r,1, row[0], date_format)
-                httpgw.write(r,2, row[1], content)
-                httpgw.write(r,3, row[2], content)
-                httpgw.write(r,4, row[3], content)
-                httpgw.write(r,5, row[4], content)
-            
-        cursor.close()
+        
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    httpgw.write(r,1, row[0], date_format)
+                    httpgw.write(r,2, row[1], content)
+                    httpgw.write(r,3, row[2], content)
+                    httpgw.write(r,4, row[3], content)
+                    httpgw.write(r,5, row[4], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing A. HTTPGW BREAKDOWN PURCHASE on worksheet HTTPGW xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
     
     # B. HTTPGW BREAKDOWN RENEWAL
     def B_HTTPGW_BREAKDOWN_RENEWAL():
@@ -1446,17 +1530,20 @@ def HTTPGW():
         httpgw.write('J3','SUCC',bold)
         httpgw.write('K3','SR',bold)
         httpgw.set_column('H:K', 15)
-            
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                httpgw.write(r,7, row[0], date_format)
-                httpgw.write(r,8, row[1], content)
-                httpgw.write(r,9, row[2], content)
-                httpgw.write(r,10, row[3], content)
-            
-        cursor.close()
-        chat = 'HTTPGW Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+        
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    httpgw.write(r,7, row[0], date_format)
+                    httpgw.write(r,8, row[1], content)
+                    httpgw.write(r,9, row[2], content)
+                    httpgw.write(r,10, row[3], content)
+            cursor.close()
+            kelar = 'HTTPGW Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(kelar)
+        else:
+            chat = 'Skip writing B. HTTPGW BREAKDOWN RENEWAL on worksheet HTTPGW xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
     
     A_HTTPGW_BREAKDOWN_PURCHASE()
     B_HTTPGW_BREAKDOWN_RENEWAL()
@@ -1491,16 +1578,19 @@ def SMS_CONFIRMATION():
         smsconfirm.set_column('E:E', 25)
         smsconfirm.set_column('F:G', 15)
         
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                smsconfirm.write(r,1, row[0], date_format)
-                smsconfirm.write(r,2, row[1], content)
-                smsconfirm.write(r,3, row[2], content)
-                smsconfirm.write(r,4, row[3], content)
-                smsconfirm.write(r,5, row[4], content)
-                smsconfirm.write(r,6, row[5], content)
-            
-        cursor.close()
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    smsconfirm.write(r,1, row[0], date_format)
+                    smsconfirm.write(r,2, row[1], content)
+                    smsconfirm.write(r,3, row[2], content)
+                    smsconfirm.write(r,4, row[3], content)
+                    smsconfirm.write(r,5, row[4], content)
+                    smsconfirm.write(r,6, row[5], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing PURCHASE on worksheet SMS_CONFIRMATION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
         
     # Error_Detail_Purchase
     def Error_Detail_Purchase():
@@ -1521,15 +1611,18 @@ def SMS_CONFIRMATION():
             for kolom in range(11):
                 Alline = line+'{}'.format(*([kolom + 9] * 11))
                 smsconfirm.write(Alline,'',neat)
-            
-        for r, row in enumerate(result, start=8):
-            for c, col in enumerate(row):
-                smsconfirm.write(r,1, row[0], date_format)
-                smsconfirm.write(r,2, row[1], content)
-                smsconfirm.write(r,3, row[2], content)
-                smsconfirm.write(r,4, row[3], content)
-            
-        cursor.close()
+        
+        if result:
+            for r, row in enumerate(result, start=8):
+                for c, col in enumerate(row):
+                    smsconfirm.write(r,1, row[0], date_format)
+                    smsconfirm.write(r,2, row[1], content)
+                    smsconfirm.write(r,3, row[2], content)
+                    smsconfirm.write(r,4, row[3], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing ERROR DETAIL on worksheet SMS_CONFIRMATION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
         
     # Renewal
     def Renewal():
@@ -1547,17 +1640,20 @@ def SMS_CONFIRMATION():
         smsconfirm.write('E24','Non Respond 1st Confirm',bold)
         smsconfirm.write('F24','Success Charged',bold)
         smsconfirm.write('G24','Fail Charged',bold)
-            
-        for r, row in enumerate(result, start=24):
-            for c, col in enumerate(row):
-                smsconfirm.write(r,1, row[0], date_format)
-                smsconfirm.write(r,2, row[1], content)
-                smsconfirm.write(r,3, row[2], content)
-                smsconfirm.write(r,4, row[3], content)
-                smsconfirm.write(r,5, row[4], content)
-                smsconfirm.write(r,6, row[5], content)
-            
-        cursor.close()
+        
+        if result:
+            for r, row in enumerate(result, start=24):
+                for c, col in enumerate(row):
+                    smsconfirm.write(r,1, row[0], date_format)
+                    smsconfirm.write(r,2, row[1], content)
+                    smsconfirm.write(r,3, row[2], content)
+                    smsconfirm.write(r,4, row[3], content)
+                    smsconfirm.write(r,5, row[4], content)
+                    smsconfirm.write(r,6, row[5], content)
+            cursor.close()
+        else:
+            chat = 'Skip writing Renewal on worksheet SMS_CONFIRMATION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
         
     # Error_Detail_Purchase
     def Error_Detail_Renewal():
@@ -1578,17 +1674,20 @@ def SMS_CONFIRMATION():
             for kolom in range(11):
                 Alline = line+'{}'.format(*([kolom + 30] * 11))
                 smsconfirm.write(Alline,'',neat)
-            
-        for r, row in enumerate(result, start=29):
-            for c, col in enumerate(row):
-                smsconfirm.write(r,1, row[0], date_format)
-                smsconfirm.write(r,2, row[1], content)
-                smsconfirm.write(r,3, row[2], content)
-                smsconfirm.write(r,4, row[3], content)
-            
-        cursor.close()
-        chat = 'SMS_CONFIRMATION Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+        
+        if result:
+            for r, row in enumerate(result, start=29):
+                for c, col in enumerate(row):
+                    smsconfirm.write(r,1, row[0], date_format)
+                    smsconfirm.write(r,2, row[1], content)
+                    smsconfirm.write(r,3, row[2], content)
+                    smsconfirm.write(r,4, row[3], content)
+            cursor.close()
+            kelar = 'SMS_CONFIRMATION Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(kelar)
+        else:
+            chat = 'Skip writing ERROR DETAIL on worksheet SMS_CONFIRMATION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(chat)
         
     Purchase()
     Error_Detail_Purchase()
@@ -1608,9 +1707,14 @@ def SONGTOP():
 
         cursor.execute(query)
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode='a')
-        # df.to_csv(r'SongTop.csv', index=False, mode='a')
-    
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append Song Top '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            cursor.close()
+
         songtop.set_zoom(70)
         songtop.hide_gridlines(2)
         songtop.write('A1','SONG TOP 75 STATISTIC',title)
@@ -1630,20 +1734,22 @@ def SONGTOP():
         songtop.set_column('H:H', 26)
 
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=3):
-                for c, col in enumerate(row):
-                    songtop.write(r,1, row[0], date_format)
-                    songtop.write(r,2, row[1], content)
-                    songtop.write(r,3, row[2], content)
-                    songtop.write(r,4, row[3], content)
-                    songtop.write(r,5, row[4], content)
-                    songtop.write(r,6, row[5], content)
-                    songtop.write(r,7, row[6], content)
-
-        cursor.close()
-        chat = 'SONG TOP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=3):
+                    for c, col in enumerate(row):
+                        songtop.write(r,1, row[0], date_format)
+                        songtop.write(r,2, row[1], content)
+                        songtop.write(r,3, row[2], content)
+                        songtop.write(r,4, row[3], content)
+                        songtop.write(r,5, row[4], content)
+                        songtop.write(r,6, row[5], content)
+                        songtop.write(r,7, row[6], content)
+                chat = 'SONG TOP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing 75 Song Top on worksheet SONG TOP xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
 
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -1664,17 +1770,24 @@ def SONGTOP():
 def GROSSREVENUE():
     
     def GETDAT():
+        Dump = 'Gross_Revenue_'+str(kmrnbulan[0:6])+'.csv'
         cursor = database.cursor()
         query = ("SELECT CALLING_DATE,TOTAL_COUNT,TOTAL_SUCCESS,FAIL_COUNT,SUCCESS_RATE,BILLABLE_COUNT,GROSS_REVENUE,MELON_REVENUE FROM(SELECT calling_date,         SUM (TOTAL_COUNT) AS TOTAL_COUNT,SUM (SUCCESS_COUNT) AS TOTAL_SUCCESS,SUM (FAIL_COUNT) AS FAIL_COUNT,ROUND( (SUM (SUCCESS_COUNT)/ (SUM (SUCCESS_COUNT)         + SUM (FAIL_COUNT))) * 100,2) ||'%' AS success_rate,SUM (BILLABLE_COUNT) AS BILLABLE_COUNT,SUM (CHARGE_AMOUNT) AS GROSS_REVENUE,SUM (CHARGE_AMOUNT)         * 75 /100 AS MELON_REVENUE FROM CDR_SUMMARY WHERE CALLING_DATE = TO_CHAR(SYSDATE-"+sys+",'YYYYMMDD') AND calling_type IN (1,2,7,64,93,77,78,65,95,96,99,100)         AND calling_type BETWEEN 0 AND 999 GROUP BY calling_date ORDER BY calling_date)")
         cursor.execute(query)
-        Dump = 'Gross_Revenue_'+str(kmrnbulan[0:6])+'.csv'
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append Gross Revenue '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            cursor.close()
         
         for line in ['B','C','D','E','F','G','H','I']:
             for kolom in range(33):
                 Alline = line+'{}'.format(*([kolom + 4] * 33))
                 revenue.write(Alline,'',neat)
+
         revenue.set_zoom(70)
         revenue.hide_gridlines(2)
         revenue.write('A1','Revenue Statistics',title)
@@ -1697,21 +1810,23 @@ def GROSSREVENUE():
             revenue.write_formula(persum+'36','=SUM('+persum+'4:'+persum+'35)',content)
             
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=3):
-                for c, col in enumerate(row):
-                    revenue.write(r,1, row[0], date_format)
-                    revenue.write(r,2, row[1], content)
-                    revenue.write(r,3, row[2], content)
-                    revenue.write(r,4, row[3], content)
-                    revenue.write(r,5, row[4], percentage)
-                    revenue.write(r,6, row[5], content)
-                    revenue.write(r,7, row[6], content)
-                    revenue.write(r,8, row[7], content)
-                    
-        cursor.close()
-        chat = 'REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=3):
+                    for c, col in enumerate(row):
+                        revenue.write(r,1, row[0], date_format)
+                        revenue.write(r,2, row[1], content)
+                        revenue.write(r,3, row[2], content)
+                        revenue.write(r,4, row[3], content)
+                        revenue.write(r,5, row[4], percentage)
+                        revenue.write(r,6, row[5], content)
+                        revenue.write(r,7, row[6], content)
+                        revenue.write(r,8, row[7], content)
+                chat = 'REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing Revenue Statistics on worksheet REVENUE xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
     
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -1732,12 +1847,19 @@ def GROSSREVENUE():
 def MELONDIY():
     
     def GETDAT():
+        Dump = 'Melon_Diy_'+str(kmrnbulan[0:6])+'.csv'
         cursor = database.cursor()
         query = ("SELECT CALLING_DATE,TOTAL_COUNT,TOTAL_SUCCESS,FAIL_COUNT,SUCCESS_RATE,BILLABLE_COUNT,GROSS_REVENUE FROM (SELECT calling_date, SUM(TOTAL_COUNT) AS TOTAL_COUNT,SUM(SUCCESS_COUNT) AS TOTAL_SUCCESS,         SUM (FAIL_COUNT) AS FAIL_COUNT,ROUND( (SUM (SUCCESS_COUNT)/ (SUM (SUCCESS_COUNT) + SUM (FAIL_COUNT))) * 100,2) ||'%' AS success_rate, SUM(BILLABLE_COUNT) AS BILLABLE_COUNT,SUM (CHARGE_AMOUNT) AS GROSS_REVENUE         FROM CDR_SUMMARY WHERE CALLING_DATE = TO_CHAR(SYSDATE-"+sys+",'YYYYMMDD') AND calling_type IN (1,2,7,64,93,77,78,65,95,96,99,100) AND RATING_CONTENT_ID in ( select content_id from (select content_id from content where mcp_user_id ='23610'         union all select bundle_id  as content_id from bundle where mcp_user_id ='23610')) AND calling_type BETWEEN 0 AND 999 GROUP BY calling_date ORDER BY calling_date)")
         cursor.execute(query)
-        Dump = 'Melon_Diy_'+str(kmrnbulan[0:6])+'.csv'
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append Melon Diy '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            cursor.close()
+
         for line in ['B','C','D','E','F','G','H']:
             for kolom in range(33):
                 Alline = line+'{}'.format(*([kolom + 4] * 33))
@@ -1761,20 +1883,22 @@ def MELONDIY():
         for persum in ['G','H']:
             melondiy.write_formula(persum+'36','=SUM('+persum+'4:'+persum+'35)',content)
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=3):
-                for c, col in enumerate(row):
-                    melondiy.write(r,1, row[0], date_format)
-                    melondiy.write(r,2, row[1], content)
-                    melondiy.write(r,3, row[2], content)
-                    melondiy.write(r,4, row[3], content)
-                    melondiy.write(r,5, row[4], percentage)
-                    melondiy.write(r,6, row[5], content)
-                    melondiy.write(r,7, row[6], content)
-        
-        cursor.close()
-        chat = 'MELON DIY Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=3):
+                    for c, col in enumerate(row):
+                        melondiy.write(r,1, row[0], date_format)
+                        melondiy.write(r,2, row[1], content)
+                        melondiy.write(r,3, row[2], content)
+                        melondiy.write(r,4, row[3], content)
+                        melondiy.write(r,5, row[4], percentage)
+                        melondiy.write(r,6, row[5], content)
+                        melondiy.write(r,7, row[6], content)
+                chat = 'MELON DIY Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing MELON DIY on worksheet MELON DIY xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
     
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -1795,12 +1919,18 @@ def MELONDIY():
 def MELONMYNSP():
     def Statistic():
         def GETDAT():
+            Dump = 'Melon_MyNsp_'+str(kmrnbulan[0:6])+'.csv'
             cursor = database.cursor()
             query = ("SELECT CALLING_DATE,TOTAL_COUNT,TOTAL_SUCCESS,FAIL_COUNT,SUCCESS_RATE,BILLABLE_COUNT,GROSS_REVENUE FROM (SELECT calling_date,SUM (TOTAL_COUNT) AS TOTAL_COUNT,SUM (SUCCESS_COUNT) AS TOTAL_SUCCESS,SUM (FAIL_COUNT) AS FAIL_COUNT,             ROUND( (SUM (SUCCESS_COUNT)/ (SUM (SUCCESS_COUNT) + SUM (FAIL_COUNT))) * 100,2) ||'%' AS success_rate,SUM (BILLABLE_COUNT) AS BILLABLE_COUNT,SUM (CHARGE_AMOUNT) AS GROSS_REVENUE FROM CDR_SUMMARY WHERE CALLING_DATE = TO_CHAR(SYSDATE-"+sys+",'YYYYMMDD')             AND calling_type IN (1,2,7,77,64,93,78,65,95,96,99,100) AND RATING_CONTENT_ID in ( select content_id from (select content_id from content where mcp_user_id ='23661' union all select bundle_id  as content_id from bundle where mcp_user_id ='23661' ))             AND calling_type BETWEEN 0 AND 999 GROUP BY calling_date ORDER BY calling_date)")
             cursor.execute(query)
-            Dump = 'Melon_MyNsp_'+str(kmrnbulan[0:6])+'.csv'
             df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append Melon MyNsp '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+                cursor.close()
 
             for line in ['B','C','D','E','F','G','H']:
                 for kolom in range(33):
@@ -1825,18 +1955,20 @@ def MELONMYNSP():
             for persum in ['G','H']:
                 melonmynsp.write_formula(persum+'36','=SUM('+persum+'4:'+persum+'35)',content)
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-                readCSV = csv.reader(csvfile, delimiter=',')
-                for r, row in enumerate(readCSV, start=3):
-                    for c, col in enumerate(row):
-                        melonmynsp.write(r,1, row[0], date_format)
-                        melonmynsp.write(r,2, row[1], content)
-                        melonmynsp.write(r,3, row[2], content)
-                        melonmynsp.write(r,4, row[3], content)
-                        melonmynsp.write(r,5, row[4], percentage)
-                        melonmynsp.write(r,6, row[5], content)
-                        melonmynsp.write(r,7, row[6], content)
-                        
-            cursor.close()
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=3):
+                        for c, col in enumerate(row):
+                            melonmynsp.write(r,1, row[0], date_format)
+                            melonmynsp.write(r,2, row[1], content)
+                            melonmynsp.write(r,3, row[2], content)
+                            melonmynsp.write(r,4, row[3], content)
+                            melonmynsp.write(r,5, row[4], percentage)
+                            melonmynsp.write(r,6, row[5], content)
+                            melonmynsp.write(r,7, row[6], content)
+                else:
+                    Alert = 'Skip writing Melon MyNSP Statistic on worksheet MELON MYNSP xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    fyi(Alert)
 
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -1864,13 +1996,17 @@ def MELONMYNSP():
         melonmynsp.write('D39','ERROR_RESULT',bold)
         melonmynsp.write('E39','ERROR_COUNT',bold)
         
-        for r, row in enumerate(result, start=39):
-            for c, col in enumerate(row):
-                melonmynsp.write(r,1, row[0], date_format)
-                melonmynsp.write(r,2, row[1], content)
-                melonmynsp.write(r,3, row[2], content)
-                melonmynsp.write(r,4, row[3], content)
-        cursor.close()
+        if result:
+            for r, row in enumerate(result, start=39):
+                for c, col in enumerate(row):
+                    melonmynsp.write(r,1, row[0], date_format)
+                    melonmynsp.write(r,2, row[1], content)
+                    melonmynsp.write(r,3, row[2], content)
+                    melonmynsp.write(r,4, row[3], content)
+            cursor.close()
+        else:
+            Alert = 'Skip writing ERROR CHANNEL on worksheet MELON MYNSP xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(Alert)
     
     def ERROR_PRICE():
         cursor = database.cursor()
@@ -1887,15 +2023,19 @@ def MELONMYNSP():
         melonmynsp.write('J39','ERROR_COUNT',bold)
         melonmynsp.set_column('I:J', 20)
         
-        for r, row in enumerate(result, start=39):
-            for c, col in enumerate(row):
-                melonmynsp.write(r,6, row[0], date_format)
-                melonmynsp.write(r,7, row[1], content)
-                melonmynsp.write(r,8, row[2], content)
-                melonmynsp.write(r,9, row[3], content)
-        cursor.close()
-        chat = 'MELON MYNSP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+        if result:
+            for r, row in enumerate(result, start=39):
+                for c, col in enumerate(row):
+                    melonmynsp.write(r,6, row[0], date_format)
+                    melonmynsp.write(r,7, row[1], content)
+                    melonmynsp.write(r,8, row[2], content)
+                    melonmynsp.write(r,9, row[3], content)
+            cursor.close()
+            chat = 'MELON MYNSP Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(chat)
+        else:
+            Alert = 'Skip writing ERROR CHANNEL on worksheet MELON MYNSP xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(Alert)
 
     Statistic()
     ERROR_CHANNEL()
@@ -1924,16 +2064,19 @@ def SUSPEND_TOP20():
         suspendtop20.set_column('D:D', 60)
         suspendtop20.set_column('E:E', 30)
         
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                suspendtop20.write(r,1, row[0], date_format)
-                suspendtop20.write(r,2, row[1], content)
-                suspendtop20.write(r,3, row[2], content)
-                suspendtop20.write(r,4, row[3], content)
-                
-        cursor.close()
-        chat = 'SUSPEND_TOP20 Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    suspendtop20.write(r,1, row[0], date_format)
+                    suspendtop20.write(r,2, row[1], content)
+                    suspendtop20.write(r,3, row[2], content)
+                    suspendtop20.write(r,4, row[3], content)
+            cursor.close()
+            kelar = 'SUSPEND_TOP20 Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(kelar)
+        else:
+            Alert = 'Skip writing SUSPEND_TOP20 on worksheet SUSPEND_TOP20 xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(Alert)
 
 
 # In[32]:
@@ -1942,12 +2085,18 @@ def SUSPEND_TOP20():
 def REGION():
     def TRAFFIC_AND_REVENUE_PER_REGION():
         def GETDAT():
+            Dump = 'TRAFFIC_AND_REVENUE_PER_REGION_'+str(kmrnbulan[0:6])+'.csv'
             cursor = database.cursor()
             query = ("select calling_date ,T_Sumbagut,SUMBAGUT,T_SUMBAGTENG,Sumbagteng ,T_Sumbagsel ,Sumbagsel ,T_Metro_Jakarta, Metro_Jakarta ,                     T_Outer_Jakarta , Outer_Jakarta ,T_Jabar , Jabar , T_Jateng_DIY , Jateng_DIY ,T_Jatim , Jatim , T_Balinusra ,Balinusra ,                     T_Kalimantan , Kalimantan , T_Sulawesi , Sulawesi , T_Papua_Maluku , Papua_Maluku , T_unknown , unknown , Traffic_total ,                     revenue_total                     FROM                     (                     select calling_date,                         sum(case when region='Sumbagut' then TOTAL_SUCCESS else 0 end)  T_Sumbagut,                             sum(case when region='Sumbagut' then TOTAL_REVENUE else 0 end)  Sumbagut,                             sum(case when region='Sumbagteng' then TOTAL_SUCCESS else 0 end) T_Sumbagteng,                         sum(case when region='Sumbagteng' then TOTAL_REVENUE else 0 end) Sumbagteng,                             sum(case when region='Sumbagsel' then TOTAL_SUCCESS else 0 end)  T_Sumbagsel,                             sum(case when region='Sumbagsel' then TOTAL_REVENUE else 0 end)  Sumbagsel,                         sum(case when region='Jabotabek'  and sub_region = 'Jakarta' then TOTAL_SUCCESS else 0 end) T_Metro_Jakarta,                         sum(case when region='Jabotabek'  and sub_region = 'Jakarta' then TOTAL_REVENUE else 0 end) Metro_Jakarta,                             sum(case when region='Jabotabek'  and  sub_region <> 'Jakarta' then TOTAL_SUCCESS else 0 end) T_Outer_Jakarta,                         sum(case when region='Jabotabek'  and  sub_region <> 'Jakarta' then TOTAL_REVENUE else 0 end) Outer_Jakarta,                             sum(case when region='Jabar' then TOTAL_SUCCESS else 0 end) T_Jabar,                         sum(case when region='Jabar' then TOTAL_REVENUE else 0 end) Jabar,                             sum(case when region='Jateng' then TOTAL_SUCCESS else 0 end) T_Jateng_DIY,                         sum(case when region='Jateng' then TOTAL_REVENUE else 0 end) Jateng_DIY,                             sum(case when region='Jatim' then TOTAL_SUCCESS else 0 end) T_Jatim,                         sum(case when region='Jatim' then TOTAL_REVENUE else 0 end) Jatim,                             sum(case when region='Balinusra' then TOTAL_SUCCESS else 0 end) T_Balinusra,                         sum(case when region='Balinusra' then TOTAL_REVENUE else 0 end) Balinusra,                             sum(case when region='Kalimantan' then TOTAL_SUCCESS else 0 end) T_Kalimantan,                         sum(case when region='Kalimantan' then TOTAL_REVENUE else 0 end) Kalimantan,                             sum(case when region='Sulawesi' then TOTAL_SUCCESS else 0 end)   T_Sulawesi,                         sum(case when region='Sulawesi' then TOTAL_REVENUE else 0 end)   Sulawesi,                              sum(case when region='Papua' then TOTAL_SUCCESS else 0 end)  T_Papua_Maluku,                         sum(case when region='Papua' then TOTAL_REVENUE else 0 end)  Papua_Maluku,                         sum(case when region='UNKNOWN' then TOTAL_SUCCESS else 0 end)  T_unknown,                         sum(case when region='UNKNOWN' then TOTAL_REVENUE else 0 end)  unknown,                             sum(TOTAL_SUCCESS)  Traffic_total,                         sum(TOTAL_REVENUE )  revenue_total                               from CDR_ACTIVATION_SUMMARY_DAY                     where  calling_date = to_char(sysdate-"+sys+",'yyyymmdd')                     group by calling_date                     order by calling_date)")
             cursor.execute(query)
-            Dump = 'TRAFFIC_AND_REVENUE_PER_REGION_'+str(kmrnbulan[0:6])+'.csv'
             df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append TRAFFIC AND REVENUE PER REGION '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+                cursor.close()
 
             for line in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC']:
                 for kolom in range(33):
@@ -2005,40 +2154,42 @@ def REGION():
             for persum in ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC']:
                 region.write_formula(persum+'37','=SUM('+persum+'5:'+persum+'36)',content)
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-                readCSV = csv.reader(csvfile, delimiter=',')
-                for r, row in enumerate(readCSV, start=4):
-                    for c, col in enumerate(row):
-                        region.write(r,0, row[0], date_format)
-                        region.write(r,1, row[1], content)
-                        region.write(r,2, row[2], content)
-                        region.write(r,3, row[3], content)
-                        region.write(r,4, row[4], content)
-                        region.write(r,5, row[5], content)
-                        region.write(r,6, row[6], content)
-                        region.write(r,7, row[7], content)
-                        region.write(r,8, row[8], content)
-                        region.write(r,9, row[9], content)
-                        region.write(r,10, row[10], content)
-                        region.write(r,11, row[11], content)
-                        region.write(r,12, row[12], content)
-                        region.write(r,13, row[13], content)
-                        region.write(r,14, row[14], content)
-                        region.write(r,15, row[15], content)
-                        region.write(r,16, row[16], content)
-                        region.write(r,17, row[17], content)
-                        region.write(r,18, row[18], content)
-                        region.write(r,19, row[19], content)
-                        region.write(r,20, row[20], content)
-                        region.write(r,21, row[21], content)
-                        region.write(r,22, row[22], content)
-                        region.write(r,23, row[23], content)
-                        region.write(r,24, row[24], content)
-                        region.write(r,25, row[25], content)
-                        region.write(r,26, row[26], content)
-                        region.write(r,27, row[27], content)
-                        region.write(r,28, row[28], content)
-                        
-            cursor.close()
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=4):
+                        for c, col in enumerate(row):
+                            region.write(r,0, row[0], date_format)
+                            region.write(r,1, row[1], content)
+                            region.write(r,2, row[2], content)
+                            region.write(r,3, row[3], content)
+                            region.write(r,4, row[4], content)
+                            region.write(r,5, row[5], content)
+                            region.write(r,6, row[6], content)
+                            region.write(r,7, row[7], content)
+                            region.write(r,8, row[8], content)
+                            region.write(r,9, row[9], content)
+                            region.write(r,10, row[10], content)
+                            region.write(r,11, row[11], content)
+                            region.write(r,12, row[12], content)
+                            region.write(r,13, row[13], content)
+                            region.write(r,14, row[14], content)
+                            region.write(r,15, row[15], content)
+                            region.write(r,16, row[16], content)
+                            region.write(r,17, row[17], content)
+                            region.write(r,18, row[18], content)
+                            region.write(r,19, row[19], content)
+                            region.write(r,20, row[20], content)
+                            region.write(r,21, row[21], content)
+                            region.write(r,22, row[22], content)
+                            region.write(r,23, row[23], content)
+                            region.write(r,24, row[24], content)
+                            region.write(r,25, row[25], content)
+                            region.write(r,26, row[26], content)
+                            region.write(r,27, row[27], content)
+                            region.write(r,28, row[28], content)
+                else:
+                    Alert = 'Skip writing 1. TRAFFIC AND REVENUE PER REGION on worksheet REGION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    fyi(Alert)
 
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2054,12 +2205,18 @@ def REGION():
     
     def UNIQ_SUBS_TRANSACTION():
         def GETDAT():
+            Dump = 'UNIQ_SUBS_TRANSACTION_'+str(kmrnbulan[0:6])+'.csv'
             cursor = database.cursor()
             query = ("SELECT CALLING_DATE ,SUMBAGUT , SUMBAGTENG , SUMBAGSEL ,       METRO_JAKARTA ,OUTER_JAKARTA ,      JABAR,    JATENG_DIY,             JATIM ,  BALINUSRA ,       KALIMANTAN ,      SULAWESI ,PAPUA_MALUKU ,UNKNOWN     ,TOTAL_UNIQ_SUBS             FROM (             select calling_date,             count(distinct case when region='Sumbagut' then CALLING_MDN end)  Sumbagut,             count(distinct case when region='Sumbagteng' then CALLING_MDN end) Sumbagteng,             count(distinct case when region='Sumbagsel' then CALLING_MDN end)  Sumbagsel,             count(distinct case when region='Jabotabek'  and sub_region = 'Jakarta' then CALLING_MDN end) Metro_Jakarta,             count(distinct case when region='Jabotabek'  and  sub_region <> 'Jakarta' then CALLING_MDN end) Outer_Jakarta,             count(distinct case when region='Jabar' then CALLING_MDN end) Jabar,             count(distinct case when region='Jateng' then CALLING_MDN end) Jateng_DIY,             count(distinct case when region='Jatim' then CALLING_MDN end) Jatim,             count(distinct case when region='Balinusra' then CALLING_MDN end) Balinusra,             count(distinct case when region='Kalimantan' then CALLING_MDN end) Kalimantan,             count(distinct case when region='Sulawesi' then CALLING_MDN end)   Sulawesi,             count(distinct case when region='Papua' then CALLING_MDN end)  Papua_Maluku,             count(distinct case when region='UNKNOWN' then CALLING_MDN end)  unknown,             count(distinct calling_mdn )  total_uniq_subs             from CALL_DETAILED_RECORD a, prefix_region b             where  calling_date = to_char(sysdate-"+sys+",'yyyymmdd')             and calling_type in (1,2,7,77,78,64,93,65,95,96,99,100)             and result in (805,0)             and substr(a.calling_mdn,1,7) = b.prefix             group by calling_date             order by calling_date)")
             cursor.execute(query)
-            Dump = 'UNIQ_SUBS_TRANSACTION_'+str(kmrnbulan[0:6])+'.csv'
             df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append UNIQ SUBS TRANSACTION '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+                cursor.close()
 
             for line in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O']:
                 for kolom in range(33):
@@ -2086,26 +2243,28 @@ def REGION():
             for persum in ['B','C','D','E','F','G','H','I','J','K','L','M','N','O']:
                 region.write_formula(persum+'76','=SUM('+persum+'44:'+persum+'74)',content)
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-                readCSV = csv.reader(csvfile, delimiter=',')
-                for r, row in enumerate(readCSV, start=43):
-                    for c, col in enumerate(row):
-                        region.write(r,0, row[0], date_format)
-                        region.write(r,1, row[1], content)
-                        region.write(r,2, row[2], content)
-                        region.write(r,3, row[3], content)
-                        region.write(r,4, row[4], content)
-                        region.write(r,5, row[5], content)
-                        region.write(r,6, row[6], content)
-                        region.write(r,7, row[7], content)
-                        region.write(r,8, row[8], content)
-                        region.write(r,9, row[9], content)
-                        region.write(r,10, row[10], content)
-                        region.write(r,11, row[11], content)
-                        region.write(r,12, row[12], content)
-                        region.write(r,13, row[13], content)
-                        region.write(r,14, row[14], content)
-                        
-            cursor.close()
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=43):
+                        for c, col in enumerate(row):
+                            region.write(r,0, row[0], date_format)
+                            region.write(r,1, row[1], content)
+                            region.write(r,2, row[2], content)
+                            region.write(r,3, row[3], content)
+                            region.write(r,4, row[4], content)
+                            region.write(r,5, row[5], content)
+                            region.write(r,6, row[6], content)
+                            region.write(r,7, row[7], content)
+                            region.write(r,8, row[8], content)
+                            region.write(r,9, row[9], content)
+                            region.write(r,10, row[10], content)
+                            region.write(r,11, row[11], content)
+                            region.write(r,12, row[12], content)
+                            region.write(r,13, row[13], content)
+                            region.write(r,14, row[14], content)
+                else:
+                    Alert = 'Skip writing 2. UNIQ SUBS TRANSACTION on worksheet REGION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    fyi(Alert)
 
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2121,12 +2280,18 @@ def REGION():
             
     def UNIQ_SUBS_TRANSACTION_PROCESS_TYPE():
         def GETDAT():
+            Dump = 'UNIQ_SUBS_TRANSACTION_PROCESS_TYPE_'+str(kmrnbulan[0:6])+'.csv'
             cursor = database.cursor()
             query = ("select CALLING_DATE,PROCESS_TYPE,Sumbagut,Sumbagteng,Sumbagsel,Metro_Jakarta,Outer_Jakarta,Jabar,Jateng_DIY,Jatim,Balinusra,Kalimantan,Sulawesi,             Papua_Maluku,OTHERS FROM (select a.calling_date as CALLING_DATE,             CASE when a.calling_type in (1,2,7,77) then 'Purchase'             when a.calling_type in (64,78,65,93,95,96,99,100) then 'Renewal' end as PROCESS_TYPE,             count(distinct case when b.region = 'Sumbagut' then a.calling_mdn end) as Sumbagut,             count(distinct case when b.region = 'Sumbagteng' then  a.calling_mdn end) as Sumbagteng,             count(distinct case when b.region = 'Sumbagsel' then  a.calling_mdn end) as Sumbagsel,             count(distinct case when b.region = 'Jabotabek'  and sub_region = 'Jakarta' then CALLING_MDN end) Metro_Jakarta,             count(distinct case when b.region = 'Jabotabek'  and  sub_region <> 'Jakarta' then CALLING_MDN end) Outer_Jakarta,             count(distinct case when b.region = 'Jabar' then  a.calling_mdn end) as Jabar,             count(distinct case when b.region = 'Jateng' then  a.calling_mdn end) as Jateng_DIY,             count(distinct case when b.region = 'Jatim' then  a.calling_mdn end) as Jatim,             count(distinct case when b.region = 'Balinusra' then a.calling_mdn end) as Balinusra,             count(distinct case when b.region = 'Kalimantan' then a.calling_mdn end) as Kalimantan,             count(distinct case when b.region = 'Sulawesi' then a.calling_mdn end) as Sulawesi,             count(distinct case when b.region = 'Papua' then a.calling_mdn end) as Papua_Maluku,             count(distinct case when b.region not in ('Sumbagut','Sumbagsel','Sumbagteng','Jabotabek','Jabar','Jateng','Jatim','Balinusra','Sulawesi','Kalimantan','Papua') then             a.calling_mdn end) as Others             from call_detailed_record a, prefix_region b             where a.calling_date = ('"+kmrnbulan+"')             and substr(a.calling_mdn,1,7)=b.prefix             and calling_type in (1,2,7,77,64,65,78,93,95,96,99,100)             and result=0 group BY a.calling_date, case             when a.calling_type in (1,2,7,77) then 'Purchase'             when a.calling_type in (64,78,65,93,95,96,99,100) then 'Renewal'             end)")
             cursor.execute(query)
-            Dump = 'UNIQ_SUBS_TRANSACTION_PROCESS_TYPE_'+str(kmrnbulan[0:6])+'.csv'
             df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append UNIQ SUBS TRANSACTION PROCESS TYPE '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+                cursor.close()
 
             for line in ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']:
                 for kolom in range(33):
@@ -2154,28 +2319,30 @@ def REGION():
             for persum in ['B','C','D','E','F','G','H','I','J','K','L','M','N','O','P']:
                 region.write_formula(persum+'115','=SUM('+persum+'83:'+persum+'114)',content)
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-                readCSV = csv.reader(csvfile, delimiter=',')
-                for r, row in enumerate(readCSV, start=82):
-                    for c, col in enumerate(row):
-                        region.write(r,0, row[0], date_format)
-                        region.write(r,1, row[1], content)
-                        region.write(r,2, row[2], content)
-                        region.write(r,3, row[3], content)
-                        region.write(r,4, row[4], content)
-                        region.write(r,5, row[5], content)
-                        region.write(r,6, row[6], content)
-                        region.write(r,7, row[7], content)
-                        region.write(r,8, row[8], content)
-                        region.write(r,9, row[9], content)
-                        region.write(r,10, row[10], content)
-                        region.write(r,11, row[11], content)
-                        region.write(r,12, row[12], content)
-                        region.write(r,13, row[13], content)
-                        region.write(r,14, row[14], content)
-                        
-            cursor.close()
-            chat = 'REGION Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-            fyi(chat)
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=82):
+                        for c, col in enumerate(row):
+                            region.write(r,0, row[0], date_format)
+                            region.write(r,1, row[1], content)
+                            region.write(r,2, row[2], content)
+                            region.write(r,3, row[3], content)
+                            region.write(r,4, row[4], content)
+                            region.write(r,5, row[5], content)
+                            region.write(r,6, row[6], content)
+                            region.write(r,7, row[7], content)
+                            region.write(r,8, row[8], content)
+                            region.write(r,9, row[9], content)
+                            region.write(r,10, row[10], content)
+                            region.write(r,11, row[11], content)
+                            region.write(r,12, row[12], content)
+                            region.write(r,13, row[13], content)
+                            region.write(r,14, row[14], content)
+                    chat = 'REGION Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                    fyi(chat)
+                else:
+                    Alert = 'Skip writing 3. UNIQ SUBS TRANSACTION PROCESS TYPE on worksheet REGION xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    fyi(Alert)
 
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2200,12 +2367,18 @@ def REGION():
 def DTMF():
     def DTMF_ONLY():
         def GETDAT():
+            Dump = 'DTMF_ONLY_'+str(kmrnbulan[0:6])+'.csv'
             cursor = database.cursor()
             query = ("select calling_date , sum(trans_count)  ,             sum(case when result in (0,805) then trans_count else 0 end) ,             sum(case when result in (0,805) then revenue else 0 end ) ,             sum(case when result not in (0) then trans_count else 0 end)             from cdr_report_goofree             where calling_type in (1,77)             and calling_date = to_char(sysdate-"+sys+",'yyyymmdd')             and media_code like '%D'             group by calling_date, (case when media_code like '%D' then 'dtmf' else             null end) order by 1 asc")
             cursor.execute(query)
-            Dump = 'DTMF_ONLY_'+str(kmrnbulan[0:6])+'.csv'
             df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append DTMF ONLY '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+                cursor.close()
                      
             for line in ['A','B','C','D','E']:
                 for kolom in range(33):
@@ -2225,16 +2398,18 @@ def DTMF():
             for persum in ['B','C','D','E']:
                 dtmf.write_formula(persum+'37','=SUM('+persum+'4:'+persum+'36)',content)
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-                readCSV = csv.reader(csvfile, delimiter=',')
-                for r, row in enumerate(readCSV, start=3):
-                    for c, col in enumerate(row):
-                        dtmf.write(r,0, row[0], date_format)
-                        dtmf.write(r,1, row[1], content)
-                        dtmf.write(r,2, row[2], content)
-                        dtmf.write(r,3, row[3], content)
-                        dtmf.write(r,4, row[4], content)
-                        
-            cursor.close()
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=3):
+                        for c, col in enumerate(row):
+                            dtmf.write(r,0, row[0], date_format)
+                            dtmf.write(r,1, row[1], content)
+                            dtmf.write(r,2, row[2], content)
+                            dtmf.write(r,3, row[3], content)
+                            dtmf.write(r,4, row[4], content)
+                else:
+                    Alert = 'Skip writing DTMF ONLY on worksheet DTMF xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    fyi(Alert)
 
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2260,29 +2435,39 @@ def DTMF():
             dtmf.write('H4','Traffic',bold)
             dtmf.write('I4','Revenue',bold)
             dtmf.set_column('G:I', 12)
-            for r, row in enumerate(result, start=4):
-                    for c, col in enumerate(row):
-                        dtmf.write(r,6, row[0], date_format)
-                        dtmf.write(r,7, row[1], content)
-                        dtmf.write(r,8, row[2], content)
-                        
-            cursor.close()
+            if result:
+                for r, row in enumerate(result, start=4):
+                        for c, col in enumerate(row):
+                            dtmf.write(r,6, row[0], date_format)
+                            dtmf.write(r,7, row[1], content)
+                            dtmf.write(r,8, row[2], content)
+                cursor.close()
+            else:
+                Alert = 'Skip writing DTMF AREA on worksheet DTMF xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
             
         GETDAT()
     
     def DTMF_REGION():
         def GETDAT():
+            Dump = 'DTMF_REGION_'+str(kmrnbulan[0:6])+'.csv'
             cursor = database.cursor()
             query = ("select calling_date ,Trx_Sumbagut,Rev_Sumbagut,Trx_Sumbagteng, Rev_Sumbagteng ,Trx_Sumbagsel , Rev_Sumbagsel ,             Trx_Jabotabek, Rev_Jabotabek , Trx_Jabar , Rev_Jabar , Trx_Jateng_DIY , Rev_Jateng_DIY , Trx_Jatim ,  Rev_Jatim , Trx_Balinusra             ,Rev_Balinusra ,Trx_Kalimantan , Rev_Kalimantan , Trx_Sulawesi , Rev_Sulawesi , Trx_Papua_Maluku , Rev_Papua_Maluku, Trx_Other             , Rev_Other , Traffic_total , revenue_total FROM (             select calling_date,                 sum(case when region='Sumbagut' then trans_count else 0 end)  Trx_Sumbagut,                     sum(case when region='Sumbagut' then revenue else 0 end)  Rev_Sumbagut,                     sum(case when region='Sumbagteng' then trans_count else 0 end) Trx_Sumbagteng,                 sum(case when region='Sumbagteng' then revenue else 0 end) Rev_Sumbagteng,                     sum(case when region='Sumbagsel' then trans_count else 0 end)  Trx_Sumbagsel,                     sum(case when region='Sumbagsel' then revenue else 0 end)  Rev_Sumbagsel,                 sum(case when region='Jabotabek' then trans_count else 0 end) Trx_Jabotabek,                 sum(case when region='Jabotabek'  then revenue else 0 end) Rev_Jabotabek,                     sum(case when region='Jabar' then trans_count else 0 end) Trx_Jabar,                 sum(case when region='Jabar' then revenue else 0 end) Rev_Jabar,                     sum(case when region='Jateng' then trans_count else 0 end) Trx_Jateng_DIY,                 sum(case when region='Jateng' then revenue else 0 end) Rev_Jateng_DIY,                     sum(case when region='Jatim' then trans_count else 0 end) Trx_Jatim,                 sum(case when region='Jatim' then revenue else 0 end) Rev_Jatim,                     sum(case when region='Balinusra' then trans_count else 0 end) Trx_Balinusra,                 sum(case when region='Balinusra' then revenue else 0 end) Rev_Balinusra,                     sum(case when region='Kalimantan' then trans_count else 0 end) Trx_Kalimantan,                 sum(case when region='Kalimantan' then revenue else 0 end) Rev_Kalimantan,                     sum(case when region='Sulawesi' then trans_count else 0 end)   Trx_Sulawesi,                 sum(case when region='Sulawesi' then revenue else 0 end)   Rev_Sulawesi,                      sum(case when region='Papua' then trans_count else 0 end)  Trx_Papua_Maluku,                 sum(case when region='Papua' then revenue else 0 end)  Rev_Papua_Maluku,                 sum(case when region not in ('Sumbagut','Sumbagteng','Sumbagsel','Jabotabek','Jabar','Jateng','Jatim','Balinusra','Kalimantan','Sulawesi','Papua') then             trans_count else 0 end)  Trx_Other,                 sum(case when region not in ('Sumbagut','Sumbagteng','Sumbagsel','Jabotabek','Jabar','Jateng','Jatim','Balinusra','Kalimantan','Sulawesi','Papua') then             revenue else 0 end)  Rev_Other,                     sum(trans_count)  Traffic_total,                 sum(revenue )  revenue_total                       from cdr_report_goofree             where  calling_date = to_char(sysdate-"+sys+",'yyyymmdd')             and calling_type in (1,77)             and media_code like '%D'             and result in (0,805)             group by calling_date             order by calling_date)")
             cursor.execute(query)
-            Dump = 'DTMF_REGION_'+str(kmrnbulan[0:6])+'.csv'
             df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append DTMF REGION '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+                cursor.close()
                      
             for line in ['K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK']:
                 for kolom in range(33):
                     Alline = line+'{}'.format(*([kolom + 4] * 33))
                     dtmf.write(Alline,'',neat)
+
             dtmf.write('K3','CALLING_DATE',bold)
             dtmf.write('L3','T_SUMBAGUT',bold)
             dtmf.write('M3','SUMBAGUT',bold)
@@ -2315,40 +2500,42 @@ def DTMF():
             for persum in ['L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK']:
                 dtmf.write_formula(persum+'36','=SUM('+persum+'4:'+persum+'35)',content)
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-                readCSV = csv.reader(csvfile, delimiter=',')
-                for r, row in enumerate(readCSV, start=3):
-                    for c, col in enumerate(row):
-                        dtmf.write(r,10, row[0], date_format)
-                        dtmf.write(r,11, row[1], content)
-                        dtmf.write(r,12, row[2], content)
-                        dtmf.write(r,13, row[3], content)
-                        dtmf.write(r,14, row[4], content)
-                        dtmf.write(r,15, row[5], content)
-                        dtmf.write(r,16, row[6], content)
-                        dtmf.write(r,17, row[7], content)
-                        dtmf.write(r,18, row[8], content)
-                        dtmf.write(r,19, row[9], content)
-                        dtmf.write(r,20, row[10], content)
-                        dtmf.write(r,21, row[11], content)
-                        dtmf.write(r,22, row[12], content)
-                        dtmf.write(r,23, row[13], content)
-                        dtmf.write(r,24, row[14], content)
-                        dtmf.write(r,25, row[15], content)
-                        dtmf.write(r,26, row[16], content)
-                        dtmf.write(r,27, row[17], content)
-                        dtmf.write(r,28, row[18], content)
-                        dtmf.write(r,29, row[19], content)
-                        dtmf.write(r,30, row[20], content)
-                        dtmf.write(r,31, row[21], content)
-                        dtmf.write(r,32, row[22], content)
-                        dtmf.write(r,33, row[23], content)
-                        dtmf.write(r,34, row[24], content)
-                        dtmf.write(r,35, row[25], content)
-                        dtmf.write(r,36, row[26], content)
-                        
-            cursor.close()
-            chat = 'DTMF Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-            fyi(chat)
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=3):
+                        for c, col in enumerate(row):
+                            dtmf.write(r,10, row[0], date_format)
+                            dtmf.write(r,11, row[1], content)
+                            dtmf.write(r,12, row[2], content)
+                            dtmf.write(r,13, row[3], content)
+                            dtmf.write(r,14, row[4], content)
+                            dtmf.write(r,15, row[5], content)
+                            dtmf.write(r,16, row[6], content)
+                            dtmf.write(r,17, row[7], content)
+                            dtmf.write(r,18, row[8], content)
+                            dtmf.write(r,19, row[9], content)
+                            dtmf.write(r,20, row[10], content)
+                            dtmf.write(r,21, row[11], content)
+                            dtmf.write(r,22, row[12], content)
+                            dtmf.write(r,23, row[13], content)
+                            dtmf.write(r,24, row[14], content)
+                            dtmf.write(r,25, row[15], content)
+                            dtmf.write(r,26, row[16], content)
+                            dtmf.write(r,27, row[17], content)
+                            dtmf.write(r,28, row[18], content)
+                            dtmf.write(r,29, row[19], content)
+                            dtmf.write(r,30, row[20], content)
+                            dtmf.write(r,31, row[21], content)
+                            dtmf.write(r,32, row[22], content)
+                            dtmf.write(r,33, row[23], content)
+                            dtmf.write(r,34, row[24], content)
+                            dtmf.write(r,35, row[25], content)
+                            dtmf.write(r,36, row[26], content)
+                    chat = 'DTMF Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                    fyi(chat)
+                else:
+                    Alert = 'Skip writing DTMF REGION on worksheet DTMF xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    fyi(Alert)
         
         sys = '1'
         lusa = now - datetime.timedelta(days=2)
@@ -2372,12 +2559,18 @@ def DTMF():
 
 def GP():
     def GETDAT():
+        Dump = 'GP_'+str(kmrnbulan[0:6])+'.csv'
         cursor = database.cursor()
         query = ("select calling_date, sum(case when result = 0 then 1 end),         sum(case when result = 0 then charge_amount end) as revenue         from call_detailed_record_all where calling_date = to_char(sysdate-"+sys+",'YYYYMMDD')         and calling_type = '95' group by calling_date order by calling_date")
         cursor.execute(query)
-        Dump = 'GP_'+str(kmrnbulan[0:6])+'.csv'
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append GRACE PERIODE '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            cursor.close()
                  
         for line in ['B','C','D']:
             for kolom in range(33):
@@ -2397,16 +2590,18 @@ def GP():
         for persum in ['C','D']:
             gp.write_formula(persum+'37','=SUM('+persum+'5:'+persum+'36)',content)
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=4):
-                for c, col in enumerate(row):
-                    gp.write(r,1, row[0], date_format)
-                    gp.write(r,2, row[1], content)
-                    gp.write(r,3, row[2], content)
-                    
-        cursor.close()
-        chat = 'GRACE PERIODE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=4):
+                    for c, col in enumerate(row):
+                        gp.write(r,1, row[0], date_format)
+                        gp.write(r,2, row[1], content)
+                        gp.write(r,3, row[2], content)
+                chat = 'GRACE PERIODE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing GRACE PERIODE on worksheet GRACE PERIODE xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2426,12 +2621,18 @@ def GP():
 
 def SMS_REVENUE():
     def GETDAT():
+        Dump = 'SMS_REVENUE_'+str(kmrnbulan[0:6])+'.csv'
         cursor = database.cursor()
         query = ("select calling_date,count(*),sum(case when result=0 then 1 else 0 end),                 sum(case when result=0 then charge_amount else 0 end) from cdr_all_in_one                 where calling_date= to_char(sysdate-"+sys+", 'YYYYMMDD')                 and calling_type in (1,2,7,77) and media_code like '%0'                 group by calling_date")
         cursor.execute(query)
-        Dump = 'SMS_REVENUE_'+str(kmrnbulan[0:6])+'.csv'
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append SMS REVENUE '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            cursor.close()
                  
         for line in ['A','B','C','D']:
             for kolom in range(33):
@@ -2450,16 +2651,19 @@ def SMS_REVENUE():
         for persum in ['B','C','D']:
             smsrev.write_formula(persum+'37','=SUM('+persum+'5:'+persum+'36)',content)
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=4):
-                for c, col in enumerate(row):
-                    smsrev.write(r,0, row[0], date_format)
-                    smsrev.write(r,1, row[1], content)
-                    smsrev.write(r,2, row[2], content)
-                    smsrev.write(r,3, row[3], content)
-        cursor.close()
-        chat = 'SMS REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=4):
+                    for c, col in enumerate(row):
+                        smsrev.write(r,0, row[0], date_format)
+                        smsrev.write(r,1, row[1], content)
+                        smsrev.write(r,2, row[2], content)
+                        smsrev.write(r,3, row[3], content)
+                chat = 'SMS REVENUE Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing SMS REVENUE on worksheet SMS REVENUE xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2479,12 +2683,18 @@ def SMS_REVENUE():
 
 def REVENUE_RENEWAL():
     def GETDAT():
+        Dump = 'REVENUE_RENEWAL_'+str(kmrnbulan[0:6])+'.csv'
         cursor = database.cursor()
         query = ("select calling_date,sum(charge_amount) from cdr_all_in_one where calling_date=to_char(sysdate-"+sys+",'YYYYMMDD')                 and result=0 and calling_type in (64,93,95,96,99,100) and rating_id in (select rating_id from rating_mcp_info                 where initial_amount=0 and RECURRENT_RATING_CYCLE_DAY=7 and recurrent_amount between 600 and 3000) group by calling_date")
         cursor.execute(query)
-        Dump = 'REVENUE_RENEWAL_'+str(kmrnbulan[0:6])+'.csv'
         df = pd.DataFrame.from_records(cursor.fetchall(),columns = [desc[0] for desc in cursor.description])
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append REVENUE RENEWAL '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+            cursor.close()
                  
         for line in ['B','C']:
             for kolom in range(33):
@@ -2501,14 +2711,17 @@ def REVENUE_RENEWAL():
         for persum in ['C']:
             revrenew.write_formula(persum+'35','=SUM('+persum+'3:'+persum+'34)',content)
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=2):
-                for c, col in enumerate(row):
-                    revrenew.write(r,1, row[0], date_format)
-                    revrenew.write(r,2, row[1], content)
-        cursor.close()
-        chat = 'REVENUE RENEWAL Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=2):
+                    for c, col in enumerate(row):
+                        revrenew.write(r,1, row[0], date_format)
+                        revrenew.write(r,2, row[1], content)
+                chat = 'REVENUE RENEWAL Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing REVENUE RENEWAL on worksheet REVENUE RENEWAL xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2535,11 +2748,18 @@ def NSP_REKOMENDASI(): # https://pandas.pydata.org/docs/user_guide/merging.html
         stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/'+kmrnbulan+'/25.NSP_Rekomendasi_'+kmrnbulan+'.csv')
         df2 = pd.read_csv(stdout, sep=',',usecols=["Total_SMS_Recommendation_Sent","Total_Attempt_Purchased","Total_Success_Purchased","Total_New_Subscriber_Activated","Total_Revenue_Purchased"])
         df = pd.concat([df1, df2], axis=1)
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append NSP Rekomendasi '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+
         for line in ['B','C','D','E','F','G','H','I','J','K','L']:
             for kolom in range(350):
                 Alline = line+'{}'.format(*([kolom + 2] * 350))
                 nspreco.write(Alline,'',neat)
+
         nspreco.set_zoom(50)
         nspreco.hide_gridlines(2)
         nspreco.write('B1','CALLING_DATE',bold)
@@ -2561,20 +2781,24 @@ def NSP_REKOMENDASI(): # https://pandas.pydata.org/docs/user_guide/merging.html
             nspreco.write_formula('K'+SRP,'=I'+SRP+'/H'+SRP+'',percentage)
             nspreco.write_formula('L'+SRP,'=H'+SRP+'/G'+SRP+'',percentage)
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=1):
-                for c, col in enumerate(row):
-                    nspreco.write(r,1, row[0], date_format)
-                    nspreco.write(r,2, row[1], content)
-                    nspreco.write(r,3, row[2], content)
-                    nspreco.write(r,4, row[3], content)
-                    nspreco.write(r,5, row[4], content)
-                    nspreco.write(r,6, row[5], content)
-                    nspreco.write(r,7, row[6], content)
-                    nspreco.write(r,8, row[7], content)
-                    nspreco.write(r,9, row[8], content)
-        chat = 'NSP REKOMENDASI Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=1):
+                    for c, col in enumerate(row):
+                        nspreco.write(r,1, row[0], date_format)
+                        nspreco.write(r,2, row[1], content)
+                        nspreco.write(r,3, row[2], content)
+                        nspreco.write(r,4, row[3], content)
+                        nspreco.write(r,5, row[4], content)
+                        nspreco.write(r,6, row[5], content)
+                        nspreco.write(r,7, row[6], content)
+                        nspreco.write(r,8, row[7], content)
+                        nspreco.write(r,9, row[8], content)
+                chat = 'NSP REKOMENDASI Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing NSP REKOMENDASI on worksheet NSP REKOMENDASI xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2597,7 +2821,12 @@ def SUCCESS_RATE_MT_AND_MO():
         Dump = 'success_rate_MT_MO_'+str(kmrnbulan[0:6])+'.csv'
         stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/'+kmrnbulan+'/26.success_rate_MT_MO_'+kmrnbulan+'.csv')
         df = pd.read_csv(stdout, sep=',')
-        df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
+        number_rows = len(df.index)
+        if number_rows == 0:
+            append = 'Failed to append success rate MT MO '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(append)
+        else:
+            df.to_csv(r''+Dump+'', sep=',',index=False, header=False, mode=''+ AsNeeded +'')
         
         for line in ['B','C','D','E','F']:
             for kolom in range(70):
@@ -2615,15 +2844,19 @@ def SUCCESS_RATE_MT_AND_MO():
             SRP = '{}'.format(*([kolom + 4] * 70))
             succratemt.write_formula('F'+SRP,'=E'+SRP+'/D'+SRP+'',percentage)
         with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
-            readCSV = csv.reader(csvfile, delimiter=',')
-            for r, row in enumerate(readCSV, start=3):
-                for c, col in enumerate(row):
-                    succratemt.write(r,1, row[0], date_format)
-                    succratemt.write(r,2, row[1], content)
-                    succratemt.write(r,3, row[2], content)
-                    succratemt.write(r,4, row[3], content)
-        chat = 'SUCCESS RATE MT AND MO Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+            if csvfile:
+                readCSV = csv.reader(csvfile, delimiter=',')
+                for r, row in enumerate(readCSV, start=3):
+                    for c, col in enumerate(row):
+                        succratemt.write(r,1, row[0], date_format)
+                        succratemt.write(r,2, row[1], content)
+                        succratemt.write(r,3, row[2], content)
+                        succratemt.write(r,4, row[3], content)
+                chat = 'SUCCESS RATE MT AND MO Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                fyi(chat)
+            else:
+                Alert = 'Skip writing success rate MT MO on worksheet SUCCESS RATE MT AND MO xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                fyi(Alert)
         
     sys = '1'
     lusa = now - datetime.timedelta(days=2)
@@ -2657,12 +2890,16 @@ def TRANSACTION_UMB_TMENU():
         transumb.write('B3','PROMO',bold)
         transumb.write('C3','Total_Transaksi',bold)
         transumb.set_column('A:C', 16)
-        for r, row in enumerate(result, start=3):
-            for c, col in enumerate(row):
-                transumb.write(r,0, row[0], date_format)
-                transumb.write(r,1, row[1], content)
-                transumb.write(r,2, row[2], content)
-        cursor.close()
+        if result:
+            for r, row in enumerate(result, start=3):
+                for c, col in enumerate(row):
+                    transumb.write(r,0, row[0], date_format)
+                    transumb.write(r,1, row[1], content)
+                    transumb.write(r,2, row[2], content)
+            cursor.close()
+        else:
+            Alert = 'Skip writing JUMLAH TRANSAKSI UMB T-MENU PROMO on worksheet TRANSACTION_UMB_TMENU_PROMO xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(Alert)
     
     def HITS():
         cursor = database.cursor()
@@ -2672,14 +2909,18 @@ def TRANSACTION_UMB_TMENU():
         transumb.write('A26','CALLING_DATE',bold)
         transumb.write('B26','HITS',bold)
         transumb.write('C26','Total_Transaksi',bold)
-        for r, row in enumerate(result, start=26):
-            for c, col in enumerate(row):
-                transumb.write(r,0, row[0], date_format)
-                transumb.write(r,1, row[1], content)
-                transumb.write(r,2, row[2], content)
-        cursor.close()
-        chat = 'TRANSACTION_UMB_TMENU_PROMO Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-        fyi(chat)
+        if result:
+            for r, row in enumerate(result, start=26):
+                for c, col in enumerate(row):
+                    transumb.write(r,0, row[0], date_format)
+                    transumb.write(r,1, row[1], content)
+                    transumb.write(r,2, row[2], content)
+            cursor.close()
+            chat = 'TRANSACTION_UMB_TMENU_PROMO Worksheet has just been written on xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+            fyi(chat)
+        else:
+            Alert = 'Skip writing JUMLAH TRANSAKSI UMB T-MENU HITS on worksheet TRANSACTION_UMB_TMENU_PROMO xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+            fyi(Alert)
 
     PROMO()
     HITS()
