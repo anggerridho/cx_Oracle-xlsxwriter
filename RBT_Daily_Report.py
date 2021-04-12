@@ -31,7 +31,7 @@ database = cx_Oracle.connect('RBTRPTN/RBTRPTN@192.168.0.7:1521/RBTRPTN')
 
 def fyi(*text):
     import requests
-    TOKEN="1273628193:AAGfFDAO2res2DeaGHOLVxLFxz25E06LYrY"
+    TOKEN="1273628193:AAGvPFhN_pNcUEZimFHRGm7Vf0b082crS3g"
     CHAT_ID="214749655"
     CHID="-1001475662404"
     API_ENDPOINT = "https://api.telegram.org/bot"+ TOKEN +"/sendMessage"
