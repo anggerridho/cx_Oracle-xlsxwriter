@@ -17,26 +17,24 @@ from xlsxwriter.utility import xl_rowcol_to_cell
 now = datetime.date.today()
 kemarin = now - datetime.timedelta(days=1)
 kemarin_str = str(kemarin.strftime('%Y%m%d'))
-dir = '/home/palugada/Daily/'
-TOKEN="1273628193:AAGfFDAO2res2DeaGHOLVxLFxz25E06LYrY"
-CHAT_ID="214749655"
+dir = '/root/Daily/'
 
 os.environ["ORACLE_HOME"] = "/usr/lib/oracle/12.2/client64"
-# workbook = xlsxwriter.Workbook('/home/palugada/Daily/Demo.xlsx')
 workbook = xlsxwriter.Workbook(dir+"RBT_Daily_Report_"+str(kemarin_str)+".xlsx",{'strings_to_numbers': True})
 ssh = paramiko.SSHClient()
 ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-ssh.connect('192.168.0.7', 1115, username='trbt', password='.pteluon')
-database = cx_Oracle.connect('RBTRPTN/RBTRPTN@192.168.0.7:1521/RBTRPTN')
+ssh.connect('127.0.0.1', 1115, username='trbt', password='.pteluon')
+database = cx_Oracle.connect('RBTRPTN/RBTRPTN@127.0.0.1:1521/RBTRPTN')
 
 def fyi(*text):
     import requests
-    TOKEN="1273628193:AAGvPFhN_pNcUEZimFHRGm7Vf0b082crS3g"
-    CHAT_ID="214749655"
-    CHID="-1001475662404"
-    API_ENDPOINT = "https://api.telegram.org/bot"+ TOKEN +"/sendMessage"
-    data = {'chat_id':CHID,'text':text}
-    requests.post(url = API_ENDPOINT, data = data)
+    with open('/root/.Tokegram.txt','r') as Tokegram:
+        TOKEN = Tokegram.read().rstrip('\n')
+        CHAT_ID="214749655" # Mine
+        CHID="-1001475662404" # Group
+        API_ENDPOINT = "https://api.telegram.org/bot"+ TOKEN +"/sendMessage"
+        data = {'chat_id':CHAT_ID,'text':text}
+        requests.post(url = API_ENDPOINT, data = data)
 
 bold = workbook.add_format({'bold': True, 'bg_color': '#92D050', 'align': 'center', 'valign': 'vcenter', 'border': 1})
 bold.set_border()
@@ -99,10 +97,12 @@ def SendEmail():
 
 #     subject = "An email with attachment from Python"
     Yesterday = str(kemarin.strftime('for %B %d, %Y'))
-    subject = "(Testing) RBT Daily Report " + Yesterday
+    subject = "(CloudKilat) RBT Daily Report " + Yesterday
     body = "Dear All,\nPlease kindly find RBT Daily Reports " + Yesterday + " in attachment.\n\nBest Regards,\nAngger Ridho (https://linktr.ee/anggerdho)\nNote: xlsx & this email message is an automation process that I created"
     sender_email = "Angger Ridho <angger@eluon.com>"
-    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com','angger@eluon.com']
+#     receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com', \
+#                       'operation.support@eluon.com','amanda@eluon.com','angger@eluon.com']
+    receiver_email = ['angger@eluon.com']
 #     password = input("Type your password and press enter:")
     password = "@nG9er28"
 
@@ -140,7 +140,7 @@ def SendEmail():
     with smtplib.SMTP_SSL("gw.eluon.com", 465, context=context) as server:
         server.login("angger@eluon.com", "@nG9er28")
         server.sendmail(sender_email, receiver_email, text)
-        chat = 'RBT Daily Report ' + str(kemarin_str) + 'was just emailed at '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        chat = 'RBT Daily Report ' + str(kemarin_str) + ' was just emailed at '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         fyi(chat)
 
 
