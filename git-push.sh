@@ -1,4 +1,4 @@
-cd /home/palugada/Daily/
+cd /root/Daily/
 git status
 #git add RBT_Daily_Report.ipynb
 git add .
