@@ -1,3 +1,4 @@
+clear
 cd /root/Daily/
 echo "# Execute: git status"
 git status
