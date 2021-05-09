@@ -12,6 +12,7 @@ import paramiko
 import pandas as pd
 import xlsxwriter
 import requests # Untuk Curl
+import operator # Sorter
 from xlsxwriter.utility import xl_rowcol_to_cell
 
 now = datetime.date.today()
@@ -32,7 +33,7 @@ def fyi(*text):
         CHAT_ID="214749655" # Mine
         CHID="-1001475662404" # Group
         API_ENDPOINT = "https://api.telegram.org/bot"+ TOKEN +"/sendMessage"
-        data = {'chat_id':CHID,'text':text}
+        data = {'chat_id':CHAT_ID,'text':text}
         requests.post(url = API_ENDPOINT, data = data)
 
 
@@ -3160,6 +3161,7 @@ def RBTDailyReport():
     NSP_REKOMENDASI()
     SUCCESS_RATE_MT_AND_MO()
     TRANSACTION_UMB_TMENU()
+    workbook.close()
 
 
 # In[ ]:
@@ -3191,8 +3193,9 @@ def NewRBTDailyReport():
     trxz = workbook.add_worksheet('TRX')
     trxz_hourly = workbook.add_worksheet('TRX_HOURLY')
     historicaldatsum = workbook.add_worksheet('HISTORICAL DATA SUMMARY')
+    nspmembersince = workbook.add_worksheet('NSP_MEMBER_SINCE_2015')
 
-    for TabCon in ['subs','subs_hourly','umb','trxz','trxz_hourly','historicaldatsum']:
+    for TabCon in ['subs','subs_hourly','umb','trxz','trxz_hourly','historicaldatsum','nspmembersince']:
         TabCol = TabCon + ".set_tab_color('#00B050')"
         exec(TabCol)
 
@@ -4299,6 +4302,7 @@ def NewRBTDailyReport():
                     fyi(append)
                 else:
                     df.to_csv(r''+Dump+'', sep=',', header=False, mode=''+ AsNeeded +'')
+                    os.remove(dir+'subs_summary_new_'+str(kmrn)+'.csv')
 
             historicaldatsum.set_zoom(70)
             historicaldatsum.hide_gridlines(2)
@@ -4333,7 +4337,9 @@ def NewRBTDailyReport():
             with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
                 if csvfile:
                     readCSV = csv.reader(csvfile, delimiter=',')
-                    for r, row in enumerate(readCSV, start=4):
+                    # sortedlist = sorted(readCSV, key=operator.itemgetter(0), reverse=True) # Sorter
+                    sortedlist = sorted(readCSV, key=lambda row: row[0], reverse=True) # Sorter
+                    for r, row in enumerate(sortedlist, start=4):
                         for c, col in enumerate(row):
                             historicaldatsum.write(r,0, row[0], date_format)
                             historicaldatsum.write(r,1, row[1], content)
@@ -4360,7 +4366,6 @@ def NewRBTDailyReport():
                     Alert = 'Skip writing TRX HISTORICAL for worksheet HISTORICAL DATA SUMMARY on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
                     print(Alert)
                     fyi(Alert)
-
         sys = '1'
         ystrdy = now - datetime.timedelta(days=1)
         lusa = now - datetime.timedelta(days=2)
@@ -4375,12 +4380,70 @@ def NewRBTDailyReport():
             AsNeeded = 'w'
             GETDAT()
         
+    def NSP_MEMBER_SINCE_2015():
+        GetQuery = 'NSP MEMBER for worksheet NSP_MEMBER_SINCE_2015 on (New)RBTDailyReport is running queries at '+datetime.datetime.now().strftime("%H:%M:%S")
+        print(GetQuery)
+        # fyi(GetQuery)
+        def GETDAT():
+            Dump = dir+'member_since2k15_'+str(kmrnbulan[0:6])+'.csv'
+            stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/7_member_since2015_'+kmrnbulan+'.csv')
+            df = pd.read_csv(stdout, sep=',', index_col=0)
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append NSP MEMBER for worksheet NSP_MEMBER_SINCE_2015 on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                print(append)
+                # fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',', header=False, mode=''+ AsNeeded +'')
+            
+            nspmembersince.set_zoom(85)
+            nspmembersince.hide_gridlines(2)
+            nspmembersince.merge_range('A1:C1','*starting point 1st January 2015',title)
+            nspmembersince.write('A2','Date',bold)
+            nspmembersince.write('B2','Total_NSP_Member',bold)
+            nspmembersince.write('C2','Member_Increment',bold)
+            nspmembersince.set_column('A:C', 18)
+            for kolom in range(70):
+                SRP = '{}'.format(*([kolom + 4] * 70))
+                succratemt.write_formula('C'+SRP,'=E'+SRP+'/D'+SRP+'',title)
+            with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
+                if csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    # sortedlist = sorted(readCSV, key=operator.itemgetter(0), reverse=True) # Sorter
+                    sortedlist = sorted(readCSV, key=lambda row: row[0], reverse=True) # Sorter
+                    for r, row in enumerate(sortedlist, start=2):
+                        for c, col in enumerate(row):
+                            nspmembersince.write(r,0, row[0], date_format)
+                            nspmembersince.write(r,1, row[1], content)
+                            nspmembersince.write(r,2, row[2], content)
+                    chat = 'NSP MEMBER has just been written for worksheet NSP_MEMBER_SINCE_2015 on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                    print(chat)
+                    # fyi(chat)
+                else:
+                    Alert = 'Skip writing NSP MEMBER for worksheet NSP_MEMBER_SINCE_2015 on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                    print(Alert)
+                    # fyi(Alert)
+        sys = '1'
+        ystrdy = now - datetime.timedelta(days=1)
+        lusa = now - datetime.timedelta(days=2)
+        storyday = now - datetime.timedelta(days=int(sys))
+        kmrn = str(ystrdy.strftime('%Y%m%d'))
+        kmrnlusa = str(lusa.strftime('%Y%m%d'))
+        kmrnbulan = str(storyday.strftime('%Y%m%d'))
+        if kmrnbulan[0:6] == kmrnlusa[0:6]:
+            AsNeeded = 'a'
+            GETDAT()
+        else:
+            AsNeeded = 'w'
+            GETDAT()
+
     # SUB()
     # SUB_HOURLY()
     # UMBS()
     # TRX()
     # TRXHOURLY()
-    HISTORICALDATASUMMARY()
+    # HISTORICALDATASUMMARY()
+    # NSP_MEMBER_SINCE_2015()
     workbook.close()
 
 
