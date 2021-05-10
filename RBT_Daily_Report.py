@@ -33,7 +33,7 @@ def fyi(*text):
         CHAT_ID="214749655" # Mine
         CHID="-1001475662404" # Group
         API_ENDPOINT = "https://api.telegram.org/bot"+ TOKEN +"/sendMessage"
-        data = {'chat_id':CHAT_ID,'text':text}
+        data = {'chat_id':CHID,'text':text}
         requests.post(url = API_ENDPOINT, data = data)
 
 
