@@ -1,0 +1,101 @@
+WITH TB_REPORT_WINBACK AS (
+SELECT
+	ab.CALLING_DATE,
+	ab.PROCESS_TYPE,
+	ab.CHANNEL,
+	ab.CALLING_MDN,
+	ab.ORG_CHARGE_AMOUNT,
+	ab.CHARGE_AMOUNT,
+	c.SONG_CODE,
+	c.CONTENT_SINGER,
+	c.CONTENT_TITLE
+FROM
+	(
+	SELECT
+		b.CALLING_DATE,
+		b.CALLING_HOUR,
+		b.PROCESS_TYPE,
+		b.CHANNEL,
+		b.CALLING_MDN,
+		b.RATING_CONTENT_ID,
+		b.ORG_CHARGE_AMOUNT,
+		b.CHARGE_AMOUNT
+	FROM
+		(
+		SELECT
+			CALLING_DATE,
+			CALLING_HOUR,
+			CALLING_MDN,
+			CONTENT_ID
+		FROM
+			CDR_WINBACK
+		WHERE
+			calling_date = to_char(sysdate-1,'yyyymmdd'))a
+	INNER JOIN (
+		SELECT
+			calling_date,
+			substr(calling_time, 1, 2) AS calling_hour,
+			(
+			CASE
+				WHEN calling_type IN (1, 2, 7, 77) THEN 'PURCHASE'
+				WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100) THEN 'RENEWAL'
+				ELSE 'N/A'
+			END ) AS PROCESS_TYPE,
+			CASE
+				WHEN substr(media_code, 2, 1) = 'U' THEN 'UMB'
+				WHEN substr(media_code, 2, 1) = 'I' THEN 'IVR'
+				WHEN substr(media_code, 2, 1) = 'O' THEN 'OpenAPI'
+				WHEN substr(media_code, 2, 1) = '0' THEN 'SMS'
+				WHEN substr(media_code, 2, 1) = 'B' THEN 'Web'
+				WHEN substr(media_code, 2, 1) = 'D' THEN 'DTMF'
+				WHEN substr(media_code, 2, 1) = 'S' THEN 'HTTPGW'
+				WHEN substr(media_code, 2, 1) = 'C' THEN 'CSWeb'
+				WHEN substr(media_code, 2, 1) = 'W'
+					AND lower(DVC_ID) != 'smsbroadcast' THEN 'WCC'
+					WHEN substr(media_code, 2, 1) = 'W'
+						AND lower(DVC_ID) = 'smsbroadcast' THEN 'Sms Broadcast'
+						WHEN substr(media_code, 2, 1) = 'M' THEN 'MKios'
+						WHEN substr(media_code, 2, 1) = 'Z' THEN 'Point'
+						WHEN substr(media_code, 2, 1) = 'N' THEN 'Renewal'
+						WHEN substr(media_code, 2, 1) = 'J' THEN 'Recomendation'
+						WHEN substr(media_code, 2, 1) = 'L' THEN 'Referal'
+						WHEN substr(media_code, 2, 1) = 'P' THEN 'WAP'
+						WHEN substr(media_code, 2, 1) = 'R' THEN 'MyNSP'
+						WHEN substr(media_code, 2, 1) = 'V' THEN 'My Telkomsel'
+						WHEN substr(media_code, 2, 1) = 'Q' THEN 'Music Max'
+						WHEN substr(media_code, 2, 1) = 'Y' THEN 'PCU'
+						ELSE 'Promo'
+					END AS CHANNEL,
+					CALLING_MDN,
+					RATING_CONTENT_ID,
+					ORG_CHARGE_AMOUNT,
+					CHARGE_AMOUNT
+				FROM
+					CALL_DETAILED_RECORD_201801
+				WHERE
+					calling_date = to_char(sysdate-1,'yyyymmdd')
+						AND CALLING_TYPE IN (1, 2, 7, 77, 64, 65, 78, 93, 95, 96, 99, 100)
+							AND RESULT = 0 )b ON
+		a.CALLING_MDN = b.CALLING_MDN
+		AND a.CONTENT_ID = b.RATING_CONTENT_ID )ab
+LEFT JOIN (
+	SELECT
+		CONTENT_ID,
+		concat(CP_ALIAS, DEFAULT_SONG_CODE) AS SONG_CODE,
+		promo_code AS CONTENT_TITLE,
+		CONTENT_SINGER
+	FROM
+		TOT_CONTENT )c ON
+	ab.RATING_CONTENT_ID = c.CONTENT_ID )
+SELECT
+	CALLING_DATE,PROCESS_TYPE,CHANNEL,count(DISTINCT CALLING_MDN),count(CALLING_MDN),ORG_CHARGE_AMOUNT,sum(CHARGE_AMOUNT),SONG_CODE,CONTENT_SINGER,CONTENT_TITLE
+FROM
+	TB_REPORT_WINBACK
+GROUP BY
+	CALLING_DATE,
+	PROCESS_TYPE,
+	CHANNEL,
+	ORG_CHARGE_AMOUNT,
+	SONG_CODE,
+	CONTENT_SINGER,
+	CONTENT_TITLE
