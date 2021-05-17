@@ -1,0 +1,41 @@
+WITH tb_charged_cdr AS (
+SELECT
+	calling_date,
+	calling_hour,
+	count(RESULT) AS attempt,
+	sum(insuf_balance) AS total_insuf_balance,
+	sum(success) AS total_success,
+	sum(revenue) AS total_revenue
+FROM
+	(
+	SELECT
+		calling_date,
+		substr(calling_time, 1, 2) AS calling_hour,
+		(CASE
+			WHEN RESULT = 0 THEN charge_amount
+			ELSE 0
+		END) AS revenue,
+		(CASE
+			WHEN RESULT = 0 THEN 1
+			ELSE 0
+		END) AS success,
+		(CASE
+			WHEN RESULT = 666 THEN 1
+			ELSE 0
+		END) AS insuf_balance,
+		RESULT
+	FROM
+		call_detailed_record
+	WHERE
+		calling_date = to_char(sysdate-1, 'YYYYMMDD')
+		AND calling_type IN (1, 2, 7, 77, 64, 65, 78, 93, 95, 96, 99, 100) )a
+GROUP BY
+	calling_date,
+	calling_hour
+ORDER BY
+	calling_date,
+	calling_hour )
+SELECT
+	calling_date,calling_hour,attempt,total_insuf_balance,total_success,total_revenue,round((total_revenue / total_success), 0),round((100 *(total_success / attempt)), 2)
+FROM
+	tb_charged_cdr

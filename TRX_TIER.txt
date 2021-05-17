@@ -1,0 +1,88 @@
+SELECT
+	x.CALLING_DATE,x.TIER,sum(x.TRX_FREE),sum(x.TRX_PAID),sum(x.REVENUE)
+FROM
+	(
+	SELECT
+		a.CALLING_DATE,
+		CASE
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 2 THEN '2 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 3 THEN '3 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 7 THEN '7 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 14 THEN '14 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 30 THEN '30 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 2 THEN '2 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 3 THEN '3 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 7 THEN '7 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 14 THEN '14 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 30 THEN '30 days'
+			ELSE 'blank'
+		END AS TIER,
+		sum(CASE WHEN a.CHARGE_AMOUNT = 0 THEN 1 ELSE 0 END) AS TRX_FREE,
+		sum(CASE WHEN a.CHARGE_AMOUNT > 0 THEN 1 ELSE 0 END) AS TRX_PAID,
+		sum(a.CHARGE_AMOUNT) AS REVENUE
+	FROM
+		(
+		SELECT
+			CALLING_DATE,
+			CALLING_TYPE,
+			(CASE
+				WHEN substr(ORG_RATING_ID, 1, 1) NOT IN ('0', '1', '2', '3', '4', '5', '6', '7', '8', '9') THEN RATING_ID
+				ELSE ORG_RATING_ID
+			END) AS ORG_RATING_ID,
+			CHARGE_AMOUNT
+		FROM
+			CALL_DETAILED_RECORD
+		WHERE
+			CALLING_DATE = to_char(sysdate-1, 'YYYYMMDD')
+			AND CALLING_TYPE IN (1, 2, 7, 77, 64, 65, 78, 93, 95, 96, 99, 100)
+			AND RESULT = 0 )a
+	LEFT JOIN (
+		SELECT
+			RATING_ID,
+			RATING_CYCLE_DAY,
+			RECURRENT_RATING_CYCLE_DAY
+		FROM
+			RATING_MCP_INFO )b ON
+		a.ORG_RATING_ID = b.RATING_ID
+	GROUP BY
+		a.CALLING_DATE,
+		a.CALLING_TYPE,
+		CASE
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 2 THEN '2 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 3 THEN '3 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 7 THEN '7 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 14 THEN '14 days'
+			WHEN calling_type IN (1, 2, 7, 77)
+			AND b.RATING_CYCLE_DAY = 30 THEN '30 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 2 THEN '2 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 3 THEN '3 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 7 THEN '7 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 14 THEN '14 days'
+			WHEN calling_type IN (64, 65, 78, 93, 95, 96, 99, 100)
+			AND b.RECURRENT_RATING_CYCLE_DAY = 30 THEN '30 days'
+			ELSE 'blank'
+		END )x
+GROUP BY
+	x.CALLING_DATE,
+	x.TIER
+ORDER BY
+	x.CALLING_DATE,
+	lpad(x.TIER, 10) ASC
