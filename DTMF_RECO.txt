@@ -1,0 +1,42 @@
+SELECT
+	CALLING_DATE,PROCESS_TYPE,CHANNEL,PRICE,TRX,REVENUE
+FROM
+	(
+	SELECT
+		calling_date,
+		process_type,
+		channel,
+		org_charge_amount AS price,
+		count(charge_amount) AS trx,
+		sum(charge_amount) AS revenue
+	FROM
+		(
+		SELECT
+			calling_date,
+			substr(calling_time, 1, 2) AS calling_hour,
+			(
+			CASE
+				WHEN calling_type IN (1, 2, 7, 77) THEN 'PURCHASE'
+				WHEN calling_type IN (64, 93, 65, 78, 95, 96, 99, 100) THEN 'RENEWAL'
+				ELSE 'N/A'
+			END ) AS process_type,
+			DECODE( SUBSTR(MEDIA_CODE, 2, 1), 'N', 'Renewal', '0', 'SMS', 'B', 'WEB', 'C', 'CSWeb', 'D', 'DTMF', 'I', 'IVR', 'J', 'Recommendation', 'M', 'MKIOS', 'O', 'OpenAPI', 'P', 'WAP', 'S', 'HTTPGW', 'T', 'Media_T', 'U', 'UMB', 'W', 'WCC', 'OTHERS' ) AS channel,
+			org_charge_amount,
+			charge_amount
+		FROM
+			call_detailed_record
+		WHERE
+			calling_date = to_char(sysdate-1, 'YYYYMMDD')
+			AND calling_type IN (1, 2, 7, 77, 64, 93, 65, 78, 95, 96, 99, 100)
+			AND SUBSTR(MEDIA_CODE, 2, 1) IN ('D', 'J')
+			AND RESULT = 0 )x
+	GROUP BY
+		calling_date,
+		process_type,
+		channel,
+		org_charge_amount
+	ORDER BY
+		calling_date,
+		process_type,
+		channel,
+		org_charge_amount )z
