@@ -1,0 +1,9 @@
+SELECT
+	calling_date,sum(trx),sum(revenue)
+FROM
+	MYNSP_REVENUE_DAILY
+WHERE
+	calling_date = to_char(sysdate-1,'yyyymmdd')
+	AND substr(reg_date, 1, 8) >= '20170206'
+GROUP BY
+	calling_date

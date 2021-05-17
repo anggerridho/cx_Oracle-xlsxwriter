@@ -1,0 +1,43 @@
+SELECT
+	x.calling_date,x.content_id,x.reg_date,x.cp_name,x.content_title,x.content_singer,x.total_trx,x.total_revenue
+FROM
+	(
+	SELECT
+		a.calling_date,
+		a.content_id,
+		a.reg_date,
+		b.cp_name,
+		b.content_title,
+		b.content_singer,
+		a.total_trx,
+		a.total_revenue
+	FROM
+		(
+		SELECT
+			calling_date,
+			content_id,
+			reg_date,
+			sum(trx) AS total_trx,
+			sum(revenue) AS total_revenue
+		FROM
+			MYNSP_REVENUE_DAILY
+		WHERE
+			calling_date = to_char(sysdate-1,'yyyymmdd')
+			AND substr(reg_date, 1, 8) >= '20170206'
+		GROUP BY
+			calling_date,
+			content_id,
+			reg_date )a
+	LEFT JOIN (
+		SELECT
+			content_id,
+			cp_name,
+			promo_code AS content_title,
+			content_singer
+		FROM
+			tot_content )b ON
+		a.content_id = b.content_id
+	ORDER BY
+		a.total_revenue DESC )x
+WHERE
+	rownum <= 10
