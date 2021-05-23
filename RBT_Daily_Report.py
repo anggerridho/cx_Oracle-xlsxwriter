@@ -45,7 +45,6 @@ def fyi(*text):
 # In[2]:
 
 
-# Send Email:
 def SendEmail():
     import email, smtplib, ssl
     from email import encoders
@@ -53,40 +52,26 @@ def SendEmail():
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
 
-#     subject = "An email with attachment from Python"
     Yesterday = str(kemarin.strftime('for %B %d, %Y'))
-    subject = "(New) RBT Daily Report " + Yesterday
+    subject = "(Automation) RBT Daily Report " + Yesterday
     body = "Dear All,\nPlease kindly find RBT Daily Reports " + Yesterday + " in attachment.\n\nBest Regards,\nAngger Ridho (https://linktr.ee/anggerdho)\nNote: xlsx & this email message is an automation process that I created"
-    sender_email = "Angger Ridho <operation.support@eluon.com>"
-#     sender_email = "Angger Ridho <angger@eluon.com>"
-    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com','angger@eluon.com']
-#    receiver_email = ['angger@eluon.com']
-#     password = input("Type your password and press enter:")
-    password = "An9gr3k!!"
+    sender_email = "Angger Ridho <standbyeluon@gmail.com>"
+    receiver_email = ['rizky.fauzi@eluon.com', 'randy@eluon.com', 'dhifa@eluon.com', 'handi@eluon.com', 'diyas@eluon.com',                       'operation.support@eluon.com','amanda@eluon.com','angger@eluon.com','anggeridho@gmail.com',                       'standbyeluon@gmail.com']
+    password = ".pteluon"
 
-    # Create a multipart message and set headers
     message = MIMEMultipart()
     message["From"] = sender_email
     message["To"] = ", ".join(receiver_email)
     message["Subject"] = subject
-#     message["Bcc"] = receiver_email  # Recommended for mass emails
-
-    # Add body to email
     message.attach(MIMEText(body, "plain"))
-
-#     f = ["RBT_Daily_Report_" + str(kemarin_str) + ".xlsx", \
-#          "New_RBT_Daily_Report_" + str(kemarin_str) + ".xlsx"]  # In same directory as script
     f = [Old]
     d = [Old, New]
-    Penting = str(path.exists(''+Old+''))
-    Banyak = str(path.exists(''+New+''))
+    Penting = str(path.exists(''+dir+Old+''))
+    Banyak = str(path.exists(''+dir+New+''))
     if Penting == 'True':
         if Banyak == 'True':
-            # Open PDF file in binary mode
-            for filename in d:  # add files to the message
+            for filename in d:
                 with open(dir+filename, "rb") as attachment:
-                    # Add file as application/octet-stream
-                    # Email client can usually download this automatically as attachment
                     part = MIMEBase("application", "octet-stream")
                     part.set_payload(attachment.read())
                     encoders.encode_base64(part)
@@ -96,20 +81,18 @@ def SendEmail():
                     )
                     message.attach(part)
                     text = message.as_string()
-            # Log in to server using secure context and send email
             context = ssl.create_default_context()
-            with smtplib.SMTP_SSL("gw.eluon.com", 465, context=context) as server:
-                server.login("operation.support@eluon.com", password)
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.ehlo()
+                server.starttls(context=context)
+                server.login("standbyeluon@gmail.com", password)
                 server.sendmail(sender_email, receiver_email, text)
                 chat = ''+Old+' dan '+New+' was just emailed at '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 print(chat)
                 fyi(chat)
         else:
-            # Open PDF file in binary mode
-            for filename in f:  # add files to the message
+            for filename in f:
                 with open(dir+filename, "rb") as attachment:
-                    # Add file as application/octet-stream
-                    # Email client can usually download this automatically as attachment
                     part = MIMEBase("application", "octet-stream")
                     part.set_payload(attachment.read())
                     encoders.encode_base64(part)
@@ -119,10 +102,11 @@ def SendEmail():
                     )
                     message.attach(part)
                     text = message.as_string()
-            # Log in to server using secure context and send email
             context = ssl.create_default_context()
-            with smtplib.SMTP_SSL("gw.eluon.com", 465, context=context) as server:
-                server.login("operation.support@eluon.com", password)
+            with smtplib.SMTP("smtp.gmail.com", 587) as server:
+                server.ehlo()
+                server.starttls(context=context)
+                server.login("standbyeluon@gmail.com", password)
                 server.sendmail(sender_email, receiver_email, text)
                 chat = 'There was a problem generating '+New+', So only '+Old+' was just emailed at '+datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                 print(chat)
@@ -4775,40 +4759,63 @@ def NewRBTDailyReport():
         GetQuery = 'CHARGING for worksheet CHARGING_HOURLY on (New)RBTDailyReport is running queries at '+datetime.datetime.now().strftime("%H:%M:%S")
         print(GetQuery)
         fyi(GetQuery)
-        cursor = database.cursor()
-        with open(dir+'CHARGING_HOURLY.txt','r') as inserts:
-            query = inserts.read()
-        cursor.execute(query)
-        result = cursor.fetchall()
-        charginghourly.hide_gridlines(2)
-        charginghourly.write('A1','CALLING_DATE',bold)
-        charginghourly.write('B1','HOUR',bold)
-        charginghourly.write('C1','ATTEMPT',bold)
-        charginghourly.write('D1','INSUFFICIENT_BALANCE',bold)
-        charginghourly.write('E1','SUCCESS',bold)
-        charginghourly.write('F1','REVENUE',bold)
-        charginghourly.write('G1','AVG_CHARGED',bold)
-        charginghourly.write('H1','TAKERS (%)',bold)
-        charginghourly.set_column('A:H', 22)
-        if result:
-            for r, row in enumerate(result, start=1):
-                for c, col in enumerate(row):
-                    charginghourly.write(r,0, row[0], date_format)
-                    charginghourly.write(r,1, row[1], content)
-                    charginghourly.write(r,2, row[2], content)
-                    charginghourly.write(r,3, row[3], content)
-                    charginghourly.write(r,4, row[4], content)
-                    charginghourly.write(r,5, row[5], content)
-                    charginghourly.write(r,6, row[6], content)
-                    charginghourly.write(r,7, row[7], content)
-            cursor.close()
-            chat = 'CHARGING has just been written for worksheet CHARGING_HOURLY on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
-            print(chat)
-            fyi(chat)
+        def GETDAT():
+            Dump = dir+'charging_time_'+str(kmrnbulan)+'.csv'
+            stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/13_charging_time_'+kmrnbulan+'.csv')
+            df = pd.read_csv(stdout, sep=',', index_col=0)
+            number_rows = len(df.index)
+            if number_rows == 0:
+                append = 'Failed to append CHARGING for worksheet CHARGING_HOURLY on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                print(append)
+                fyi(append)
+            else:
+                df.to_csv(r''+Dump+'', sep=',', header=False, mode=''+ AsNeeded +'')
+            
+            charginghourly.hide_gridlines(2)
+            charginghourly.write('A1','CALLING_DATE',bold)
+            charginghourly.write('B1','HOUR',bold)
+            charginghourly.write('C1','ATTEMPT',bold)
+            charginghourly.write('D1','INSUFFICIENT_BALANCE',bold)
+            charginghourly.write('E1','SUCCESS',bold)
+            charginghourly.write('F1','REVENUE',bold)
+            charginghourly.write('G1','AVG_CHARGED',bold)
+            charginghourly.write('H1','TAKERS (%)',bold)
+            charginghourly.set_column('A:H', 22)
+            Ada = str(path.exists(''+Dump+''))
+            if Ada == 'True':
+                with open(''+Dump+'',encoding='ISO-8859-1') as csvfile:
+                    readCSV = csv.reader(csvfile, delimiter=',')
+                    for r, row in enumerate(readCSV, start=1):
+                        for c, col in enumerate(row):
+                            charginghourly.write(r,0, row[0], date_format)
+                            charginghourly.write(r,1, row[1], content)
+                            charginghourly.write(r,2, row[2], content)
+                            charginghourly.write(r,3, row[3], content)
+                            charginghourly.write(r,4, row[4], content)
+                            charginghourly.write(r,5, row[5], content)
+                            charginghourly.write(r,6, row[6], content)
+                            charginghourly.write(r,7, row[7], content)
+                os.remove(dir+'charging_time_'+str(kmrn)+'.csv')
+                chat = 'CHARGING has just been written for worksheet CHARGING_HOURLY on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")
+                print(chat)
+                fyi(chat)
+            else:
+                Alert = 'Skip writing CHARGING for worksheet CHARGING_HOURLY on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
+                print(Alert)
+                fyi(Alert)
+        sys = '1'
+        ystrdy = now - datetime.timedelta(days=1)
+        lusa = now - datetime.timedelta(days=2)
+        storyday = now - datetime.timedelta(days=int(sys))
+        kmrn = str(ystrdy.strftime('%Y%m%d'))
+        kmrnlusa = str(lusa.strftime('%Y%m%d'))
+        kmrnbulan = str(storyday.strftime('%Y%m%d'))
+        if kmrnbulan[0:6] == kmrnlusa[0:6]:
+            AsNeeded = 'a'
+            GETDAT()
         else:
-            Alert = 'Skip writing CHARGING for worksheet CHARGING_HOURLY on (New)RBTDailyReport xlsx at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
-            print(Alert)
-            fyi(Alert)
+            AsNeeded = 'w'
+            GETDAT()
 
     def TRX_TIER():
         GetQuery = 'TIER for worksheet TRX_TIER on (New)RBTDailyReport is running queries at '+datetime.datetime.now().strftime("%H:%M:%S")
@@ -5195,7 +5202,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'Historical_Renewal_without_GP_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/23__gp_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Without GP for worksheet Historical Renewal without GP on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -5255,7 +5262,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'retry_hourly_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/24__retry_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Retry for worksheet Historical Retry Hourly on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -5315,7 +5322,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'purchase_hourly_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/25__purchase_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Purchase for worksheet Historical Purchase Hourly on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -5375,7 +5382,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'gp_hourly_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/26__grace_period_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append GP for worksheet Grace Periode Hourly on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -5435,7 +5442,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'enhance_retry_hourly_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/27__enhance_retry_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Enhance for worksheet Historical Retry Enhance Hourly on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -5495,7 +5502,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'retry_3_hourly_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/36__retry_3_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Dynamic for worksheet Historical Retry Dynamic Hourly on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -5555,7 +5562,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'extend_retry_hourly_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/41__extend_retry_hourly_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=',', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=',', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Extend for worksheet Historical Retry Extend Hourly on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -6143,7 +6150,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'purchase_sms_broadcast_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/37_purchase_sms_broadcast_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=';', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=';', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append worksheet Purchase_Sms_Broadcast on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -6284,7 +6291,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'purchase_inject_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/39_purchase_inject_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=';', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=';', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Gift Inject for worksheet Purchase_Gift_Inject on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -6345,7 +6352,7 @@ def NewRBTDailyReport():
         def GETDAT():
             Dump = dir+'renewal_inject_'+str(kmrnbulan[0:6])+'.csv'
             stdin, stdout, stderr = ssh.exec_command('cat /TRBT/rpt/daily/new_report/'+kmrnbulan+'/40_renewal_inject_'+kmrnbulan+'.csv')
-            df = pd.read_csv(stdout, sep=';', index_col=0, header=None)
+            df = pd.read_csv(stdout, sep=';', index_col=0)
             number_rows = len(df.index)
             if number_rows == 0:
                 append = 'Failed to append Renew Gift Inject for worksheet Renewal_Gift_Inject on (New)RBTDailyReport '+ kmrnbulan +' at '+datetime.datetime.now().strftime("%H:%M:%S")+', because the data is empty from the database'
@@ -6517,8 +6524,8 @@ def NewRBTDailyReport():
 # In[5]:
 
 
-Oldaily = str(path.exists(''+Old+''))
-Newdaily = str(path.exists(''+New+''))
+Oldaily = str(path.exists(''+dir+Old+''))
+Newdaily = str(path.exists(''+dir+New+''))
 
 def GenDaily():
     if Oldaily == 'True':
